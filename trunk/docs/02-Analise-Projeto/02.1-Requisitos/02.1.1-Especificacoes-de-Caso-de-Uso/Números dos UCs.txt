@@ -1,0 +1,7 @@
+UC-01: Efetuar Login
+UC-02: Compartilhar MER
+UC-03: Manter Estrutura de Arquivos
+UC-04: Cadastrar Usuário
+UC-05: Exportar MER
+UC-06: Gerar SQL
+UC-07: Desenhar MER
