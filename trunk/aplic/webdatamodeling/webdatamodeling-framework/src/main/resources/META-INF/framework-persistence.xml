@@ -11,7 +11,7 @@
            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
 		   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
     
-    <context:component-scan base-package="br.gov.stf.framework.persister.jpa" />
+    <context:component-scan base-package="br.edu.ucb.webdatamodeling.framework.dao.persistence.jpa" />
     
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>    
            

@@ -13,7 +13,7 @@ import br.edu.ucb.webdatamodeling.framework.dao.persistence.Persistence;
 import br.edu.ucb.webdatamodeling.framework.dao.persistence.PersistenceException;
 import br.edu.ucb.webdatamodeling.framework.entity.Entity;
 
-@Component("persister")
+@Component("persistence")
 @Qualifier("JPA")
 public class PersistenceJPA<E extends Entity<?>> implements Persistence<E> {
 

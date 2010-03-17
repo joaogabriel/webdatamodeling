@@ -1,8 +1,8 @@
-package br.edu.ucb.webdatamodeling.entity;
+package br.edu.ucb.webdatamodeling.dto;
 
-import br.edu.ucb.webdatamodeling.framework.entity.Entity;
+import br.edu.ucb.webdatamodeling.framework.dto.AbstractDTO;
 
-public class EntidadeTeste implements Entity<Long> {
+public class EntidadeTesteDTO extends AbstractDTO {
 
 	private Long id;
 	private String mensagem;
