@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <service id="remoting-service" class="flex.messaging.services.RemotingService">
 	<adapters>
-		<adapter-definition id="java-object"
-			class="flex.messaging.services.remoting.adapters.JavaAdapter"
-			default="true" />
+		<adapter-definition id="java-object" class="flex.messaging.services.remoting.adapters.JavaAdapter" default="true" />
 	</adapters>
+	
 	<default-channels>
-		<channel ref="channel-amf" />
+		<channel ref="webdatamodeling-amf" />
 	</default-channels>
-	<destination id="myService">
-		<properties>
-            <factory>spring</factory>
-			<source>myService</source>
-		</properties>
-	</destination>
+	
+<!--	<destination id="UsuarioService">-->
+<!--		<properties>-->
+<!--			<source>br.edu.ucb.webdatamodeling.service.impl.UsuarioServiceImpl</source>-->
+<!--		</properties>-->
+<!--	</destination>-->
 </service>
