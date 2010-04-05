@@ -14,20 +14,25 @@
     <bean id="persistenceXmlLocations" class="org.springframework.beans.factory.config.ListFactoryBean">
 		<property name="sourceList">
 			<list>
-				<value>classpath:META-INF/persistence-entities.xml</value>
+				<value>classpath*:META-INF/persistence-entities.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath*:/Config.properties</value>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="STFJFWKTestDS" class="br.gov.stf.stefanini.framework.security.authorization.sql.DataSourceSTF">
-		<property name="dataSource">
-			<bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-				<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
-				<property name="url" value="jdbc:oracle:thin:@pavo:1521:STFH" />
-				<property name="username" value="USUARIOBIBLIOTECA" />
-				<property name="password" value="bmrx%37r5niwq7yb" /> 
-			</bean>
-		</property>
+	<bean id="dataSource" class="org.apache.tomcat.dbcp.dbcp.BasicDataSource" destroy-method="close">
+<!--	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" destroy-method="close">-->
+		<property name="driverClassName" value="org.postgresql.Driver" />
+		<property name="url" value="jdbc:postgresql:WebDataModeling" />
+		<property name="username" value="wdm_user" />
+		<property name="password" value="password" /> 
 	</bean>
 	
 </beans>
