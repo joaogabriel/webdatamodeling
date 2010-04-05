@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"
+	xmlns:display="flash.display.*"
+	xmlns:components="com.pfp.components.*"
+	creationComplete="init()">
+	
+	<mx:Style source="../resources/assets/style/style.css"/>
+	
+	<mx:Metadata>
+        [ResourceBundle("messages")]
+    </mx:Metadata>
+	    
+	<mx:Script>
+		<![CDATA[
+			import br.edu.ucb.webdatamodeling.other.pfp.components.CubeStack;
+			import br.edu.ucb.webdatamodeling.other.pfp.rsscube.models.MainModel;
+			import br.edu.ucb.webdatamodeling.components.Cubo;
+			import mx.managers.PopUpManager;
+			import mx.controls.Alert;
+			import com.adobe.viewsource.ViewSource;
+			
+			[Bindable]
+			private var model:MainModel = MainModel.GetInstance();
+			
+			private function init():void
+			{
+				//var srcUrl:String = Application.application.parameters.srcUrl;
+				//if (srcUrl)
+				//{
+					//ViewSource.addMenuItem(this, srcUrl);
+				//}
+                PopUpManager.centerPopUp(PopUpManager.createPopUp(this, Cubo , true));
+			}
+		]]>
+	</mx:Script>
+	<mx:VBox width="100%" height="100%">
+		<mx:ApplicationControlBar width="100%" height="40">
+			<mx:HBox horizontalGap="950" horizontalAlign="center" verticalAlign="middle">
+				<mx:Text text="WEB DATA MODELING" fontFamily="Verdana" fontSize="15" fontWeight="bold"/>
+				<mx:Text text="versão 1.0 beta" enabled="true" textAlign="left" bottom=""/>
+			</mx:HBox>
+		</mx:ApplicationControlBar>
+		<mx:Canvas id="content" width="100%" height="100%">
+			<mx:HBox id="subContent" width="100%" height="100%">
+				<mx:Tree id="treeView" width="25%" height="100%" backgroundAlpha="0.49">
+				
+				</mx:Tree>
+				<mx:Canvas id="fileView" width="75%" height="100%" backgroundColor="white" backgroundAlpha="0.49">
+					
+				</mx:Canvas>
+			</mx:HBox>
+		</mx:Canvas>
+		<mx:ApplicationControlBar width="100%" height="40">
+			<mx:Label text="Usuário:"/>
+			<mx:Text id="usuario" text="Eduardo Moresi"/>
+		</mx:ApplicationControlBar>
+	</mx:VBox>
+</mx:Application>

@@ -1,0 +1,16 @@
+Application
+{
+	backgroundGradientAlphas: 1.0, 1.0;
+	backgroundGradientColors: #F5EFEF, #DAD8D8;
+	backgroundImage: Embed(source='/assets/images/brushedMetal.jpg');
+}
+
+.buttonLoader
+{
+	skin:						ClassReference('br.edu.ucb.webdatamodeling.other.pfp.skins.ButtonLoader_skin');
+	color:						#FFFFFF;
+	textRollOverColor:			#FFFFFF;
+	disabledColor:				#FFFFFF;
+	fontSize:					20;
+	paddingTop: 				6;
+}

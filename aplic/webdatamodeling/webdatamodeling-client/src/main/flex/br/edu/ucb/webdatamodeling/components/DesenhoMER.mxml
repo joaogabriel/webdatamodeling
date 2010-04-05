@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300">
+	<mx:Script>
+		<![CDATA[
+			import br.edu.ucb.webdatamodeling.display.modeling.StageModeling;
+			import mx.core.UIComponent;
+			
+			private function tt():void
+			{
+				ui.addChild(new StageModeling());
+			}
+		]]>
+	</mx:Script>
+	<mx:UIComponent id="ui"/>
+</mx:Canvas>

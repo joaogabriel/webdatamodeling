@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300"
+	xmlns:components="br.edu.ucb.webdatamodeling.other.pfp.components.*"
+	xmlns:display="br.edu.ucb.webdatamodeling.components.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import br.edu.ucb.webdatamodeling.other.pfp.components.CubeStack;
+			import br.edu.ucb.webdatamodeling.other.pfp.rsscube.models.MainModel;
+			import mx.controls.Alert;
+			import com.adobe.viewsource.ViewSource;
+			
+			[Bindable]
+			private var model:MainModel = MainModel.GetInstance();
+			
+			private function init():void
+			{
+				/* var srcUrl:String = Application.application.parameters.srcUrl;
+				if (srcUrl)
+				{
+					ViewSource.addMenuItem(this, srcUrl);
+				} */
+			}
+		]]>
+	</mx:Script>
+	<components:CubeStack id="cube" selectedSide="{model.cubeSide}">
+	  	<display:Login name="Front"/>
+	  	<display:Cadastro name="Left"/>
+	  	<display:RecuperacaoSenha name="Back"/>
+	</components:CubeStack>
+</mx:Canvas>
