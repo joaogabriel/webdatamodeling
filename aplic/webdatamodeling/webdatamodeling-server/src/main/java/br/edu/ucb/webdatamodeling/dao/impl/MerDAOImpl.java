@@ -4,15 +4,16 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Repository;
 
-import br.edu.ucb.webdatamodeling.entity.EntidadeTeste;
+import br.edu.ucb.webdatamodeling.dao.MerDAO;
+import br.edu.ucb.webdatamodeling.entity.Mer;
 import br.edu.ucb.webdatamodeling.framework.dao.AbstractObjectDAO;
 import br.edu.ucb.webdatamodeling.framework.dao.persistence.Persistence;
 
-@Repository(value = "EntidadeTesteDAO")
-public class EntidadeTesteDAOImpl extends AbstractObjectDAO<EntidadeTeste> {
+@Repository(value = "MerDAO")
+public class MerDAOImpl extends AbstractObjectDAO<Mer> implements MerDAO {
 
 	@Resource(name = "persistence")
-	public void setPersistence(Persistence<EntidadeTeste> persistence) {
+	public void setPersistence(Persistence<Mer> persistence) {
 		super.setPersistence(persistence);
 	}
 	
