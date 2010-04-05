@@ -4,30 +4,30 @@
         <service-include file-path="remoting-config.xml"/>
         <service-include file-path="messaging-config.xml"/>
         
-		<default-channels>
-			<channel ref="webdatamodeling-amf" />
-		</default-channels>
+<!--		<default-channels>-->
+<!--			<channel ref="webdatamodeling-amf" />-->
+<!--		</default-channels>-->
         
     </services>
 	
     <channels>
         <channel-definition id="webdatamodeling-amf" class="mx.messaging.channels.AMFChannel">
-            <endpoint url="http://{server.name}:{server.port}/{context.root}/messagebroker/amf" class="flex.messaging.endpoints.AMFEndpoint"/>
+            <endpoint url="http://{server.name}:8080/{context.root}/messagebroker/amf" class="flex.messaging.endpoints.AMFEndpoint"/>
             <properties>
                 <polling-enabled>false</polling-enabled>
             </properties>
         </channel-definition>
  
-	     <channel-definition id="streaming-amf" class="mx.messaging.channels.StreamingAMFChannel">
-	         <endpoint url="http://{server.name}:{server.port}/{context.root}/messagebroker/streamingamf" class="flex.messaging.endpoints.StreamingAMFEndpoint"/>
-	     </channel-definition>
-
-        <channel-definition id="polling-amf" class="mx.messaging.channels.AMFChannel">
-            <endpoint url="http://{server.name}:{server.port}/{context.root}/messagebroker/amfpolling" class="flex.messaging.endpoints.AMFEndpoint"/>
-            <properties>
-                <polling-enabled>true</polling-enabled>
-            </properties>
-        </channel-definition>
+<!--	     <channel-definition id="streaming-amf" class="mx.messaging.channels.StreamingAMFChannel">-->
+<!--	         <endpoint url="http://{server.name}:{server.port}/{context.root}/messagebroker/streamingamf" class="flex.messaging.endpoints.StreamingAMFEndpoint"/>-->
+<!--	     </channel-definition>-->
+<!---->
+<!--        <channel-definition id="polling-amf" class="mx.messaging.channels.AMFChannel">-->
+<!--            <endpoint url="http://{server.name}:{server.port}/{context.root}/messagebroker/amfpolling" class="flex.messaging.endpoints.AMFEndpoint"/>-->
+<!--            <properties>-->
+<!--                <polling-enabled>true</polling-enabled>-->
+<!--            </properties>-->
+<!--        </channel-definition>-->
 
 	     
     </channels>
