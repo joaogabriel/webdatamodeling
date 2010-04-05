@@ -8,6 +8,12 @@ import br.edu.ucb.webdatamodeling.framework.dao.persistence.Persistence;
 import br.edu.ucb.webdatamodeling.framework.dao.persistence.PersistenceException;
 import br.edu.ucb.webdatamodeling.framework.entity.Entity;
 
+/**
+ * 
+ * 
+ * @author joao.gabriel
+ *
+ */
 public class AbstractObjectDAO<E extends Entity<?>> implements ObjectDAO<E> {
 
 	private Persistence<E> persistence;
@@ -88,13 +94,11 @@ public class AbstractObjectDAO<E extends Entity<?>> implements ObjectDAO<E> {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public E findById(Serializable id) throws ObjectDAOException {
 		E entity = null;
 		
 		try {
-			// TODO tirar cast
-			entity = this.persistence.findByIdentifier((Class<E>) getEntityClass(), id);
+			entity = (E) this.persistence.findByIdentifier((Class<E>) getEntityClass(), id);
 		} catch (PersistenceException ex) {
 			throw new ObjectDAOException("Ocorreu um erro ao atualizar a entidade.");
 		}
@@ -116,12 +120,10 @@ public class AbstractObjectDAO<E extends Entity<?>> implements ObjectDAO<E> {
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public List<E> findAll() throws ObjectDAOException {
 		List<E> entities = null;
 		
 		try {
-			// TODO tirar cast
 			entities = this.persistence.findAll((Class<E>) getEntityClass());
 		} catch (PersistenceException ex) {
 			throw new ObjectDAOException("Ocorreu um erro ao atualizar a entidade.");
@@ -131,8 +133,8 @@ public class AbstractObjectDAO<E extends Entity<?>> implements ObjectDAO<E> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected Class<Entity<?>> getEntityClass() {
-		return (Class<Entity<?>>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+	protected Class<E> getEntityClass() {
+		return (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 	
 	public Persistence<E> getPersistence() {

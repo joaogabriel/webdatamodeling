@@ -5,6 +5,16 @@ import java.util.List;
 
 import br.edu.ucb.webdatamodeling.framework.entity.Entity;
 
+/**
+ * Interface que define todos os métodos de acesso a todo e qualquer Gerenciador de Banco de Dados.
+ * 
+ * Toda classe que de fato acessa um SGBD deve implementar esta interface, assim o framework fica independente de implementações/frameworks
+ * 
+ * Suporta JPA, Hibernate, iBatis, JDBC, entre outros.
+ * 
+ * @author joao.gabriel
+ *
+ */
 public interface Persistence<E extends Entity<?>> {
 
 	E insert(E entity) throws PersistenceException;

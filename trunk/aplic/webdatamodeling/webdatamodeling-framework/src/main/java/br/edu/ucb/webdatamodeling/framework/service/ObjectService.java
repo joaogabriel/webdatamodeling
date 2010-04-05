@@ -4,28 +4,37 @@ import java.io.Serializable;
 import java.util.List;
 
 import br.edu.ucb.webdatamodeling.framework.dao.DAO;
+import br.edu.ucb.webdatamodeling.framework.dto.DTO;
 import br.edu.ucb.webdatamodeling.framework.entity.Entity;
 
-public interface ObjectService<E extends Entity<?>, D extends DAO> extends Service {
+public interface ObjectService<E extends Entity<?>, T extends DTO<E>, D extends DAO> extends Service {
 
-	E insert(E entity) throws Exception;
+	T insert(T dto) throws ServiceException;
 	
-	List<E> insertAll(List<E> entities) throws Exception;
+	List<T> insertAll(List<T> dtos) throws ServiceException;
 	
-	E update(E entity) throws Exception;
+	T update(T dto) throws ServiceException;
 	
-	List<E> updateAll(List<E> entities) throws Exception;
+	List<T> updateAll(List<T> dtos) throws ServiceException;
 	
-	void remove(E entity) throws Exception;
+	void remove(T dto) throws ServiceException;
 	
-	void removeAll(List<E> entities) throws Exception;
+	void removeAll(List<T> dtos) throws ServiceException;
 	
-	E findById(Serializable id) throws Exception;
+	T findById(Serializable id) throws ServiceException;
 	
-	List<E> findByHQL(String query) throws Exception;
+	List<T> findByHQL(String query) throws ServiceException;
 	
-	List<E> findByNativeQuery(String query, E resultEntity) throws Exception;
+	List<T> findByNativeQuery(String query, T resultDTO) throws ServiceException;
 	
-	List<E> findAll() throws Exception;
+	List<T> findAll() throws ServiceException;
+	
+	E parseEntity(T dto) throws ServiceException;
+	
+	List<E> parseEntities(List<T> dtos) throws ServiceException;
+		
+	T parseDTO(E entity) throws ServiceException;;
+	
+	List<T> parseDTOs(List<E> entities) throws ServiceException;
 	
 }

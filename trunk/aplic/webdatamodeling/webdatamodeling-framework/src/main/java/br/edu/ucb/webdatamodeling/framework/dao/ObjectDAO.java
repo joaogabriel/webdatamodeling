@@ -5,6 +5,12 @@ import java.util.List;
 
 import br.edu.ucb.webdatamodeling.framework.entity.Entity;
 
+/**
+ * Interface que define os principais 
+ * @author Gabriel
+ *
+ * @param <E>
+ */
 public interface ObjectDAO<E extends Entity<?>> extends DAO {
 
 	E insert(E entity) throws ObjectDAOException;
