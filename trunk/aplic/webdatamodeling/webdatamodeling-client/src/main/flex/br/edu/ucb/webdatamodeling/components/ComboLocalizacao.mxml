@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:ComboBox
+		id="comboLocalizacao"
+		rowCount="4"
+		width="200"
+		textIndent="5"
+		selectedIndex="-1"
+		prompt="Selecione um idioma"
+		dataProvider="{locales}"
+		change="changeHandler(event)"
+		creationComplete="init()">
+	    
+		<mx:Script>
+			<![CDATA[
+				import mx.controls.Alert;
+				
+				[Bindable]
+				[Embed(source="../../../../../../resources/assets/images/flagBrasil.png")]
+				public var FlagBrasil:Class;
+				
+				[Bindable]
+				[Embed(source="../../../../../../resources/assets/images/flagUSA.png")]
+				public var FlagUSA:Class;
+				
+				[Bindable]
+				private var locales:Array = [{label: "Português", code:"pt_BR", icon:"FlagBrasil"}, 
+											 {label: "Inglês", code:"en_US", icon:"FlagUSA"}];
+				
+				private function init():void
+				{
+					comboLocalizacao.dropdown.iconField = "icon";
+				}
+				
+				private function changeHandler(event:Event):void
+				{
+					resourceManager.localeChain = [comboLocalizacao.selectedItem.code];
+				}
+			]]>
+		</mx:Script>
+	</mx:ComboBox>
+</mx:Canvas>

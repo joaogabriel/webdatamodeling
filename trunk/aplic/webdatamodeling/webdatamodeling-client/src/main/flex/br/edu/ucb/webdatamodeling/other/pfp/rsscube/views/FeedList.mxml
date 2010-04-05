@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+  width="400" height="450">
+  <mx:Script>
+    <![CDATA[
+      import com.pfp.rsscube.models.MainModel;
+      
+      [Bindable]
+      private var model:MainModel = MainModel.GetInstance();
+    ]]>
+  </mx:Script>
+  <mx:Label 
+    text="Choose a Feed:" fontSize="18" fontWeight="bold"/>
+  <mx:Button 
+    label="Mashable!" 
+    click="model.cubeSide = 'Left'" width="125" />
+  <mx:Button 
+    label="Engadget" 
+    click="model.cubeSide = 'Back'" width="125" />
+  <mx:Button 
+    label="Lifehacker" 
+    click="model.cubeSide = 'Right'" width="125" />
+</mx:VBox>

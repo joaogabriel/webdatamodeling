@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" title="Novo usuário" width="400" height="300">
+	<mx:Script>
+		<![CDATA[
+			import br.edu.ucb.webdatamodeling.service.UsuarioService;
+			import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
+			import br.edu.ucb.webdatamodeling.other.pfp.rsscube.models.MainModel;
+			import mx.controls.Alert;
+			import mx.formatters.DateFormatter;
+			  
+			[Bindable]
+			private var model:MainModel = MainModel.GetInstance();
+			
+			[Bindable]
+			private var usuarioDTO:UsuarioDTO = new UsuarioDTO();
+			  
+			private function limparCampos():void
+			{
+				nome.text = "";
+				sobrenome.text = "";
+				email.text = "";
+				senha.text = "";
+				dataNascimento.text = "";
+			}
+			
+			private function novaData():void
+			{
+				var dataAtual:Date = new Date();
+				var formatDate:DateFormatter = new DateFormatter();
+				formatDate.formatString = "DD/MM/YYYY";
+				dataCadastro.text = formatDate.format(dataAtual);
+			}
+			
+			private function cadastrar():void
+			{
+				usuarioDTO.nome = nome.text;
+				usuarioDTO.sobrenome = sobrenome.text;
+				usuarioDTO.email = email.text;
+				usuarioDTO.senha = senha.text;
+				usuarioDTO.dataNascimento = dataNascimento.selectedDate;
+				
+				var usuarioService:UsuarioService = UsuarioService.getInstance();
+				usuarioService.insert(usuarioDTO);
+				
+			}
+		]]>
+	</mx:Script>
+	<mx:Form width="100%">
+		<mx:FormItem label="Nome" width="100%">
+			<mx:TextInput id="nome" width="100%"/>
+		</mx:FormItem>
+		<mx:FormItem label="Sobrenome" width="100%">
+			<mx:TextInput id="sobrenome" width="100%" text="{usuarioDTO.sobrenome}"/>
+		</mx:FormItem>
+		<mx:FormItem label="E-mail" width="100%">
+			<mx:TextInput id="email" width="100%"/>
+		</mx:FormItem>
+		<mx:FormItem label="Senha" width="100%">
+			<mx:TextInput id="senha" displayAsPassword="true" width="100%"/>
+		</mx:FormItem>
+		<mx:FormItem label="Data de nascimento" width="100%">
+			<mx:DateField id="dataNascimento" showToday="true" formatString="DD/MM/YY"
+				dayNames="['D','S','T','Q','Q','S','S']" 
+				monthNames="['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+				'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']" width="100%"/>
+		</mx:FormItem>
+		<mx:FormItem label="Data de cadastro" width="100%">
+			<mx:TextInput id="dataCadastro" editable="false" creationComplete="novaData()" width="100%"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:HBox horizontalAlign="center" width="100%">
+		<mx:Button label="Cadastrar" click="cadastrar()"/>
+		<mx:Button label="Limpar" click="limparCampos()"/>
+		<mx:Button label="Cancelar" click="model.cubeSide = 'Front'"/>
+	</mx:HBox>
+</mx:Panel>
