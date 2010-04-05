@@ -20,4 +20,21 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.maven.ide.eclipse.maven2Nature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>common_resources</name>
+			<type>2</type>
+			<location>C:/java/svn/WebDataModeling/trunk/aplic/webdatamodeling/webdatamodeling-common/src/main/resources</location>
+		</link>
+		<link>
+			<name>framework_java</name>
+			<type>2</type>
+			<location>C:/java/svn/WebDataModeling/trunk/aplic/webdatamodeling/webdatamodeling-framework/src/main/java</location>
+		</link>
+		<link>
+			<name>framework_resources</name>
+			<type>2</type>
+			<location>C:/java/svn/WebDataModeling/trunk/aplic/webdatamodeling/webdatamodeling-framework/src/main/resources</location>
+		</link>
+	</linkedResources>
 </projectDescription>
