@@ -17,7 +17,7 @@
            
 	<bean id="defaultPersistenceUnitManager" class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">
 		<property name="persistenceXmlLocations" ref="persistenceXmlLocations" />
-		<property name="defaultDataSource" ref="${persistence.default.datasource.name}" />
+		<property name="defaultDataSource" ref="dataSource" />
 	</bean>
 
 	<bean id="DefaultEntityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -34,7 +34,6 @@
 		</property>
 	</bean>
 	
-	<!-- Gerenciador de transação local para a Entity Manager Factory -->
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="DefaultEntityManagerFactory" />
 	</bean>

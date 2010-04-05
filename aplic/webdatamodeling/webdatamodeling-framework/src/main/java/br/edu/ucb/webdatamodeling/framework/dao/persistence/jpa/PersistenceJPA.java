@@ -13,6 +13,12 @@ import br.edu.ucb.webdatamodeling.framework.dao.persistence.Persistence;
 import br.edu.ucb.webdatamodeling.framework.dao.persistence.PersistenceException;
 import br.edu.ucb.webdatamodeling.framework.entity.Entity;
 
+/**
+ * Classe que implementa a interface <code>Persistence</code> oferecendo suporte ao JPA.
+ * 
+ * @author joao.gabriel
+ * 
+ */
 @Component("persistence")
 @Qualifier("JPA")
 public class PersistenceJPA<E extends Entity<?>> implements Persistence<E> {
@@ -23,7 +29,7 @@ public class PersistenceJPA<E extends Entity<?>> implements Persistence<E> {
 	public E insert(E entity) throws PersistenceException {
 		if (entity != null) {
 			try {
-				entityManager.persist(entity);
+				getEntityManager().persist(entity);
 			} catch (Exception ex) {
 				throw new PersistenceException(ex);
 			}
@@ -46,7 +52,7 @@ public class PersistenceJPA<E extends Entity<?>> implements Persistence<E> {
 		if (entity != null) {
 			try {
 				verificarIdentificadorInformado(entity.getId());
-				entityManager.merge(entity);
+				getEntityManager().merge(entity);
 			} catch (Exception ex) {
 				throw new PersistenceException(ex);
 			}
@@ -69,7 +75,7 @@ public class PersistenceJPA<E extends Entity<?>> implements Persistence<E> {
 		if (entity != null) {
 			try {
 				verificarIdentificadorInformado(entity.getId());
-				entityManager.remove(entity);
+				getEntityManager().remove(entity);
 			} catch (Exception ex) {
 				throw new PersistenceException(ex);
 			}
@@ -91,7 +97,7 @@ public class PersistenceJPA<E extends Entity<?>> implements Persistence<E> {
 		
 		if (entityClass != null) {
 			try {
-				entityManager.createQuery(new String("from " + entityClass.getCanonicalName()));
+				getEntityManager().createQuery(new String("from " + entityClass.getCanonicalName()));
 			} catch (Exception ex) {
 				throw new PersistenceException(ex);
 			}
@@ -106,7 +112,7 @@ public class PersistenceJPA<E extends Entity<?>> implements Persistence<E> {
 		
 		if (id != null) {
 			try {
-				entity = entityManager.find(entityClass, id);
+				entity = getEntityManager().find(entityClass, id);
 			} catch (Exception ex) {
 				throw new PersistenceException(ex);
 			}
@@ -121,7 +127,7 @@ public class PersistenceJPA<E extends Entity<?>> implements Persistence<E> {
 		
 		if (query != null && !query.isEmpty()) {
 			try {
-				entityManager.createQuery(query);
+				getEntityManager().createQuery(query);
 			} catch (Exception ex) {
 				throw new PersistenceException(ex);
 			}
@@ -137,7 +143,7 @@ public class PersistenceJPA<E extends Entity<?>> implements Persistence<E> {
 		
 		if (query != null && !query.isEmpty() && resultEntity != null) {
 			try {
-				entities = entityManager.createNativeQuery(query, resultEntity.getClass()).getResultList();
+				entities = getEntityManager().createNativeQuery(query, resultEntity.getClass()).getResultList();
 			} catch (Exception ex) {
 				throw new PersistenceException(ex);
 			}
@@ -146,6 +152,10 @@ public class PersistenceJPA<E extends Entity<?>> implements Persistence<E> {
 		return entities;
 	}
 
+	public EntityManager getEntityManager() {
+		return entityManager;
+	}
+	
 	@PersistenceContext
 	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager = entityManager;
@@ -153,7 +163,7 @@ public class PersistenceJPA<E extends Entity<?>> implements Persistence<E> {
 	
 	@Override
 	public void closeTransaction() {
-		this.entityManager.close();
+		//this.entityManager.close();
 	}
 	
 	private void verificarIdentificadorInformado(Serializable id) throws PersistenceException {
