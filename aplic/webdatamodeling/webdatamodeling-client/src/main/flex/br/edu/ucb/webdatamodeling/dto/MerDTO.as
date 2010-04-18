@@ -7,7 +7,7 @@ package br.edu.ucb.webdatamodeling.dto
 		private var _id:Number;
 		private var _exportado:Boolean;
 		private var _dataUltimaExportacao:Date;
-		private var _arquivo:Number;
+		private var _arquivo:ArquivoDTO;
 		private var _tabelas:Array;
 		private var _usuarios:Array;
 		
@@ -45,12 +45,12 @@ package br.edu.ucb.webdatamodeling.dto
 			_dataUltimaExportacao = value;
 		}
 		
-		public function get arquivo():Number
+		public function get arquivo():ArquivoDTO
 		{
 			return _arquivo;
 		}
 		
-		public function set arquivo(value:Number):void 
+		public function set arquivo(value:ArquivoDTO):void 
 		{
 			_arquivo = value;
 		}

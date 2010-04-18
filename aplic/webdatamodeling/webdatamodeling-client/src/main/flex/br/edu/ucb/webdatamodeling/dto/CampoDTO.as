@@ -11,8 +11,8 @@ package br.edu.ucb.webdatamodeling.dto
 		private var _autoIncremento:Boolean;
 		private var _chavePrimaria:Boolean;
 		private var _chaveEstrangeira:Boolean;
-		private var tabela:Number;
-		private var tipo:Number;
+		private var tabela:TabelaDTO;
+		private var tipo:TipoCampoDTO;
 		
 		public function CampoDTO()
 		{
@@ -98,22 +98,22 @@ package br.edu.ucb.webdatamodeling.dto
 			_chaveEstrangeira = value;
 		}
 		
-		public function get tabela():Number
+		public function get tabela():TabelaDTO
 		{
 			return _tabela;
 		}
 		
-		public function set tabela(value:Number):void 
+		public function set tabela(value:TabelaDTO):void 
 		{
 			_tabela = value;
 		}
 		
-		public function get tipo():Number
+		public function get tipo():TipoCampoDTO
 		{
 			return _tipo;
 		}
 		
-		public function set tipo(value:Number):void 
+		public function set tipo(value:TipoCampoDTO):void 
 		{
 			_tipo = value;
 		}

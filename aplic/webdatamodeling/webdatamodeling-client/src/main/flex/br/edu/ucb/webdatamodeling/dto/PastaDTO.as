@@ -9,7 +9,7 @@ package br.edu.ucb.webdatamodeling.dto
 		private var _descricao:String;
 		private var _dataCriacao:Date;
 		private var _dataUltimaAlteracao:Date;
-		private var _usuario:Number;
+		private var _usuario:UsuarioDTO;
 		private var _arquivos:Array;
 		
 		public function PastaDTO()
@@ -66,12 +66,12 @@ package br.edu.ucb.webdatamodeling.dto
 			_dataUltimaAlteracao = value;
 		}
 		
-		public function get usuario():Number
+		public function get usuario():UsuarioDTO
 		{
 			return _usuario;
 		}
 		
-		public function set usuario(value:Number):void 
+		public function set usuario(value:UsuarioDTO):void 
 		{
 			_usuario = value;
 		}
