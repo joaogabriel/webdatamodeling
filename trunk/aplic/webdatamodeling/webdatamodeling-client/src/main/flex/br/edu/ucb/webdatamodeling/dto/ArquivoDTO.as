@@ -9,9 +9,9 @@ package br.edu.ucb.webdatamodeling.dto
 		private var _descricao:String;
 		private var _dataCriacao:Date;
 		private var _dataUltimaAlteracao:Date;
-		private var _pasta:Number;
-		private var _tipo:Number;
-		private var _mer:Number;
+		private var _pasta:PastaDTO;
+		private var _tipo:TipoArquivoDTO;
+		private var _mer:MerDTO;
 		
 		public function ArquivoDTO()
 		{
@@ -77,32 +77,32 @@ package br.edu.ucb.webdatamodeling.dto
 			_dataUltimaAlteracao = value;
 		}
 		
-		public function get pasta():Number
+		public function get pasta():PastaDTO
 		{
 			return _pasta;
 		}
 		
-		public function set pasta(value:Number):void 
+		public function set pasta(value:PastaDTO):void 
 		{
 			_pasta = value;
 		}
 		
-		public function get tipo():Number
+		public function get tipo():TipoArquivoDTO
 		{
 			return _tipo;
 		}
 		
-		public function set tipo(value:Number):void 
+		public function set tipo(value:TipoArquivoDTO):void 
 		{
 			_tipo = value;
 		}
 		
-		public function get mer():Number
+		public function get mer():MerDTO
 		{
 			return _mer;
 		}
 		
-		public function set mer(value:Number):void 
+		public function set mer(value:MerDTO):void 
 		{
 			_mer = value;
 		}

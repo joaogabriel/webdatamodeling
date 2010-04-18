@@ -9,8 +9,8 @@ package br.edu.ucb.webdatamodeling.dto
 		private var _comentario:String;
 		private var _coordenadaX:Number;
 		private var _coordenadaY:Number;
-		private var _mer:Number;
-		private var _tipo:Number;
+		private var _mer:MerDTO;
+		private var _tipo:TipoTabelaDTO;
 		private var _campos:Array;
 		
 		public function TabelaDTO()
@@ -67,22 +67,22 @@ package br.edu.ucb.webdatamodeling.dto
 			_coordenadaY = value;
 		}
 		
-		public function get mer():Number
+		public function get mer():MerDTO
 		{
 			return _mer;
 		}
 		
-		public function set mer(value:Number):void 
+		public function set mer(value:MerDTO):void 
 		{
 			_mer = value;
 		}
 		
-		public function get tipo():Number
+		public function get tipo():TipoTabelaDTO
 		{
 			return _tipo;
 		}
 		
-		public function set tipo(value:Number):void 
+		public function set tipo(value:TipoTabelaDTO):void 
 		{
 			_tipo = value;
 		}
