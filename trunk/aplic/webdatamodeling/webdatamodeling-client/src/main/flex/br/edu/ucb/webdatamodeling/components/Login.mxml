@@ -14,7 +14,7 @@
 			public function startLoader():void
 			{
 				btnLogin.enabled=false;
-				btnLogin.label='Autenticando...';
+				btnLogin.label=resourceManager.getString('messages', 'usuario.msgAutenticando');
 				//usuarioService.getTeste(new Function());
 				btnLogin.enabled=true;
 				btnLogin.label='Login';
@@ -33,13 +33,13 @@
 			<mx:Button id="btnLogin" label="Login" styleName="buttonLoader" click="startLoader()" buttonMode="true"/>
 			<mx:Spacer height="15"/>
 			<mx:HBox>
-				<mx:Text text="Esqueceu sua senha?"/>
-				<mx:LinkButton label="clique aqui" click="model.cubeSide = 'Back'"
+				<mx:Text text="{resourceManager.getString('messages', 'usuario.esqueceuSenha')}"/>
+				<mx:LinkButton label="{resourceManager.getString('messages', 'usuario.clicaAqui')}" click="model.cubeSide = 'Back'"
 					color="0x3380DD" textDecoration="underline" fontWeight="bold"/>
 			</mx:HBox>
 			<mx:HBox>
-				<mx:Text text="Não é cadastrado?"/>
-				<mx:LinkButton label="clique aqui" click="model.cubeSide = 'Left'"
+				<mx:Text text="{resourceManager.getString('messages', 'usuario.naoCadastrado')}"/>
+				<mx:LinkButton label="{resourceManager.getString('messages', 'usuario.clicaAqui')}" click="model.cubeSide = 'Left'"
 					color="0x3380DD" textDecoration="underline" fontWeight="bold"/>
 			</mx:HBox>
 			<components:ComboLocalizacao/>

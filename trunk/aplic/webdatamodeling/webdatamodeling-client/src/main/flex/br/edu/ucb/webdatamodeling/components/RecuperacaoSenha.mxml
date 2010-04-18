@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" title="Recuperar senha" width="400" height="300">
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" title="{resourceManager.getString('messages', 'recuperar.tltRecuperar')}" width="400" height="300">
 	<mx:Script>
 		<![CDATA[
 			import br.edu.ucb.webdatamodeling.other.pfp.rsscube.models.MainModel;
@@ -15,8 +15,8 @@
 			</mx:FormItem>
 		</mx:Form>
 		<mx:HBox horizontalAlign="center" width="100%">
-			<mx:Button label="Recuperar senha"/>
-			<mx:Button label="Cancelar" click="model.cubeSide = 'Top'"/>
+			<mx:Button label="{resourceManager.getString('messages', 'recuperar.btnRecuperar')}"/>
+			<mx:Button label="{resourceManager.getString('messages', 'recuperar.btnCancelar')}" click="model.cubeSide = 'Top'"/>
 		</mx:HBox>
 	</mx:VBox>
 </mx:Panel>
