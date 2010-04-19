@@ -1,4 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" label="{resourceManager.getString('messages', 'dadosArquivo.tltDadosArquivo')}" width="650" height="100%">
+	<mx:Form width="100%">
+		<mx:HBox horizontalAlign="center" width="100%">
+			<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.tltCabecalho')}" id="tltCabecalho"/>
+		</mx:HBox>
+		<mx:HBox width="100%">
+			<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.nome')}" width="100%" >
+				<mx:TextInput id="nome" width="100%" />
+			</mx:FormItem>
+			<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.versao')}" width="100%" >
+				<mx:NumericStepper id="versao" x="283" y="62"/>
+			</mx:FormItem>
+		</mx:HBox>
+		<mx:HBox width="100%">
+			<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.dtCriacao')}" width="100%">
+				<mx:TextInput id="dtCriacao" editable="false" width="100%"/>
+			</mx:FormItem>
+			<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.dtUltimaAlteracao')}" width="100%">
+				<mx:TextInput id="dtUltimaAlteracao" editable="false" width="100%"/>
+			</mx:FormItem>
+		</mx:HBox>
+		<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.descricao')}" width="100%">
+			<mx:TextArea width="100%" height="100"/>
+		</mx:FormItem>
+		<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.compartilhado')}" width="100%">
+			
+		</mx:FormItem>
+		<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.exportado')}" width="100%">
+			
+		</mx:FormItem>
+		<mx:HBox horizontalAlign="center" width="100%">
+			<mx:Button label="{resourceManager.getString('messages', 'dadosArquivo.btnSalvar')}" id="btnSalvar"/>
+			<mx:Button label="{resourceManager.getString('messages', 'dadosArquivo.btnModelar')}" id="btnModelar"/>
+			<mx:Button label="{resourceManager.getString('messages', 'dadosArquivo.btnExportar')}" id="btnExportar"/>
+			<mx:Button label="{resourceManager.getString('messages', 'dadosArquivo.btnCompartilhar')}" id="btnCompartilhar"/>
+			<mx:Button label="{resourceManager.getString('messages', 'dadosArquivo.btnExcluir')}" id="btnExcluir"/>
+		</mx:HBox>
+	</mx:Form>
 	
 </mx:Canvas>
