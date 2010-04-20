@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" title="Novo usuário" width="400" height="300">
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" title="{resourceManager.getString('messages', 'cadastro.tltCadastro')}" width="400" height="300">
 	<mx:Script>
 		<![CDATA[
 			import br.edu.ucb.webdatamodeling.service.UsuarioService;
@@ -46,31 +46,31 @@
 		]]>
 	</mx:Script>
 	<mx:Form width="100%">
-		<mx:FormItem label="Nome" width="100%">
+		<mx:FormItem label="{resourceManager.getString('messages', 'cadastro.nome')}" width="100%">
 			<mx:TextInput id="nome" width="100%"/>
 		</mx:FormItem>
-		<mx:FormItem label="Sobrenome" width="100%">
+		<mx:FormItem label="{resourceManager.getString('messages', 'cadastro.sobrenome')}" width="100%">
 			<mx:TextInput id="sobrenome" width="100%" text="{usuarioDTO.sobrenome}"/>
 		</mx:FormItem>
 		<mx:FormItem label="E-mail" width="100%">
 			<mx:TextInput id="email" width="100%"/>
 		</mx:FormItem>
-		<mx:FormItem label="Senha" width="100%">
+		<mx:FormItem label="{resourceManager.getString('messages', 'cadastro.senha')}" width="100%">
 			<mx:TextInput id="senha" displayAsPassword="true" width="100%"/>
 		</mx:FormItem>
-		<mx:FormItem label="Data de nascimento" width="100%">
+		<mx:FormItem label="{resourceManager.getString('messages', 'cadastro.dataNascimento')}" width="100%">
 			<mx:DateField id="dataNascimento" showToday="true" formatString="DD/MM/YY"
 				dayNames="['D','S','T','Q','Q','S','S']" 
 				monthNames="['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
 				'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']" width="100%"/>
 		</mx:FormItem>
-		<mx:FormItem label="Data de cadastro" width="100%">
+		<mx:FormItem label="{resourceManager.getString('messages', 'cadastro.dataCadastro')}" width="100%">
 			<mx:TextInput id="dataCadastro" editable="false" creationComplete="novaData()" width="100%"/>
 		</mx:FormItem>
 	</mx:Form>
 	<mx:HBox horizontalAlign="center" width="100%">
-		<mx:Button label="Cadastrar" click="cadastrar()"/>
-		<mx:Button label="Limpar" click="limparCampos()"/>
-		<mx:Button label="Cancelar" click="model.cubeSide = 'Front'"/>
+		<mx:Button label="{resourceManager.getString('messages', 'cadastro.btnCadastrar')}" click="cadastrar()"/>
+		<mx:Button label="{resourceManager.getString('messages', 'cadastro.btnLimpar')}" click="limparCampos()"/>
+		<mx:Button label="{resourceManager.getString('messages', 'cadastro.btnCancelar')}" click="model.cubeSide = 'Front'"/>
 	</mx:HBox>
 </mx:Panel>
