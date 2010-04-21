@@ -21,7 +21,6 @@ package br.edu.ucb.webdatamodeling.service
             bridge.destination = "UsuarioService";
             bridge.channelSet = new ChannelSet(['webdatamodeling-amf']);
             bridge.showBusyCursor = false;
-            //bridge.getTeste.addEventListener("result", getTesteHandler);
             return;
         }
 
@@ -31,6 +30,16 @@ package br.edu.ucb.webdatamodeling.service
         }
         
         public function insertHandler(event:ResultEvent):UsuarioDTO
+        {                   
+            return event.result as UsuarioDTO
+        }
+        
+        public function validarLogin(usuario:UsuarioDTO):void
+        {
+        	bridge.validarLogin(usuario).addEventListener("result", validarLoginHandler);
+        }
+        
+        public function validarLoginHandler(event:ResultEvent):UsuarioDTO
         {                   
             return event.result as UsuarioDTO
         }
