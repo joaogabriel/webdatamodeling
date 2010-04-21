@@ -14,14 +14,14 @@ import br.edu.ucb.webdatamodeling.framework.entity.Entity;
  * @author joao.gabriel
  *
  */
-public class AbstractObjectDAO<E extends Entity<?>> implements ObjectDAO<E> {
+public abstract class AbstractObjectDAO<E extends Entity<?>> implements ObjectDAO<E> {
 
 	private Persistence<E> persistence;
 	
 	@Override
 	public E insert(E entity) throws ObjectDAOException {
 		try {
-			this.persistence.insert(entity);
+			getPersistence().insert(entity);
 		} catch (PersistenceException ex) {
 			throw new ObjectDAOException("Ocorreu um erro ao inserir a entidade.", ex);
 		}
@@ -124,7 +124,7 @@ public class AbstractObjectDAO<E extends Entity<?>> implements ObjectDAO<E> {
 		List<E> entities = null;
 		
 		try {
-			entities = this.persistence.findAll((Class<E>) getEntityClass());
+			entities = getPersistence().findAll((Class<E>) getEntityClass());
 		} catch (PersistenceException ex) {
 			throw new ObjectDAOException("Ocorreu um erro ao atualizar a entidade.");
 		}
