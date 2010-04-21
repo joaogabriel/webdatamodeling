@@ -11,13 +11,18 @@
 			
 			private var usuarioService:UsuarioService = UsuarioService.getInstance();
 			
-			public function startLoader():void
+			public function login():void
 			{
-				btnLogin.enabled=false;
-				btnLogin.label=resourceManager.getString('messages', 'usuario.msgAutenticando');
-				//usuarioService.getTeste(new Function());
-				btnLogin.enabled=true;
-				btnLogin.label='Login';
+                   btnLogin.enabled = false;
+                   btnLogin.label = 'Autenticando...';
+
+                   usuarioDTO.email = txtEmail.text;
+                   usuarioDTO.senha = txtSenha.text;
+
+                   usuarioService.validarLogin(usuarioDTO);
+
+                   btnLogin.enabled=true;
+                   btnLogin.label='Login';
 			}
 		]]>
 	</mx:Script>
@@ -30,7 +35,7 @@
 		</mx:FormItem>
 		<mx:VBox horizontalAlign="center" width="100%">
 			<mx:Spacer height="15"/>
-			<mx:Button id="btnLogin" label="Login" styleName="buttonLoader" click="startLoader()" buttonMode="true"/>
+			<mx:Button id="btnLogin" label="Login" styleName="buttonLoader" click="login()" buttonMode="true"/>
 			<mx:Spacer height="15"/>
 			<mx:HBox>
 				<mx:Text text="{resourceManager.getString('messages', 'usuario.esqueceuSenha')}"/>
