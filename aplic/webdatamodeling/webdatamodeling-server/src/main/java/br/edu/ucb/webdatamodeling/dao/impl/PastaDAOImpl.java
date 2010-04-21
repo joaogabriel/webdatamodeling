@@ -13,7 +13,7 @@ import br.edu.ucb.webdatamodeling.framework.dao.persistence.Persistence;
 public class PastaDAOImpl extends AbstractObjectDAO<Pasta> implements PastaDAO {
 
 	@Resource(name = "persistence")
-	public void setPersistence(Persistence<Pasta> persistence) {
+	public void setPersistence(Persistence persistence) {
 		super.setPersistence(persistence);
 	}
 	

@@ -11,19 +11,19 @@
 	</appender>
 
 	<logger name="org.hibernate">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
 	</logger>
 	
 	<logger name="javax.persistence">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
 	</logger>
 
     <logger name="org.springframework">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
     </logger>
 
     <logger name="com.mchange">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
     </logger>
 
     <logger name="flex.messaging.log.ConsoleTarget">
@@ -31,11 +31,11 @@
     </logger>
 
     <logger name="org.springframework.core.CollectionFactory">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
     </logger>
 
     <logger name="org.springframework.web.context.ContextLoader">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
     </logger>
 
     <root>
