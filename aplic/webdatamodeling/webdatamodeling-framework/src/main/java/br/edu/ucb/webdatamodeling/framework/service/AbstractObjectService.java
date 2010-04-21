@@ -27,7 +27,6 @@ public abstract class AbstractObjectService<E extends Entity<?>, T extends DTO<E
 	private D dao;
 	private Mapper mapper;
 	
-	@Override
 	@Transactional(propagation=Propagation.REQUIRED)
 	public T insert(T dto) throws ServiceException {
 		E entity = null;
@@ -192,10 +191,10 @@ public abstract class AbstractObjectService<E extends Entity<?>, T extends DTO<E
 	}
 	
 	protected D getObjectDAO() throws ServiceException {
-		if (!(this.dao instanceof ObjectDAO)) {
+		if (!(getDao() instanceof ObjectDAO)) {
 			throw new ServiceException("A DAO informada não é uma instância de " + ObjectDAO.class);
 		}
-		return (D) this.dao;
+		return (D) getDao();
 	}
 
 	@Override

@@ -8,6 +8,8 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.edu.ucb.webdatamodeling.framework.dao.persistence.Persistence;
 import br.edu.ucb.webdatamodeling.framework.dao.persistence.PersistenceException;
@@ -26,6 +28,7 @@ public class PersistenceJPA<E extends Entity<?>> implements Persistence<E> {
 	private EntityManager entityManager;
 	
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED)
 	public E insert(E entity) throws PersistenceException {
 		if (entity != null) {
 			try {
@@ -48,6 +51,7 @@ public class PersistenceJPA<E extends Entity<?>> implements Persistence<E> {
 	}
 	
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED)
 	public E update(E entity) throws PersistenceException {
 		if (entity != null) {
 			try {
@@ -71,6 +75,7 @@ public class PersistenceJPA<E extends Entity<?>> implements Persistence<E> {
 	}
 	
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED)
 	public void remove(E entity) throws PersistenceException {
 		if (entity != null) {
 			try {
@@ -91,13 +96,15 @@ public class PersistenceJPA<E extends Entity<?>> implements Persistence<E> {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
+	@Transactional(readOnly = true)
 	public List<E> findAll(Class<E> entityClass) throws PersistenceException {
 		List<E> entities = null;
 		
 		if (entityClass != null) {
 			try {
-				getEntityManager().createQuery(new String("from " + entityClass.getCanonicalName()));
+				entities = getEntityManager().createQuery(new String("from " + entityClass.getCanonicalName())).getResultList();
 			} catch (Exception ex) {
 				throw new PersistenceException(ex);
 			}
@@ -107,6 +114,7 @@ public class PersistenceJPA<E extends Entity<?>> implements Persistence<E> {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public E findByIdentifier(Class<E> entityClass, Serializable id) throws PersistenceException {
 		E entity = null;
 		
@@ -122,12 +130,14 @@ public class PersistenceJPA<E extends Entity<?>> implements Persistence<E> {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = true)
 	public List<E> findByHQL(String query) throws PersistenceException {
 		List<E> entities = null;
 		
 		if (query != null && !query.isEmpty()) {
 			try {
-				getEntityManager().createQuery(query);
+				entities = getEntityManager().createQuery(query).getResultList();
 			} catch (Exception ex) {
 				throw new PersistenceException(ex);
 			}
@@ -137,6 +147,7 @@ public class PersistenceJPA<E extends Entity<?>> implements Persistence<E> {
 	}
 	
 	@Override
+	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
 	public List<E> findByNativeQuery(String query, E resultEntity) throws PersistenceException {
 		List<E> entities = null;
