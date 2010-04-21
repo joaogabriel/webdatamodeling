@@ -13,7 +13,7 @@ import br.edu.ucb.webdatamodeling.framework.dao.persistence.Persistence;
 public class MerDAOImpl extends AbstractObjectDAO<Mer> implements MerDAO {
 
 	@Resource(name = "persistence")
-	public void setPersistence(Persistence<Mer> persistence) {
+	public void setPersistence(Persistence persistence) {
 		super.setPersistence(persistence);
 	}
 	

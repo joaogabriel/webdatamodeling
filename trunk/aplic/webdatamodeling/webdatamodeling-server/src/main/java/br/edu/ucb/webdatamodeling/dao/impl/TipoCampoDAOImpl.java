@@ -13,7 +13,7 @@ import br.edu.ucb.webdatamodeling.framework.dao.persistence.Persistence;
 public class TipoCampoDAOImpl extends AbstractObjectDAO<TipoCampo> implements TipoCampoDAO {
 
 	@Resource(name = "persistence")
-	public void setPersistence(Persistence<TipoCampo> persistence) {
+	public void setPersistence(Persistence persistence) {
 		super.setPersistence(persistence);
 	}
 	
