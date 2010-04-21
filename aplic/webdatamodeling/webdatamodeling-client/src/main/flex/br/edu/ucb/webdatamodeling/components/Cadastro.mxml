@@ -59,7 +59,7 @@
 			<mx:TextInput id="senha" displayAsPassword="true" width="100%"/>
 		</mx:FormItem>
 		<mx:FormItem label="{resourceManager.getString('messages', 'cadastro.dataNascimento')}" width="100%">
-			<mx:DateField id="dataNascimento" showToday="true" formatString="DD/MM/YY"
+			<mx:DateField id="dataNascimento" showToday="true" formatString="DD/MM/YYYY"
 				dayNames="['D','S','T','Q','Q','S','S']" 
 				monthNames="['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
 				'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']" width="100%"/>
