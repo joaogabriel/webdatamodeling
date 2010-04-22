@@ -1,6 +1,9 @@
 package br.edu.ucb.webdatamodeling.service
 {
 	import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
+	import br.edu.ucb.webdatamodeling.events.CustomEvent;
+	
+	import flash.events.EventDispatcher;
 	
 	import mx.controls.Alert;
 	import mx.messaging.ChannelSet;
@@ -8,7 +11,7 @@ package br.edu.ucb.webdatamodeling.service
 	import mx.rpc.events.ResultEvent;
 	import mx.rpc.remoting.mxml.RemoteObject;
 	
-	public class UsuarioService extends Object
+	public class UsuarioService extends EventDispatcher
 	{
 		private var bridge:RemoteObject;
         private static var instance:UsuarioService;
@@ -26,22 +29,26 @@ package br.edu.ucb.webdatamodeling.service
 
         public function insert(usuario:UsuarioDTO):void
         {
-        	bridge.insert(usuario).addEventListener("result", insertHandler);
+        	bridge.addEventListener("result", insertHandler);
+        	bridge.insert(usuario);
         }
         
-        public function insertHandler(event:ResultEvent):UsuarioDTO
-        {                   
-            return event.result as UsuarioDTO
+        public function insertHandler(event:ResultEvent):void
+        {
+            var usuarioDTO:UsuarioDTO = event.result as UsuarioDTO;
+            dispatchEvent(new CustomEvent("insert", usuarioDTO));
         }
         
         public function validarLogin(usuario:UsuarioDTO):void
         {
-        	bridge.validarLogin(usuario).addEventListener("result", validarLoginHandler);
+        	bridge.addEventListener("result", validarLoginHandler);
+        	bridge.validarLogin(usuario);
         }
         
-        public function validarLoginHandler(event:ResultEvent):UsuarioDTO
+        public function validarLoginHandler(event:ResultEvent):void
         {                   
-            return event.result as UsuarioDTO
+            var usuarioDTO:UsuarioDTO = event.result as UsuarioDTO;
+            dispatchEvent(new CustomEvent("login", usuarioDTO));
         }
 
 		// será que precisa?        

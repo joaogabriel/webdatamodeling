@@ -1,50 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" title="Login" width="400" height="300" xmlns:components="br.edu.ucb.webdatamodeling.components.*">
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" title="Login" width="400" height="300" xmlns:components="br.edu.ucb.webdatamodeling.components.*" creationComplete="init()">
 	<mx:Style source="/assets/style/style.css"/>
 	<mx:Script>
 		<![CDATA[
-			import br.edu.ucb.webdatamodeling.service.UsuarioService;
-			import br.edu.ucb.webdatamodeling.other.pfp.rsscube.models.MainModel;
-			  
-			[Bindable]
-			private var model:MainModel = MainModel.GetInstance();
+			import br.edu.ucb.webdatamodeling.controller.LoginController;
 			
-			private var usuarioService:UsuarioService = UsuarioService.getInstance();
+			private var _controller:LoginController;
 			
-			public function login():void
+			private function init():void
 			{
-                   btnLogin.enabled = false;
-                   btnLogin.label = 'Autenticando...';
-
-                   usuarioDTO.email = txtEmail.text;
-                   usuarioDTO.senha = txtSenha.text;
-
-                   usuarioService.validarLogin(usuarioDTO);
-
-                   btnLogin.enabled=true;
-                   btnLogin.label='Login';
+				_controller = new LoginController(this);
 			}
 		]]>
 	</mx:Script>
 	<mx:Form width="100%">
 		<mx:FormItem label="E-mail" width="100%">
-			<mx:TextInput id="email" width="100%"/>
+			<mx:TextInput id="txtEmail" width="100%"/>
 		</mx:FormItem>
 		<mx:FormItem label="{resourceManager.getString('messages', 'usuario.senha')}" width="100%">
-			<mx:TextInput id="senha" displayAsPassword="true" width="100%"/>
+			<mx:TextInput id="txtSenha" displayAsPassword="true" width="100%"/>
 		</mx:FormItem>
 		<mx:VBox horizontalAlign="center" width="100%">
 			<mx:Spacer height="15"/>
-			<mx:Button id="btnLogin" label="Login" styleName="buttonLoader" click="login()" buttonMode="true"/>
+			<mx:Button id="btnLogin" label="Login" styleName="buttonLoader" click="_controller.login()" buttonMode="true"/>
 			<mx:Spacer height="15"/>
 			<mx:HBox>
 				<mx:Text text="{resourceManager.getString('messages', 'usuario.esqueceuSenha')}"/>
-				<mx:LinkButton label="{resourceManager.getString('messages', 'usuario.clicaAqui')}" click="model.cubeSide = 'Back'"
+				<mx:LinkButton label="{resourceManager.getString('messages', 'usuario.clicaAqui')}" click="_controller.model.cubeSide = 'Back'"
 					color="0x3380DD" textDecoration="underline" fontWeight="bold"/>
 			</mx:HBox>
 			<mx:HBox>
 				<mx:Text text="{resourceManager.getString('messages', 'usuario.naoCadastrado')}"/>
-				<mx:LinkButton label="{resourceManager.getString('messages', 'usuario.clicaAqui')}" click="model.cubeSide = 'Left'"
+				<mx:LinkButton label="{resourceManager.getString('messages', 'usuario.clicaAqui')}" click="_controller.model.cubeSide = 'Left'"
 					color="0x3380DD" textDecoration="underline" fontWeight="bold"/>
 			</mx:HBox>
 			<components:ComboLocalizacao/>
