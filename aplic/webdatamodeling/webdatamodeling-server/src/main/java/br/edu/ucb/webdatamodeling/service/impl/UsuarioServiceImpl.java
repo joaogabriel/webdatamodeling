@@ -34,7 +34,11 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 		try {
 			usuario = parseEntity(usuarioDTO);
 			usuario = getObjectDAO().findByEmailESenha(usuario);
-			usuarioDTO = parseDTO(usuario);
+			if (usuario != null) {
+				usuarioDTO = parseDTO(usuario);
+			} else {
+				usuarioDTO = null;
+			}
 		} catch (ObjectDAOException e) {
 			e.printStackTrace();
 		} catch (ServiceException e) {
