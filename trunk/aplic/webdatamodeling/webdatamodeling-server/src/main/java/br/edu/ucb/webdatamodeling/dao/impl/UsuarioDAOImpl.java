@@ -30,6 +30,8 @@ public class UsuarioDAOImpl extends AbstractObjectDAO<Usuario> implements Usuari
 			
 			if (usuarios != null && usuarios.size() == 1) {
 				usuario = usuarios.get(0);
+			} else {
+				usuario = null;
 			}
 		} catch (PersistenceException e) {
 			throw new ObjectDAOException("Não foi possível pesquisar o usuário.", e);
