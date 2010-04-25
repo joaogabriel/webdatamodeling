@@ -17,6 +17,29 @@ import br.edu.ucb.webdatamodeling.framework.dao.persistence.PersistenceException
 public class UsuarioDAOImpl extends AbstractObjectDAO<Usuario> implements UsuarioDAO {
 
 	@Override
+	public Usuario findByEmail(Usuario usuario) throws ObjectDAOException {
+		List<Usuario> usuarios  = null;
+		
+		try {
+			StringBuilder query = new StringBuilder();
+			query.append("from ").append(getEntityClass().getName()).append(" usuario");
+			query.append(" where usuario.email = '").append(usuario.getEmail()).append("'");
+			
+			usuarios = getPersistence().findByHQL(query.toString());
+			
+			if (usuarios != null && usuarios.size() == 1) {
+				usuario = usuarios.get(0);
+			} else {
+				usuario = null;
+			}
+		} catch (PersistenceException e) {
+			throw new ObjectDAOException("Não foi possível pesquisar o usuário.", e);
+		}
+		
+		return usuario;
+	}
+	
+	@Override
 	public Usuario findByEmailESenha(Usuario usuario) throws ObjectDAOException {
 		List<Usuario> usuarios  = null;
 		
