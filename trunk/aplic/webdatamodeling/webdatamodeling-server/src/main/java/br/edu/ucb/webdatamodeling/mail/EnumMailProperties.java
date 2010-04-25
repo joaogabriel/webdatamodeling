@@ -16,13 +16,13 @@ public enum EnumMailProperties {
 	
     SMTP_AUTH_USER {
 		public String getValue() {
-			return "jg.bsiucb@gmail.com";
+			return "webdatamodeling@gmail.com";
 		}
 	},
 	
     SMTP_AUTH_PASSWORD {
 		public String getValue() {
-			return "180748.0";
+			return "wdmpassword";
 		}
 	},
 	

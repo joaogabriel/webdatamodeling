@@ -6,6 +6,8 @@ import br.edu.ucb.webdatamodeling.framework.dao.ObjectDAOException;
 
 public interface UsuarioDAO extends ObjectDAO<Usuario> {
 
+	Usuario findByEmail(Usuario usuario) throws ObjectDAOException;
+	
 	Usuario findByEmailESenha(Usuario usuario) throws ObjectDAOException;
 	
 }
