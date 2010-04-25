@@ -6,14 +6,18 @@
 		width="200"
 		textIndent="5"
 		selectedIndex="-1"
-		prompt="Selecione um idioma"
+		prompt="{resourceManager.getString('messages', 'comboIdioma.titulo')}"
 		dataProvider="{locales}"
 		change="changeHandler(event)"
 		creationComplete="init()">
 	    
 		<mx:Script>
 			<![CDATA[
+				import mx.resources.IResourceManager;
+				import mx.resources.ResourceManager;
 				import mx.controls.Alert;
+				
+				private var _resourceManager:IResourceManager = ResourceManager.getInstance();
 				
 				[Bindable]
 				[Embed(source="../../../../../../resources/assets/images/flagBrasil.png")]
@@ -24,8 +28,8 @@
 				public var FlagUSA:Class;
 				
 				[Bindable]
-				private var locales:Array = [{label: "Português", code:"pt_BR", icon:"FlagBrasil"}, 
-											 {label: "Inglês", code:"en_US", icon:"FlagUSA"}];
+				private var locales:Array = [{label: _resourceManager.getString('messages', 'comboIdioma.PT'), code:"pt_BR", icon:"FlagBrasil"}, 
+											 {label: _resourceManager.getString('messages', 'comboIdioma.EN'), code:"en_US", icon:"FlagUSA"}];
 				
 				private function init():void
 				{
