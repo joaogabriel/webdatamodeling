@@ -11,6 +11,9 @@ public abstract class AbstractDTO<E extends Entity<?>> implements DTO<E> {
 	
 	@Override
 	public Boolean hasErro() {
+		if (erro == null) {
+			erro = Boolean.FALSE;
+		}
 		return erro;
 	}
 
