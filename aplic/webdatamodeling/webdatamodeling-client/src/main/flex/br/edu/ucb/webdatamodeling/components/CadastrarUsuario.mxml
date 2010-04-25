@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml"
 	title="{resourceManager.getString('messages', 'cadastro.tltCadastro')}"
-	width="400" height="300"
+	width="400" height="320"
 	creationComplete="init()">
 	
 	<mx:Script>
 		<![CDATA[
-			import br.edu.ucb.webdatamodeling.controller.CadastroController;
+			import br.edu.ucb.webdatamodeling.controller.CadastrarUsuarioController;
 			
-			private var _controller:CadastroController;
+			private var _controller:CadastrarUsuarioController;
 			
 			private function init():void
 			{
-				_controller = new CadastroController(this); 
+				_controller = new CadastrarUsuarioController(this);
 			}
 		]]>
 	</mx:Script>
@@ -40,8 +40,16 @@
 		</mx:FormItem>
 	</mx:Form>
 	<mx:HBox horizontalAlign="center" width="100%">
-		<mx:Button label="{resourceManager.getString('messages', 'cadastro.btnCadastrar')}" click="_controller.cadastrar()"/>
-		<mx:Button label="{resourceManager.getString('messages', 'cadastro.btnLimpar')}" click="_controller.limparCampos()"/>
-		<mx:Button label="{resourceManager.getString('messages', 'cadastro.btnCancelar')}" click="_controller.model.cubeSide = 'Front'"/>
+		<mx:Button id="btnCadastro" label="{resourceManager.getString('messages', 'cadastro.btnCadastrar')}" click="_controller.cadastrar()"/>
+		<mx:Button id="btnLimpar" label="{resourceManager.getString('messages', 'cadastro.btnLimpar')}" click="_controller.limparCampos()"/>
+		<mx:Button id="btnCancelar" label="{resourceManager.getString('messages', 'cadastro.btnCancelar')}" click="_controller.model.cubeSide = 'Front'"/>
 	</mx:HBox>
+	<mx:VBox horizontalAlign="center" width="100%">
+		<mx:Text id="msgCadastro" styleName="msgSucesso" text="{resourceManager.getString('messages', 'cadastro.msgCadastro')}" visible="false" selectable="false"/>
+		<!--<mx:Text styleName="msgSucesso" id="msgCadastroCont" visible="false" selectable="false"/>-->
+		<mx:ProgressBar id="bar" minimum="0" visible="false" maximum="100"
+			color="0x323232" labelPlacement="center" direction="right" mode="manual" />
+
+	</mx:VBox>
+	<!--<mx:Binding source="{_controller.cont}" destination="msgCadastroCont.text"/>-->
 </mx:Panel>
