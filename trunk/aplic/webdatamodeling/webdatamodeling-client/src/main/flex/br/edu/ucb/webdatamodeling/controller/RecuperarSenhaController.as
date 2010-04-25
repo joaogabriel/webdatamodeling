@@ -7,6 +7,8 @@ package br.edu.ucb.webdatamodeling.controller
 	import br.edu.ucb.webdatamodeling.service.UsuarioService;
 	
 	import mx.controls.Alert;
+	import mx.resources.IResourceManager;
+	import mx.resources.ResourceManager;
 	
 	public class RecuperarSenhaController extends AbstractController
 	{
@@ -19,6 +21,8 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		private var _usuarioService:UsuarioService = UsuarioService.getInstance();
 		
+		private var _resourceManager:IResourceManager = ResourceManager.getInstance();
+		
 		public function RecuperarSenhaController(view:RecuperarSenha)
 		{
 			_view = view;
@@ -30,25 +34,37 @@ package br.edu.ucb.webdatamodeling.controller
 			return _model;
 		}
 		
+		public function validaEmail():void
+		{
+			if ( _view.txtEmail.text == "" )
+				Alert.show( _resourceManager.getString('messages', 'recuperar.msgErro_2') );
+			else
+				Alert.show( _resourceManager.getString('messages', 'recuperar.msgErro_3') );
+		}
+		
 		public function recuperarSenha():void
 		{
 			_usuarioDTO.email = _view.txtEmail.text;
 			
 			_usuarioService.recuperarSenha(_usuarioDTO);
-			_usuarioService.addEventListener("recuperarSenha", posRecuperarSenha);
+			_usuarioService.addEventListener( "recuperarSenha", posRecuperarSenha );
 		}
 		
 		private function posRecuperarSenha(event:CustomEvent):void
 		{
 			var usuarioDTORetorno:UsuarioDTO;
 			
-			if (event.data != null) {
+			if (event.data != null) 
+			{
 				usuarioDTORetorno = event.data as UsuarioDTO;
 				
-				if (usuarioDTORetorno.erro == false) {
-					Alert.show("A senha foi enviada para o seu e-mail.", "Envio de e-mail");
-				} else {
-					Alert.show(usuarioDTORetorno.mensagemErro, "Erro durante o envio de e-mail");
+				if (usuarioDTORetorno.erro == false) 
+				{
+					Alert.show( _resourceManager.getString('messages', 'recuperar.msgEnvio_1'), _resourceManager.getString('messages', 'recuperar.msgEnvio_2') );
+				} 
+				else 
+				{
+					Alert.show(usuarioDTORetorno.mensagemErro, _resourceManager.getString('messages', 'recuperar.msgErro_4') );
 				}
 			}
 		}
