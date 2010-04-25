@@ -14,3 +14,8 @@ Application
 	fontSize:					20;
 	paddingTop: 				6;
 }
+
+.msgSucesso
+{
+	color: blue;
+}
