@@ -56,5 +56,9 @@ package br.edu.ucb.webdatamodeling.controller
 			PopUpManager.centerPopUp(_popup);
 		}
 		
+		public function createTree():void {
+			
+		}
+		
 	}
 }
