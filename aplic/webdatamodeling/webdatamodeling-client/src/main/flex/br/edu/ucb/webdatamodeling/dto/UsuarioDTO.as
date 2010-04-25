@@ -1,7 +1,7 @@
 package br.edu.ucb.webdatamodeling.dto
 {
 	[RemoteClass(alias="br.edu.ucb.webdatamodeling.dto.UsuarioDTO")]
-	public class UsuarioDTO
+	public class UsuarioDTO extends AbstractDTO
 	{
 		private var _id:Number;
 		private var _nome:String;
