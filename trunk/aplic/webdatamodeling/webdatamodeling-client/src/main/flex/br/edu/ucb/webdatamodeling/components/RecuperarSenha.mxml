@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml"
+	title="{resourceManager.getString('messages', 'recuperar.tltRecuperar')}"
+	width="400" height="300"
+	creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import br.edu.ucb.webdatamodeling.controller.RecuperarSenhaController;
+			
+			private var _controller:RecuperarSenhaController;
+			
+			private function init():void
+			{
+				_controller = new RecuperarSenhaController(this);
+			}
+		]]>
+	</mx:Script>
+	<mx:VBox horizontalAlign="center" verticalAlign="middle" width="100%" height="100%">
+		<mx:Form width="100%">
+			<mx:FormItem label="E-mail" width="100%">
+				<mx:TextInput id="txtEmail" width="100%"/>
+			</mx:FormItem>
+		</mx:Form>
+		<mx:HBox horizontalAlign="center" width="100%">
+			<mx:Button label="{resourceManager.getString('messages', 'recuperar.btnRecuperar')}" click="_controller.recuperarSenha()"/>
+			<mx:Button label="{resourceManager.getString('messages', 'recuperar.btnCancelar')}" click="_controller.model.cubeSide = 'Top'"/>
+		</mx:HBox>
+	</mx:VBox>
+</mx:Panel>

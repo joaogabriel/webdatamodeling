@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300"
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="320"
 	xmlns:components="br.edu.ucb.webdatamodeling.other.pfp.components.*"
 	xmlns:display="br.edu.ucb.webdatamodeling.components.*">
 	
@@ -25,7 +25,7 @@
 	</mx:Script>
 	<components:CubeStack id="cube" selectedSide="{model.cubeSide}">
 	  	<display:Login name="Front"/>
-	  	<display:Cadastro name="Left"/>
-	  	<display:RecuperacaoSenha name="Back"/>
+	  	<display:CadastrarUsuario name="Left"/>
+	  	<display:RecuperarSenha name="Back"/>
 	</components:CubeStack>
 </mx:Canvas>
