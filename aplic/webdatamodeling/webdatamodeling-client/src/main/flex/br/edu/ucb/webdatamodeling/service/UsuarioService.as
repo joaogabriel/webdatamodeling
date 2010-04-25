@@ -5,32 +5,30 @@ package br.edu.ucb.webdatamodeling.service
 	
 	import flash.events.EventDispatcher;
 	
-	import mx.controls.Alert;
 	import mx.messaging.ChannelSet;
-	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
 	import mx.rpc.remoting.mxml.RemoteObject;
 	
 	public class UsuarioService extends EventDispatcher
 	{
-		private var bridge:RemoteObject;
-        private static var instance:UsuarioService;
+		private var _remoteObject:RemoteObject;
+        private static var _instance:UsuarioService;
         
 		public function UsuarioService()
 		{
 			super();
-            bridge = new RemoteObject();
-            bridge.showBusyCursor = true;
-            bridge.destination = "UsuarioService";
-            bridge.channelSet = new ChannelSet(['webdatamodeling-amf']);
-            bridge.showBusyCursor = false;
+            _remoteObject = new RemoteObject();
+            _remoteObject.showBusyCursor = true;
+            _remoteObject.destination = "UsuarioService";
+            _remoteObject.channelSet = new ChannelSet(['webdatamodeling-amf']);
+            _remoteObject.showBusyCursor = false;
             return;
         }
 
         public function insert(usuario:UsuarioDTO):void
         {
-        	bridge.addEventListener("result", insertHandler);
-        	bridge.insert(usuario);
+        	_remoteObject.addEventListener("result", insertHandler);
+        	_remoteObject.insert(usuario);
         }
         
         public function insertHandler(event:ResultEvent):void
@@ -41,8 +39,8 @@ package br.edu.ucb.webdatamodeling.service
         
         public function validarLogin(usuario:UsuarioDTO):void
         {
-        	bridge.addEventListener("result", validarLoginHandler);
-        	bridge.validarLogin(usuario);
+        	_remoteObject.addEventListener("result", validarLoginHandler);
+        	_remoteObject.validarLogin(usuario);
         }
         
         public function validarLoginHandler(event:ResultEvent):void
@@ -50,22 +48,26 @@ package br.edu.ucb.webdatamodeling.service
             var usuarioDTO:UsuarioDTO = event.result as UsuarioDTO;
             dispatchEvent(new CustomEvent("login", usuarioDTO));
         }
-
-		// será que precisa?        
-        private function defaultFaultHandler(e:FaultEvent):void
+        
+        public function recuperarSenha(usuario:UsuarioDTO):void
         {
-            Alert.show(e.fault.faultDetail, e.fault.faultString);
-            return;
+        	_remoteObject.addEventListener(ResultEvent.RESULT, recuperarSenhaHandler);
+        	_remoteObject.recuperarSenha(usuario);
         }
+        
+        public function recuperarSenhaHandler(event:ResultEvent):void
+        {
+        	var usuarioDTO:UsuarioDTO = event.result as UsuarioDTO;
+            dispatchEvent(new CustomEvent("recuperarSenha", usuarioDTO));
+        } 
 
-		// será que precisa?
         public static function getInstance():UsuarioService
         {
-            if (instance == null) 
+            if (_instance == null) 
             {
-                instance = new UsuarioService();
+                _instance = new UsuarioService();
             }
-            return instance;
+            return _instance;
         }
 
 	}
