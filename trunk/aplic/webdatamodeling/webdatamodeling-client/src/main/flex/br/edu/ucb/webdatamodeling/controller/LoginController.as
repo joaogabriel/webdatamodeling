@@ -9,6 +9,7 @@ package br.edu.ucb.webdatamodeling.controller
 	import mx.controls.Alert;
 	import mx.resources.IResourceManager;
 	import mx.resources.ResourceManager;
+	import mx.validators.Validator;
 	
 	public class LoginController
 	{
@@ -22,7 +23,7 @@ package br.edu.ucb.webdatamodeling.controller
 		private var _view:Login;
 		
 		private var _resourceManager:IResourceManager = ResourceManager.getInstance();
-			
+		
 		public function LoginController(view:Login)
 		{
 			_view = view;
@@ -33,27 +34,15 @@ package br.edu.ucb.webdatamodeling.controller
 			return _model;
 		}
 		
-		public function validaEmail():void
-		{
-			if ( _view.txtEmail.text == "" || _view.txtSenha.text == "" )
-				Alert.show( _resourceManager.getString('messages', 'usuario.msgErro_2') );
-			else
-				Alert.show( _resourceManager.getString('messages', 'usuario.msgErro_3') );
-		}
-		
+	
 		public function validarLogin():void
 		{
-			if ( _view.txtEmail.text == "" || _view.txtSenha.text == "" )
-			{
-				Alert.show( _resourceManager.getString('messages', 'usuario.msgErro_1') );
-			}
-			else
-			{
+			if ( Validator.validateAll([_view.valEmail,_view.valSenha]).length == 0 )
 				login();
-			}
-			
+			else
+				Alert.show("Algum campo não foi preenchido corretamente.\n\nTodos os campos com * são obrigatorios.");
 		}
-					
+		
 		public function login():void
 		{
 			_view.btnLogin.enabled = false;
