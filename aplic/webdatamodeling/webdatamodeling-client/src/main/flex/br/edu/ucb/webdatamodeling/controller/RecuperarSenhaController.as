@@ -9,6 +9,7 @@ package br.edu.ucb.webdatamodeling.controller
 	import mx.controls.Alert;
 	import mx.resources.IResourceManager;
 	import mx.resources.ResourceManager;
+	import mx.validators.Validator;
 	
 	public class RecuperarSenhaController extends AbstractController
 	{
@@ -34,12 +35,12 @@ package br.edu.ucb.webdatamodeling.controller
 			return _model;
 		}
 		
-		public function validaEmail():void
+		public function validarEsqueceu():void
 		{
-			if ( _view.txtEmail.text == "" )
-				Alert.show( _resourceManager.getString('messages', 'recuperar.msgErro_2') );
+			if ( Validator.validateAll([_view.valEmail]).length == 0 )
+				recuperarSenha();
 			else
-				Alert.show( _resourceManager.getString('messages', 'recuperar.msgErro_3') );
+				Alert.show("Algum campo não foi preenchido corretamente.\n\nTodos os campos com * são obrigatorios.");
 		}
 		
 		public function recuperarSenha():void

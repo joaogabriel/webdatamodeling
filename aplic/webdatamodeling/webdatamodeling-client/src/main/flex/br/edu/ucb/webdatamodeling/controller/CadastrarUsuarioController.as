@@ -9,9 +9,11 @@ package br.edu.ucb.webdatamodeling.controller
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
+	import mx.controls.Alert;
 	import mx.formatters.DateFormatter;
 	import mx.resources.IResourceManager;
 	import mx.resources.ResourceManager;
+	import mx.validators.Validator;
 			
 	public class CadastrarUsuarioController
 	{
@@ -58,6 +60,14 @@ package br.edu.ucb.webdatamodeling.controller
 			formatDate.formatString = "DD/MM/YYYY";
 			_view.txtDataCadastro.text = formatDate.format(dataAtual);
 		}
+		
+		public function validarCadastro():void
+		{
+			if ( Validator.validateAll([_view.valNome,_view.valEmail,_view.valSenha]).length == 0 )
+				cadastrar();
+			else
+				Alert.show("Algum campo não foi preenchido corretamente.\n\nTodos os campos com * são obrigatorios.");
+		} 
 		
 		public function cadastrar():void
 		{
