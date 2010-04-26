@@ -17,16 +17,16 @@
 		]]>
 	</mx:Script>
 	<mx:Form width="100%">
-		<mx:FormItem label="{resourceManager.getString('messages', 'cadastro.nome')}" width="100%">
+		<mx:FormItem label="{resourceManager.getString('messages', 'cadastro.nome')}" width="100%" required="true">
 			<mx:TextInput id="txtNome" width="100%"/>
 		</mx:FormItem>
-		<mx:FormItem label="{resourceManager.getString('messages', 'cadastro.sobrenome')}" width="100%">
+		<mx:FormItem label="{resourceManager.getString('messages', 'cadastro.sobrenome')}" width="100%" >
 			<mx:TextInput id="txtSobrenome" width="100%"/>
 		</mx:FormItem>
-		<mx:FormItem label="E-mail" width="100%">
+		<mx:FormItem label="E-mail" width="100%" required="true">
 			<mx:TextInput id="txtEmail" width="100%"/>
 		</mx:FormItem>
-		<mx:FormItem label="{resourceManager.getString('messages', 'cadastro.senha')}" width="100%">
+		<mx:FormItem label="{resourceManager.getString('messages', 'cadastro.senha')}" width="100%" required="true">
 			<mx:TextInput id="txtSenha" displayAsPassword="true" width="100%"/>
 		</mx:FormItem>
 		<mx:FormItem label="{resourceManager.getString('messages', 'cadastro.dataNascimento')}" width="100%">
@@ -40,7 +40,7 @@
 		</mx:FormItem>
 	</mx:Form>
 	<mx:HBox horizontalAlign="center" width="100%">
-		<mx:Button id="btnCadastro" label="{resourceManager.getString('messages', 'cadastro.btnCadastrar')}" click="_controller.cadastrar()"/>
+		<mx:Button id="btnCadastro" label="{resourceManager.getString('messages', 'cadastro.btnCadastrar')}" click="_controller.validarCadastro()" />
 		<mx:Button id="btnLimpar" label="{resourceManager.getString('messages', 'cadastro.btnLimpar')}" click="_controller.limparCampos()"/>
 		<mx:Button id="btnCancelar" label="{resourceManager.getString('messages', 'cadastro.btnCancelar')}" click="_controller.model.cubeSide = 'Front'"/>
 	</mx:HBox>
@@ -51,5 +51,37 @@
 			color="0x323232" labelPlacement="center" direction="right" mode="manual" />
 
 	</mx:VBox>
+
+	<mx:EmailValidator id="valEmail" source="{txtEmail}" property="text" 
+							missingAtSignError="O e-mail deve conter apenas: - _ . +" 
+							missingPeriodInDomainError="O e-mail deve conter apenas: - _ . +" 
+							missingUsernameError="O e-mail deve conter apenas: - _ . +"
+							invalidCharError="O e-mail deve conter apenas: - _ . +"
+							invalidDomainError="O e-mail deve conter apenas: - _ . +" 
+							invalidIPDomainError="O e-mail deve conter apenas: - _ . +"
+							invalidPeriodsInDomainError="O e-mail deve conter apenas: - _ . +"
+							tooManyAtSignsError="O e-mail deve conter apenas: - _ . +"
+							requiredFieldError="Campo obrigatório."/>
+							
+	<mx:StringValidator id="valNome" source="{txtNome}" property="text" required="true"
+				  requiredFieldError="Campo obrigatório."
+				  tooLongError="Limite máximo de 30 caracteres."
+				  tooShortError="Limite mínimo de 5 caracteres."
+				  maxLength="30"
+				  minLength="5" />
+				  
+	<mx:StringValidator id="valSobrenome" source="{txtSobrenome}" property="text" required="false"
+				  tooLongError="Limite máximo de 30 caracteres."
+				  tooShortError="Limite mínimo de 5 caracteres."
+				  maxLength="30"
+				  minLength="5" />
+				  
+	<mx:StringValidator id="valSenha" source="{txtSenha}" property="text" required="true" 
+				  requiredFieldError="Campo obrigatório."
+				  tooLongError="Limite máximo de 20 caracteres."
+				  tooShortError="Limite mínimo de 5 caracteres."
+				  maxLength="20"
+				  minLength="5" />
+							
 	<!--<mx:Binding source="{_controller.cont}" destination="msgCadastroCont.text"/>-->
 </mx:Panel>

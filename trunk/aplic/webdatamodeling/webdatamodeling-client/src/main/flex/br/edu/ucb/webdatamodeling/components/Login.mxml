@@ -22,7 +22,7 @@
 		</mx:FormItem>
 		<mx:VBox horizontalAlign="center" width="100%">
 			<mx:Spacer height="15"/>
-			<mx:Button id="btnLogin" label="Login" styleName="buttonLoader" buttonMode="true"/>
+			<mx:Button id="btnLogin" label="Login" styleName="buttonLoader" buttonMode="true" click="_controller.validarLogin()"/>
 			<mx:Spacer height="15"/>
 			<mx:HBox>
 				<mx:Text text="{resourceManager.getString('messages', 'usuario.esqueceuSenha')}"/>
@@ -37,16 +37,22 @@
 			<components:ComboLocalizacao/>
 		</mx:VBox>
 	</mx:Form>
-	<mx:EmailValidator source="{txtEmail}" property="text" trigger="{btnLogin}" 
-						missingAtSignError="" 
-						missingPeriodInDomainError="" 
-						missingUsernameError=""
-						invalidCharError=""
-						invalidDomainError="" 
-						invalidIPDomainError=""
-						invalidPeriodsInDomainError=""
-						tooManyAtSignsError=""
-						requiredFieldError="" 
-						triggerEvent="click" valid="_controller.validarLogin()" invalid="_controller.validaEmail()" />
+	<mx:EmailValidator id="valEmail" source="{txtEmail}" property="text" required="true" 
+						missingAtSignError="O e-mail deve conter apenas: - _ . +" 
+						missingPeriodInDomainError="O e-mail deve conter apenas: - _ . +" 
+						missingUsernameError="O e-mail deve conter apenas: - _ . +"
+						invalidCharError="O e-mail deve conter apenas: - _ . +"
+						invalidDomainError="O e-mail deve conter apenas: - _ . +" 
+						invalidIPDomainError="O e-mail deve conter apenas: - _ . +"
+						invalidPeriodsInDomainError="O e-mail deve conter apenas: - _ . +"
+						tooManyAtSignsError="O e-mail deve conter apenas: - _ . +"
+						requiredFieldError="Campo obrigatório."  />
+						
+	<mx:StringValidator id="valSenha" source="{txtSenha}" property="text" required="true" 
+				  requiredFieldError="Campo obrigatório."
+				  tooLongError="Limite máximo de 20 caracteres."
+				  tooShortError="Limite mínimo de 5 caracteres."
+				  maxLength="20"
+				  minLength="5" />
 
 </mx:Panel>
