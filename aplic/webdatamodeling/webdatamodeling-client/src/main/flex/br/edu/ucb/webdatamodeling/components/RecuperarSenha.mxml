@@ -22,20 +22,19 @@
 			</mx:FormItem>
 		</mx:Form>
 		<mx:HBox horizontalAlign="center" width="100%">
-			<mx:Button label="{resourceManager.getString('messages', 'recuperar.btnRecuperar')}" id="btnRecuperar" />
+			<mx:Button label="{resourceManager.getString('messages', 'recuperar.btnRecuperar')}" id="btnRecuperar" click="_controller.validarEsqueceu()" />
 			<mx:Button label="{resourceManager.getString('messages', 'recuperar.btnCancelar')}" click="_controller.model.cubeSide = 'Top'"/>
 		</mx:HBox>
 	</mx:VBox>
 	
-<mx:EmailValidator source="{txtEmail}" property="text" trigger="{btnRecuperar}" 
-						missingAtSignError="" 
-						missingPeriodInDomainError="" 
-						missingUsernameError=""
-						invalidCharError=""
-						invalidDomainError="" 
-						invalidIPDomainError=""
-						invalidPeriodsInDomainError=""
-						tooManyAtSignsError=""
-						requiredFieldError="" 
-						triggerEvent="click" valid="_controller.recuperarSenha()" invalid="_controller.validaEmail()" />
+	<mx:EmailValidator id="valEmail" source="{txtEmail}" property="text" required="true" 
+						missingAtSignError="O e-mail deve conter apenas: - _ . +" 
+						missingPeriodInDomainError="O e-mail deve conter apenas: - _ . +" 
+						missingUsernameError="O e-mail deve conter apenas: - _ . +"
+						invalidCharError="O e-mail deve conter apenas: - _ . +"
+						invalidDomainError="O e-mail deve conter apenas: - _ . +" 
+						invalidIPDomainError="O e-mail deve conter apenas: - _ . +"
+						invalidPeriodsInDomainError="O e-mail deve conter apenas: - _ . +"
+						tooManyAtSignsError="O e-mail deve conter apenas: - _ . +"
+						requiredFieldError="Campo obrigatório."  />
 </mx:Panel>
