@@ -8,8 +8,10 @@ import br.edu.ucb.webdatamodeling.framework.service.ServiceException;
 
 public interface UsuarioService extends ObjectService<Usuario, UsuarioDTO, UsuarioDAO> {
 
-	UsuarioDTO validarLogin(UsuarioDTO usuarioDTO) throws ServiceException;
+	UsuarioDTO efetuarLogin(UsuarioDTO usuarioDTO) throws ServiceException;
 	
 	UsuarioDTO recuperarSenha(UsuarioDTO usuarioDTO) throws ServiceException;
+	
+	Boolean logoff();
 	
 }

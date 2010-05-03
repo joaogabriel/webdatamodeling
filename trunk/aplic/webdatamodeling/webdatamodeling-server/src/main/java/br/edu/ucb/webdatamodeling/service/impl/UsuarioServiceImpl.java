@@ -7,6 +7,11 @@ import javax.annotation.Resource;
 import org.springframework.flex.remoting.RemotingDestination;
 import org.springframework.stereotype.Service;
 
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
+
+import flex.messaging.FlexContext;
+import flex.messaging.FlexSession;
+
 import br.edu.ucb.webdatamodeling.dao.UsuarioDAO;
 import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
 import br.edu.ucb.webdatamodeling.entity.Usuario;
@@ -21,7 +26,9 @@ import br.edu.ucb.webdatamodeling.service.UsuarioService;
 @RemotingDestination(channels = {"webdatamodeling-amf"})
 public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDTO, UsuarioDAO> implements UsuarioService {
 
+	private static final String USUARIO_SESSAO = "USUARIO_SESSAO";
 	private MailServiceImpl mailService;
+	private FlexSession flexSession;
 	
 	@Override
 	public UsuarioDTO insert(UsuarioDTO dto) throws ServiceException {
@@ -30,7 +37,7 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 	}
 
 	@Override
-	public UsuarioDTO validarLogin(UsuarioDTO usuarioDTO) throws ServiceException {
+	public UsuarioDTO efetuarLogin(UsuarioDTO usuarioDTO) throws ServiceException {
 		Usuario usuario = null;
 		
 		try {
@@ -38,6 +45,7 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 			usuario = getObjectDAO().findByEmailESenha(usuario);
 			if (usuario != null) {
 				usuarioDTO = parseDTO(usuario);
+				getFlexSession().setAttribute(USUARIO_SESSAO, usuarioDTO);
 			} else {
 				usuarioDTO = null;
 			}
@@ -89,10 +97,28 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 		this.mailService = mailService;
 	}
 	
+	public FlexSession getFlexSession() {
+		if (flexSession == null) {
+			flexSession = FlexContext.getFlexSession();
+		}
+		return flexSession;
+	}
+
+	public void setFlexSession(FlexSession flexSession) {
+		this.flexSession = flexSession;
+	}
+
 	@Override
 	@Resource(name = "UsuarioDAO")
 	public void setDao(UsuarioDAO dao) {
 		super.setDao(dao);
+	}
+
+	@Override
+	public Boolean logoff() {
+		getFlexSession().setAttribute(USUARIO_SESSAO, null);
+		
+		return true;
 	}
 
 }
