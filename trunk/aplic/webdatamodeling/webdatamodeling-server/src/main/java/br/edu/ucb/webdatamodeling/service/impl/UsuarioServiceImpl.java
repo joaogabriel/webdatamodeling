@@ -115,7 +115,7 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 	}
 
 	@Override
-	public Boolean logoff() {
+	public Boolean logout() {
 		getFlexSession().setAttribute(USUARIO_SESSAO, null);
 		
 		return true;

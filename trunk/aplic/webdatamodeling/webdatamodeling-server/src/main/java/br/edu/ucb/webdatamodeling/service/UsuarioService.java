@@ -12,6 +12,6 @@ public interface UsuarioService extends ObjectService<Usuario, UsuarioDTO, Usuar
 	
 	UsuarioDTO recuperarSenha(UsuarioDTO usuarioDTO) throws ServiceException;
 	
-	Boolean logoff();
+	Boolean logout();
 	
 }
