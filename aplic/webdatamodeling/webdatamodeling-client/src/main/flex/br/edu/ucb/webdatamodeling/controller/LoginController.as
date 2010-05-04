@@ -51,7 +51,7 @@ package br.edu.ucb.webdatamodeling.controller
 			_usuarioDTO.email = _view.txtEmail.text;
 			_usuarioDTO.senha = _view.txtSenha.text;
 			
-			_usuarioService.validarLogin(_usuarioDTO);
+			_usuarioService.efetuarLogin(_usuarioDTO);
 			
 			_usuarioService.addEventListener("login", habilitarBotaoLogin);
 		}

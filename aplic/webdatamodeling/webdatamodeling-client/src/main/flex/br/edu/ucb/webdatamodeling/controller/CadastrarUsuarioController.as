@@ -92,7 +92,7 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		private function autenticar(event:Event):void
 		{
-			_usuarioService.validarLogin(_usuarioDTO);
+			_usuarioService.efetuarLogin(_usuarioDTO);
 		}
 
 		private function desabiblitarBotoes():void
