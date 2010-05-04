@@ -35,7 +35,7 @@ package br.edu.ucb.webdatamodeling.tree
 		
 		public function getChildren(node:Object, model:Object=null):ICollectionView
 		{
-			return FolderNode(node).Items;
+			return FolderNode(node).items;
 		}		
 	}
 } 
