@@ -7,11 +7,6 @@ import javax.annotation.Resource;
 import org.springframework.flex.remoting.RemotingDestination;
 import org.springframework.stereotype.Service;
 
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
-
-import flex.messaging.FlexContext;
-import flex.messaging.FlexSession;
-
 import br.edu.ucb.webdatamodeling.dao.UsuarioDAO;
 import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
 import br.edu.ucb.webdatamodeling.entity.Usuario;
@@ -21,6 +16,8 @@ import br.edu.ucb.webdatamodeling.framework.service.ServiceException;
 import br.edu.ucb.webdatamodeling.mail.MailException;
 import br.edu.ucb.webdatamodeling.mail.service.impl.MailServiceImpl;
 import br.edu.ucb.webdatamodeling.service.UsuarioService;
+import flex.messaging.FlexContext;
+import flex.messaging.FlexSession;
 
 @Service(value = "UsuarioService")
 @RemotingDestination(channels = {"webdatamodeling-amf"})
@@ -115,10 +112,18 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 	}
 
 	@Override
-	public Boolean logout() {
+	public Boolean efetuarLogout() {
 		getFlexSession().setAttribute(USUARIO_SESSAO, null);
 		
 		return true;
+	}
+
+	@Override
+	public UsuarioDTO verificarUsuarioAutenticado() {
+		if (getFlexSession().getAttribute(USUARIO_SESSAO) != null) {
+			return (UsuarioDTO) getFlexSession().getAttribute(USUARIO_SESSAO);
+		}
+		return null;
 	}
 
 }
