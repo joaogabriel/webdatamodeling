@@ -2,7 +2,7 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"
 	xmlns:display="flash.display.*"
 	xmlns:components="com.pfp.components.*"
-	creationComplete="init()">
+	creationComplete="init()" applicationComplete="verificarUsuarioAutenticado()">
 	
 	<mx:Style source="../resources/assets/style/style.css"/>
 	
@@ -12,16 +12,25 @@
 	    
 	<mx:Script>
 		<![CDATA[
+			import mx.managers.CursorManager;
+			import mx.controls.Alert;
 			import br.edu.ucb.webdatamodeling.controller.WebDataModelingController;
 			
 			private var _controller:WebDataModelingController;
 			
-			private function init():void
+			public function init():void
 			{
 				_controller = new WebDataModelingController(this);
 				_controller.init()
 			}
 			
+			public function verificarUsuarioAutenticado():void
+			{
+				if (_controller == null) {
+					_controller = new WebDataModelingController(this);
+				}
+				_controller.verificarUsuarioAutenticado();
+			}
 		]]>
 	</mx:Script>
 	<mx:VBox width="100%" height="100%">
@@ -43,7 +52,8 @@
 		</mx:Canvas>
 		<mx:ApplicationControlBar width="100%" height="40">
 			<mx:Label text="Usuário:"/>
-			<mx:Text id="txtNomeUsuario" selectable="false"/>
+			<mx:Text id="txtNomeUsuario" selectable="false" />
+			<mx:Image click="_controller.logout()" source="@Embed(source='../resources/assets/images/logout.png')" autoLoad="true" scaleContent="true" width="30" height="30"/>
 		</mx:ApplicationControlBar>
 	</mx:VBox>
 </mx:Application>
