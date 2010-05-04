@@ -5,6 +5,7 @@ package br.edu.ucb.webdatamodeling.service
 	
 	import flash.events.EventDispatcher;
 	
+	import mx.controls.Alert;
 	import mx.messaging.ChannelSet;
 	import mx.rpc.events.ResultEvent;
 	import mx.rpc.remoting.mxml.RemoteObject;
@@ -37,13 +38,13 @@ package br.edu.ucb.webdatamodeling.service
             dispatchEvent(new CustomEvent("insert", usuarioDTO));
         }
         
-        public function validarLogin(usuario:UsuarioDTO):void
+        public function efetuarLogin(usuario:UsuarioDTO):void
         {
-        	_remoteObject.addEventListener("result", validarLoginHandler);
-        	_remoteObject.validarLogin(usuario);
+        	_remoteObject.addEventListener("result", efetuarLoginHandler);
+        	_remoteObject.efetuarLogin(usuario);
         }
         
-        public function validarLoginHandler(event:ResultEvent):void
+        public function efetuarLoginHandler(event:ResultEvent):void
         {                   
             var usuarioDTO:UsuarioDTO = event.result as UsuarioDTO;
             dispatchEvent(new CustomEvent("login", usuarioDTO));
@@ -70,5 +71,28 @@ package br.edu.ucb.webdatamodeling.service
             return _instance;
         }
 
+        public function efetuarLogout():void
+        {
+        	_remoteObject.addEventListener("result", efetuarLogoutHandler);
+        	_remoteObject.efetuarLogout();
+        }
+        
+        public function efetuarLogoutHandler(event:ResultEvent):void
+        {
+            var result:Boolean = event.result as Boolean;
+            dispatchEvent(new CustomEvent("logout", result));
+        }
+        
+		public function verificarUsuarioAutenticado():void
+        {
+        	_remoteObject.addEventListener("result", verificarUsuarioAutenticadoHandler);
+        	_remoteObject.verificarUsuarioAutenticado();
+        }
+        
+        public function verificarUsuarioAutenticadoHandler(event:ResultEvent):void
+        {
+            var usuarioDTO:UsuarioDTO = event.result as UsuarioDTO;
+            dispatchEvent(new CustomEvent("usuarioLogado", usuarioDTO));
+        }
 	}
 }
