@@ -11,8 +11,8 @@ package br.edu.ucb.webdatamodeling.dto
 		private var _autoIncremento:Boolean;
 		private var _chavePrimaria:Boolean;
 		private var _chaveEstrangeira:Boolean;
-		private var tabela:TabelaDTO;
-		private var tipo:TipoCampoDTO;
+		private var _tabela:TabelaDTO;
+		private var _tipo:TipoCampoDTO;
 		
 		public function CampoDTO()
 		{
