@@ -42,7 +42,7 @@ public class MailServiceImpl implements MailService {
 		
 		try {
 			mailSession = Session.getDefaultInstance(props);
-			//mailSession.setDebug(true);
+			mailSession.setDebug(true);
 			
 			transport = mailSession.getTransport();
 			
