@@ -43,7 +43,6 @@ package br.edu.ucb.webdatamodeling.controller
 	            PopUpManager.centerPopUp(_popup);
 	            _view.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
    			}
-   			Alert.show(_usuarioLogado+"");
 		}
 		
 		public function verificarUsuarioAutenticado():void
