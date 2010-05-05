@@ -32,7 +32,6 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		public function init():void
 		{
-			Alert.show("teste2");
 			var node1:FileNode = new FileNode();
 			node1.size = 5;
 			node1.Name = "nó 1";
