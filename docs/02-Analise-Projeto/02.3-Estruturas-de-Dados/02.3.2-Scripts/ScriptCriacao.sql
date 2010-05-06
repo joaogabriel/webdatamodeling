@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     2/4/2010 14:51:07                            */
+/* Created on:     06/05/2010 09:01:21                          */
 /*==============================================================*/
 
 
@@ -61,6 +61,7 @@ create table CAMPO (
    DS_COMENTARIO        VARCHAR(30)          null,
    CHAVE_PRIMARIA       BOOL                 null,
    CHAVE_ESTRANGEIRA    BOOL                 null,
+   TAMANHO              INT50                null,
    constraint PK_CAMPO primary key (ID_CAMPO)
 );
 
@@ -143,9 +144,9 @@ alter table TIPO_ARQUIVO owner to WDM_USER
 /*==============================================================*/
 create table TIPO_CAMPO (
    ID_TIPO_CAMPO        SERIAL               not null,
-   DS_TIPO_CAMPO        VARCHAR(200)         null,
-   DS_VALOR_MINIMO      VARCHAR(200)         null,
-   DS_VALOR_MAXIMO      VARCHAR(200)         null,
+   DS_TIPO_CAMPO        VARCHAR(50)          null,
+   DS_VALOR_MINIMO      NUMERIC              null,
+   DS_VALOR_MAXIMO      NUMERIC              null,
    constraint PK_TIPO_CAMPO primary key (ID_TIPO_CAMPO)
 );
 
