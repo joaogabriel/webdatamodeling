@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     06/05/2010 09:01:21                          */
+/* Created on:     19/5/2010 01:06:50                           */
 /*==============================================================*/
 
 
@@ -34,7 +34,6 @@ create user WDM_USER;
 /*==============================================================*/
 create table ARQUIVO (
    ID_ARQUIVO           SERIAL               not null,
-   ID_TIPO_ARQUIVO      INT4                 null,
    ID_PASTA             INT4                 null,
    DS_VERSAO            VARCHAR(5)           null,
    DS_NOME              VARCHAR(30)          null,
@@ -185,11 +184,6 @@ alter table USUARIO owner to WDM_USER
 alter table ARQUIVO
    add constraint FK_ARQUIVO_PK_PASTA__PASTA foreign key (ID_PASTA)
       references PASTA (ID_PASTA)
-      on delete restrict on update restrict;
-
-alter table ARQUIVO
-   add constraint FK_ARQUIVO_PK_TIPO_A_TIPO_ARQ foreign key (ID_TIPO_ARQUIVO)
-      references TIPO_ARQUIVO (ID_TIPO_ARQUIVO)
       on delete restrict on update restrict;
 
 alter table CAMPO
