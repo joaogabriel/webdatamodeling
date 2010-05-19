@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     19/5/2010 01:06:50                           */
+/* Created on:     19/5/2010 01:26:36                           */
 /*==============================================================*/
 
 
@@ -53,11 +53,11 @@ create table CAMPO (
    ID_CAMPO             SERIAL               not null,
    ID_TIPO_CAMPO        INT4                 null,
    ID_TABELA            INT4                 null,
-   DS_CAMPO             VARCHAR(10)          null,
+   DS_CAMPO             VARCHAR(50)          null,
    NAO_NULO             BOOL                 null,
    AUTO_INCREMENTO      BOOL                 null,
-   DS_VALOR_PADRAO      VARCHAR(10)          null,
-   DS_COMENTARIO        VARCHAR(30)          null,
+   DS_VALOR_PADRAO      VARCHAR(50)          null,
+   DS_COMENTARIO        VARCHAR(80)          null,
    CHAVE_PRIMARIA       BOOL                 null,
    CHAVE_ESTRANGEIRA    BOOL                 null,
    TAMANHO              INT50                null,
