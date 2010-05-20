@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     19/5/2010 01:26:36                           */
+/* Created on:     20/05/2010 09:57:38                          */
 /*==============================================================*/
 
 
@@ -53,13 +53,13 @@ create table CAMPO (
    ID_CAMPO             SERIAL               not null,
    ID_TIPO_CAMPO        INT4                 null,
    ID_TABELA            INT4                 null,
+   ID_TABELA_FK         INT4                 null,
    DS_CAMPO             VARCHAR(50)          null,
    NAO_NULO             BOOL                 null,
    AUTO_INCREMENTO      BOOL                 null,
    DS_VALOR_PADRAO      VARCHAR(50)          null,
    DS_COMENTARIO        VARCHAR(80)          null,
    CHAVE_PRIMARIA       BOOL                 null,
-   CHAVE_ESTRANGEIRA    BOOL                 null,
    TAMANHO              INT50                null,
    constraint PK_CAMPO primary key (ID_CAMPO)
 );
@@ -184,6 +184,11 @@ alter table USUARIO owner to WDM_USER
 alter table ARQUIVO
    add constraint FK_ARQUIVO_PK_PASTA__PASTA foreign key (ID_PASTA)
       references PASTA (ID_PASTA)
+      on delete restrict on update restrict;
+
+alter table CAMPO
+   add constraint FK_CAMPO_FK_CAMPO__TABELA foreign key (ID_TABELA_FK)
+      references TABELA (ID_TABELA)
       on delete restrict on update restrict;
 
 alter table CAMPO
