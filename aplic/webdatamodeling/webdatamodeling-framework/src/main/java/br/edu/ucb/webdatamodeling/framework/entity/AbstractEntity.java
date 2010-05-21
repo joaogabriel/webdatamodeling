@@ -2,6 +2,7 @@ package br.edu.ucb.webdatamodeling.framework.entity;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public abstract class AbstractEntity<ID extends Serializable> implements Entity<ID> {
 
 	@Override

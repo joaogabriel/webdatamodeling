@@ -22,7 +22,7 @@ import br.edu.ucb.webdatamodeling.framework.entity.Entity;
 /**
  * Classe abstrata que implementa todos os métodos da interface <code>ObjectService</code>
  */
-public abstract class AbstractObjectService<E extends Entity<?>, T extends DTO<E>, D extends ObjectDAO<E>> implements ObjectService<E, T, D> {
+public abstract class AbstractObjectService<E extends Entity<?>, T extends DTO<E, ?>, D extends ObjectDAO<E>> implements ObjectService<E, T, D> {
 
 	private D dao;
 	private Mapper mapper;
@@ -33,7 +33,6 @@ public abstract class AbstractObjectService<E extends Entity<?>, T extends DTO<E
 		
 		try {
 			entity = parseEntity(dto);
-			entity.setId(null);
 			getObjectDAO().insert(entity);
 			dto = parseDTO(entity);
 		} catch (ObjectDAOException e) {

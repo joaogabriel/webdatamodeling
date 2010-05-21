@@ -1,13 +1,21 @@
 package br.edu.ucb.webdatamodeling.framework.dto;
 
+import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 
 import br.edu.ucb.webdatamodeling.framework.entity.Entity;
 
-public abstract class AbstractDTO<E extends Entity<?>> implements DTO<E> {
+public abstract class AbstractDTO<E extends Entity<?>, ID extends Serializable> implements DTO<E, ID> {
 
 	private Boolean erro;
 	private String mensagemErro;
+	
+	protected ID doDefineIdValue(ID id) {
+		if (id instanceof Long && ((Long) id).equals(0L)) {
+			id = null;
+		}
+		return id;
+	}
 	
 	@Override
 	public Boolean hasErro() {
@@ -31,8 +39,8 @@ public abstract class AbstractDTO<E extends Entity<?>> implements DTO<E> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Class<DTO<E>> getEntityClass() {
-		return (Class<DTO<E>>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+	public Class<DTO<E, ID>> getEntityClass() {
+		return (Class<DTO<E, ID>>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 	
 }
