@@ -1,5 +1,7 @@
 package br.edu.ucb.webdatamodeling.framework.dto;
 
+import java.io.Serializable;
+
 import br.edu.ucb.webdatamodeling.framework.entity.Entity;
 
 /**
@@ -8,9 +10,13 @@ import br.edu.ucb.webdatamodeling.framework.entity.Entity;
  * @author joao.gabriel
  *
  */
-public interface DTO<E extends Entity<?>> {
+public interface DTO<E extends Entity<?>, ID extends Serializable> {
 
-	Class<DTO<E>> getEntityClass();
+	ID getId();
+	
+	void setId(ID id);
+	
+	Class<DTO<E, ID>> getEntityClass();
 	
 	Boolean hasErro();
 	

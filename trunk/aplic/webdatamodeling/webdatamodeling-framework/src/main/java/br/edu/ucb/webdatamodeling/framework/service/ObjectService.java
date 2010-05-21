@@ -7,7 +7,7 @@ import br.edu.ucb.webdatamodeling.framework.dao.DAO;
 import br.edu.ucb.webdatamodeling.framework.dto.DTO;
 import br.edu.ucb.webdatamodeling.framework.entity.Entity;
 
-public interface ObjectService<E extends Entity<?>, T extends DTO<E>, D extends DAO> extends Service {
+public interface ObjectService<E extends Entity<?>, T extends DTO<?, ?>, D extends DAO> extends Service {
 
 	T insert(T dto) throws ServiceException;
 	

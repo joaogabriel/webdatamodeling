@@ -1,7 +1,18 @@
 package br.edu.ucb.webdatamodeling.framework.dto;
 
-import br.edu.ucb.webdatamodeling.framework.entity.Entity;
+import java.io.Serializable;
 
-public class DefaultDTO<E extends Entity<?>> extends AbstractDTO<E> implements DTO<E> {
+@SuppressWarnings("unchecked")
+public class DefaultDTO extends AbstractDTO implements DTO {
+
+	@Override
+	public Serializable getId() {
+		return null;
+	}
+
+	@Override
+	public void setId(Serializable id) {
+		
+	}
 
 }

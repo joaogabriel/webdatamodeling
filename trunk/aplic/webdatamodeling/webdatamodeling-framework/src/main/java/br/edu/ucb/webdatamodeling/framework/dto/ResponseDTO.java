@@ -4,24 +4,24 @@ import java.util.List;
 
 public class ResponseDTO {
 
-	private DTO<?> dto;
-	private List<DTO<?>> dtos;
+	private DTO<?, ?> dto;
+	private List<DTO<?, ?>> dtos;
 	private Boolean erro;
 	private String mensagemErro;
 	
-	public DTO<?> getDto() {
+	public DTO<?, ?> getDto() {
 		return dto;
 	}
 
-	public void setDto(DTO<?> dto) {
+	public void setDto(DTO<?, ?> dto) {
 		this.dto = dto;
 	}
 
-	public List<DTO<?>> getDtos() {
+	public List<DTO<?, ?>> getDtos() {
 		return dtos;
 	}
 
-	public void setDtos(List<DTO<?>> dtos) {
+	public void setDtos(List<DTO<?, ?>> dtos) {
 		this.dtos = dtos;
 	}
 
