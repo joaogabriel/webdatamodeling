@@ -5,7 +5,7 @@ import java.util.List;
 import br.edu.ucb.webdatamodeling.entity.TipoArquivo;
 import br.edu.ucb.webdatamodeling.framework.dto.AbstractDTO;
 
-public class TipoArquivoDTO extends AbstractDTO<TipoArquivo> {
+public class TipoArquivoDTO extends AbstractDTO<TipoArquivo, Long> {
 	
 	private Long id;
 	private String descricao;
@@ -16,7 +16,7 @@ public class TipoArquivoDTO extends AbstractDTO<TipoArquivo> {
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.id = doDefineIdValue(id);
 	}
 
 	public String getDescricao() {

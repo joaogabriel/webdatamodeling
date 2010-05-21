@@ -6,7 +6,7 @@ import java.util.List;
 import br.edu.ucb.webdatamodeling.entity.Mer;
 import br.edu.ucb.webdatamodeling.framework.dto.AbstractDTO;
 
-public class MerDTO extends AbstractDTO<Mer> {
+public class MerDTO extends AbstractDTO<Mer, Long> {
 	
 	private Long id;
 	private Boolean exportado;
@@ -20,7 +20,7 @@ public class MerDTO extends AbstractDTO<Mer> {
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.id = doDefineIdValue(id);
 	}
 
 	public Boolean getExportado() {

@@ -67,5 +67,23 @@ public class UsuarioDAOImpl extends AbstractObjectDAO<Usuario> implements Usuari
 	public void setPersistence(Persistence<Usuario> persistence) {
 		super.setPersistence(persistence);
 	}
+
+	@Override
+	public List<Usuario> findByNomeOuEmail(Usuario usuario) throws ObjectDAOException {
+		List<Usuario> usuarios  = null;
+		
+		try {
+			StringBuilder query = new StringBuilder();
+			query.append("from ").append(getEntityClass().getName()).append(" usuario");
+			query.append(" where usuario.nome like '%").append(usuario.getNome()).append("%'");
+			query.append(" or usuario.email like '%").append(usuario.getEmail()).append("%'");
+			
+			usuarios = getPersistence().findByHQL(query.toString());
+		} catch (PersistenceException e) {
+			throw new ObjectDAOException("Não foi possível pesquisar o usuário.", e);
+		}
+		
+		return usuarios;
+	}
 	
 }

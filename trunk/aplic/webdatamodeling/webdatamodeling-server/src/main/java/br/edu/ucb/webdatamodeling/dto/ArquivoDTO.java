@@ -5,7 +5,7 @@ import java.util.Date;
 import br.edu.ucb.webdatamodeling.entity.Arquivo;
 import br.edu.ucb.webdatamodeling.framework.dto.AbstractDTO;
 
-public class ArquivoDTO extends AbstractDTO<Arquivo> {
+public class ArquivoDTO extends AbstractDTO<Arquivo, Long> {
 	
 	private Long id;
 	private String versao;
@@ -22,7 +22,7 @@ public class ArquivoDTO extends AbstractDTO<Arquivo> {
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.id = doDefineIdValue(id);
 	}
 
 	public String getVersao() {

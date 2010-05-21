@@ -3,7 +3,7 @@ package br.edu.ucb.webdatamodeling.dto;
 import br.edu.ucb.webdatamodeling.entity.Campo;
 import br.edu.ucb.webdatamodeling.framework.dto.AbstractDTO;
 
-public class CampoDTO extends AbstractDTO<Campo> {
+public class CampoDTO extends AbstractDTO<Campo, Long> {
 	
 	private Long id;
 	private String descricao;
@@ -21,7 +21,7 @@ public class CampoDTO extends AbstractDTO<Campo> {
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.id = doDefineIdValue(id);
 	}
 
 	public String getDescricao() {
