@@ -1,5 +1,6 @@
 package br.edu.ucb.webdatamodeling.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -8,6 +9,7 @@ import org.springframework.flex.remoting.RemotingDestination;
 import org.springframework.stereotype.Service;
 
 import br.edu.ucb.webdatamodeling.dao.PastaDAO;
+import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
 import br.edu.ucb.webdatamodeling.dto.PastaDTO;
 import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
 import br.edu.ucb.webdatamodeling.entity.Pasta;
@@ -34,9 +36,7 @@ public class PastaServiceImpl extends AbstractObjectService<Pasta, PastaDTO, Pas
 				pastas = usuarioPersistente.getPastas();
 				
 				if (pastas != null && pastas.isEmpty()) {
-					PastaDTO pastaDTO = new PastaDTO();
-					pastaDTO.setNome("uepa");
-					pastas.add(pastaDTO);
+					getEstruturaHardCode(pastas);
 				}
 			}
 		} catch (ServiceException e) {
@@ -44,6 +44,41 @@ public class PastaServiceImpl extends AbstractObjectService<Pasta, PastaDTO, Pas
 		}
 		
 		return pastas;
+	}
+
+	private void getEstruturaHardCode(List<PastaDTO> pastas) {
+		ArquivoDTO arquivo1 = new ArquivoDTO();
+		arquivo1.setNome("Arquivo 1");
+		
+		ArquivoDTO arquivo2 = new ArquivoDTO();
+		arquivo2.setNome("Arquivo 2");
+		
+		ArquivoDTO arquivo3 = new ArquivoDTO();
+		arquivo3.setNome("Arquivo 3");
+		
+		ArquivoDTO arquivo4 = new ArquivoDTO();
+		arquivo4.setNome("Arquivo 4");
+		
+		ArquivoDTO arquivo5 = new ArquivoDTO();
+		arquivo5.setNome("Arquivo 5");
+		
+		PastaDTO pastaA = new PastaDTO();
+		pastaA.setNome("Pasta A");
+		
+		PastaDTO pastaB = new PastaDTO();
+		pastaB.setNome("Pasta B");
+		
+		pastaA.setArquivos(new ArrayList<ArquivoDTO>());
+		pastaA.getArquivos().add(arquivo1);
+		pastaA.getArquivos().add(arquivo2);
+		pastaA.getArquivos().add(arquivo3);
+		
+		pastaB.setArquivos(new ArrayList<ArquivoDTO>());
+		pastaB.getArquivos().add(arquivo4);
+		pastaB.getArquivos().add(arquivo5);
+		
+		pastas.add(pastaA);
+		pastas.add(pastaB);
 	}
 
 	@Resource(name = "UsuarioService")
