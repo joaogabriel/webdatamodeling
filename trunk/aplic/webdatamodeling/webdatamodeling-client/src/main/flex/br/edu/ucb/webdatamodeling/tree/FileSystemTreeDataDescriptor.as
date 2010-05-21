@@ -1,8 +1,10 @@
 package br.edu.ucb.webdatamodeling.tree
 {
-	import mx.controls.treeClasses.ITreeDataDescriptor;
+	import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
+	import br.edu.ucb.webdatamodeling.dto.PastaDTO;
+	
 	import mx.collections.ICollectionView;
-	import mx.collections.ArrayCollection;
+	import mx.controls.treeClasses.ITreeDataDescriptor;
 	
 	public class FileSystemTreeDataDescriptor implements ITreeDataDescriptor
 	{
@@ -13,7 +15,7 @@ package br.edu.ucb.webdatamodeling.tree
 		
 		public function hasChildren(node:Object, model:Object=null):Boolean
 		{
-		   return node is FolderNode;
+		   return node is PastaDTO;
 		}
 		
 		public function addChildAt(parent:Object, newChild:Object, index:int, model:Object=null):Boolean
@@ -23,7 +25,7 @@ package br.edu.ucb.webdatamodeling.tree
 		
 		public function isBranch(node:Object, model:Object=null):Boolean
 		{
-			return !(node is FileNode) && hasChildren(node);
+			return !(node is ArquivoDTO) && hasChildren(node);
 		}
 		
 		public function removeChildAt(parent:Object, child:Object, index:int, model:Object=null):Boolean
@@ -35,7 +37,7 @@ package br.edu.ucb.webdatamodeling.tree
 		
 		public function getChildren(node:Object, model:Object=null):ICollectionView
 		{
-			return FolderNode(node).items;
+			return PastaDTO(node).arquivos;
 		}		
 	}
 } 

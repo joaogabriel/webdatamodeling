@@ -1,7 +1,9 @@
 package br.edu.ucb.webdatamodeling.controller
 {
-	import br.edu.ucb.webdatamodeling.dto.CampoDTO;
-	import br.edu.ucb.webdatamodeling.dto.TabelaDTO;
+	import br.edu.ucb.webdatamodeling.dto.PastaDTO;
+	import br.edu.ucb.webdatamodeling.events.CustomEvent;
+	import br.edu.ucb.webdatamodeling.service.PastaService;
+	import br.edu.ucb.webdatamodeling.service.UsuarioService;
 	import br.edu.ucb.webdatamodeling.tree.FileNode;
 	import br.edu.ucb.webdatamodeling.tree.FolderNode;
 	
@@ -14,17 +16,22 @@ package br.edu.ucb.webdatamodeling.controller
 	import mx.rpc.AsyncToken;
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
-	import mx.rpc.remoting.RemoteObject;
 	
 	public class TreeViewController
 	{
 		[Bindable]
-		public var files:ArrayCollection;
+		private var _files:ArrayCollection;
 	
 		private var _view:Tree;
 		
-		private var fileSystemService:RemoteObject;
+		private var _pastaService:PastaService = PastaService.getInstance();
 		
+		private var _usuarioService:UsuarioService = UsuarioService.getInstance();
+		
+		public function get files():ArrayCollection
+		{
+			return _files;
+		}
 		public function TreeViewController(view:Tree)
 		{
 			_view = view;
@@ -32,7 +39,7 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		public function init():void
 		{
-			var node1:FileNode = new FileNode();
+			/* var node1:FileNode = new FileNode();
 			node1.size = 5;
 			node1.Name = "nó 1";
 			node1.fullName = "";
@@ -49,49 +56,60 @@ package br.edu.ucb.webdatamodeling.controller
 			folder1.items.addItem(folder2);
 			
 			files = new ArrayCollection();
-			files.addItem(folder1);
+			files.addItem(folder1); */
+			_usuarioService.addEventListener("login", initHandler);
 		}
 		
-		private function processRootStructure( result:ResultEvent ):void
+		public function initHandler(event:CustomEvent):void
+		{
+			_pastaService.addEventListener("getPastas", processRootStructure);
+			_pastaService.getPastasByUsuarioAutenticado();
+		}
+		
+		private function processRootStructure(result:CustomEvent):void
 		{
 			if (result == null) {
-				files = new ArrayCollection();
-				files.addItem(new FileNode());
+				_files = new ArrayCollection();
+				_files.addItem(new FileNode());
 			} else {
-				files = new ArrayCollection( result.result as Array );
+				_files = result.data;
 			}					
 		}
 		
-		private function gotError( fault:FaultEvent ):void
+		private function gotError(fault:FaultEvent):void
 		{
-			Alert.show( "Server reported an error - " + fault.fault.faultString );
+			Alert.show("Server reported an error - " + fault.fault.faultString);
 		}
 		
 		public function handleTreeChange( event:Event ):void
 		{
-			var selectedItem:Object = Tree( event.target ).selectedItem;
+			var selectedItem:Object = Tree(event.target).selectedItem;
 			
-			if( selectedItem is FolderNode )
-				fetchFolderInfo( FolderNode( selectedItem ) );
+			if (selectedItem is PastaDTO) {
+				fetchFolderInfo(PastaDTO(selectedItem));
+			}
 		}
 		
-		public function handleRetrieve( event:TreeEvent ):void
+		public function handleRetrieve(event:TreeEvent):void
 		{
-			if( event.item is FolderNode && event.opening )
-				fetchFolderInfo( FolderNode( event.item ) );
+			if (event.item is FolderNode && event.opening) {
+				fetchFolderInfo(PastaDTO(event.item));
+			}
 		}
 		
-		private function fetchFolderInfo( folder:FolderNode ):void
+		private function fetchFolderInfo(folder:PastaDTO):void
 		{
-			if( folder.items.length != 0 )
+			if (folder.arquivos.length != 0) {
 				return;
-				
-			var asyncToken:AsyncToken = fileSystemService.getDirectory( folder.fullName );
+			}
+			
+			// escrever service	
+			var asyncToken:AsyncToken = null;//fileSystemService.getDirectory( folder.fullName );
 			
 			asyncToken.addResponder( new mx.rpc.Responder(
                 function( event:ResultEvent ):void
                 {
-                	folder.items = new ArrayCollection( event.result as Array );
+                	folder.arquivos = new ArrayCollection(event.result as Array);
                 	_view.validateNow();
                 	_view.expandItem( folder, true );	                	
                 },

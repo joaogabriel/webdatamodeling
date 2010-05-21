@@ -5,7 +5,6 @@ package br.edu.ucb.webdatamodeling.service
 	
 	import flash.events.EventDispatcher;
 	
-	import mx.controls.Alert;
 	import mx.messaging.ChannelSet;
 	import mx.rpc.events.ResultEvent;
 	import mx.rpc.remoting.mxml.RemoteObject;
@@ -14,7 +13,7 @@ package br.edu.ucb.webdatamodeling.service
 	{
 		private var _remoteObject:RemoteObject;
         private static var _instance:UsuarioService;
-        
+
 		public function UsuarioService()
 		{
 			super();
@@ -94,5 +93,28 @@ package br.edu.ucb.webdatamodeling.service
             var usuarioDTO:UsuarioDTO = event.result as UsuarioDTO;
             dispatchEvent(new CustomEvent("usuarioLogado", usuarioDTO));
         }
+        
+        public function findByNomeOuEmail(usuario:UsuarioDTO):void
+        {
+        	_remoteObject.addEventListener("result", findByNomeOuEmailHandler);
+        	_remoteObject.findByNomeOuEmail(usuario);
+        }
+        
+        public function findByNomeOuEmailHandler(event:ResultEvent):void
+        {
+            dispatchEvent(new CustomEvent("resultSearch", event.result));
+        }
+        
+        public function findAll():void
+        {
+        	_remoteObject.addEventListener("result", findAllHandler);
+        	_remoteObject.findAll();
+        }
+        
+        public function findAllHandler(event:ResultEvent):void
+        {
+            dispatchEvent(new CustomEvent("findAll", event.result));
+        }
+        
 	}
 }

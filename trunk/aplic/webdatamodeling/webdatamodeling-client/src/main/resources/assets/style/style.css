@@ -7,7 +7,7 @@ Application
 
 .buttonLoader
 {
-	skin:						ClassReference('br.edu.ucb.webdatamodeling.other.pfp.skins.ButtonLoader_skin');
+	skin:						ClassReference('pfp.skins.ButtonLoader_skin');
 	color:						#FFFFFF;
 	textRollOverColor:			#FFFFFF;
 	disabledColor:				#FFFFFF;
