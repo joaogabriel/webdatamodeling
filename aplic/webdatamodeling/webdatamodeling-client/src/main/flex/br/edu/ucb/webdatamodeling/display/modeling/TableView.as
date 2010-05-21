@@ -1,11 +1,19 @@
 package br.edu.ucb.webdatamodeling.display.modeling {
+	import br.edu.ucb.webdatamodeling.dto.TabelaDTO;
+	import flash.display.DisplayObject;
+
+	import br.com.thalespessoa.utils.Library;
+	import gs.easing.Expo;
+	import gs.easing.Back;
+	import gs.easing.Bounce;
 	import gs.easing.Cubic;
 	import gs.TweenMax;
+
+	import br.edu.ucb.webdatamodeling.display.modeling.events.MenuEvent;
+	import br.edu.ucb.webdatamodeling.display.modeling.menu.TableMenu;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.display.Sprite;
-	import gs.*; 
-	import gs.easing.*;
 
 	/**
 	 * @author usuario
@@ -14,45 +22,257 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 	{
 		static public const DRAGGING:String = "dragging";
 		static public const START_RELATIONSHIP:String = "startRelationship";
+		
+		static private var _i:uint = 0;
 
-		public function TableView() 
+		private var _menu:TableMenu;
+		private var _relationships:Array;
+		private var _title:TableText;
+		private var _id:uint;
+		private var _attributes:Array;
+		private var _maxField:DisplayObject;
+		private var _oldMaxField:DisplayObject;
+		
+		private var _titleBase : Sprite;
+		private var _base : Sprite;
+		
+		private var _plusMenu:Sprite;
+		
+		private var _centerX:Number;
+		private var _centerY:Number;
+		private var _dto:TabelaDTO;
+
+		public function get centerX() : Number {return x + _centerX;}
+		public function get centerY() : Number {return y + _centerY;}
+		public function get tableName() : String {return _title.text;}
+		public function get fk() : Array {return [TableAttribute(_attributes[0]).createFK(this)];}
+		
+		public function get data():TabelaDTO{return _dto;}
+		public function get title():String{ return _title.text; }
+
+		public function TableView( name:String = null ) 
 		{
+			_dto = new TabelaDTO;
+			_id = _i++;
+			_relationships = [];
+			_menu = new TableMenu();
+			_menu.addEventListener(MenuEvent.SELECT_CREATE_RELATIONSHIP, createRelationshipHandler);
+			_menu.addEventListener(MenuEvent.SELECT_DELETE, selectDeleteHandler);
+			_menu.addEventListener(MenuEvent.SELECT_EDIT_TITLE, selectEditTitleHandler);
+			_menu.addEventListener(MenuEvent.SELECT_PLUS, selectPlusHandler);
 			addEventListener(MouseEvent.CLICK, clickHandler);
 			//addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
+			create( name );
+			if(!name) addAttribute(new TableAttribute("id",null,false,true));
 			show();
-			create();
+			
+			resize(_title);
+		}
+		
+		public function generateData():TabelaDTO
+		{
+			var attributes:Array = [];
+			var len:uint = _attributes.length;
+			
+			for(var i:uint=0; i<len; i++) attributes[i] = TableAttribute(_attributes[i]).data;
+			
+			// valor maximo: 10
+			_dto.comentario = "sem come2";
+			_dto.coordenadaX = x;
+			_dto.coordenadaY = y;
+			_dto.descricao = _title.text;
+			_dto.campos = attributes;
+			
+			return _dto;
 		}
 
 		public function show():void
 		{
-			TweenMax.from(this, .2, {scaleX:.6, scaleY:.6, alpha:0, ease:Cubic.easeOut});
+			TweenMax.to(_titleBase, .3, { scaleY:1, ease:Expo.easeOut });
+			//TweenMax.to(_base, .3, { scaleY:1, ease:Expo.easeOut, delay:.2 });
 		}
 		
-		public function hide():void
+		public function kill():void
 		{
+			var relationships:Array = _relationships;
+			_relationships = null;
 			
+			for(var i:uint = 0; i<relationships.length; i++)
+				RelationshipView(relationships[i]).kill();
+				
+			for(i=0; i<_attributes.length; i++)
+				TweenMax.to(_attributes[i], .3, { alpha:0, delay: _attributes.length*.05 - i*.05 });
+			
+			_menu = null;
+			TweenMax.to(_title, .3, { scaleY:0, ease:Expo.easeOut, delay:.5 });
+			TweenMax.to(_base, .3, { scaleY:0, ease:Expo.easeOut, delay:.5 });
+			TweenMax.to(_titleBase, .3, { scaleY:0, ease:Expo.easeOut, delay:.7, onComplete:onKill });
 		}
 		
-		private function create():void
+
+		public function addAttributes(attributes : Array) : void 
 		{
-			var base:Sprite = new Sprite();
-			base.graphics.beginFill(0xFFCC99);
-			base.graphics.drawRect(-50, -50, 100, 100);
-			base.graphics.endFill();
-			addChild( base );
-			base.addEventListener(MouseEvent.MOUSE_DOWN, baseMouseDownHandler);
+			for(var i:uint = 0; i<attributes.length; i++)
+				addAttribute(attributes[i]);
+		}
+		
+		public function addAttribute( attribute:TableAttribute ):void
+		{
+			var len:uint = _attributes.length;
+			var i:uint = _attributes.length;
 			
-			var title:Sprite = new Sprite();
-			title.graphics.beginFill(0xFF9965);
-			title.graphics.drawRect(-50, -50, 100, 50);
-			title.graphics.endFill();
-			addChild( title );
-			title.addEventListener(MouseEvent.MOUSE_DOWN, titleMouseDownHandler);
+			if(attribute.isPK) i = 0;
+			else if(attribute.isFK)
+			{
+				for(i=0; i<len; i++)	
+					if(!TableAttribute(_attributes[i]).isPK) 
+						break;
+			}
+			
+			attribute.y = 20 + i * 18 + 5;
+			_attributes.splice(i,0,attribute);
+			
+			organizeAttributes();
+			
+			addChild(attribute);
+			attribute.addEventListener(Event.RESIZE, resizeHandler);
+			attribute.addEventListener(TableAttribute.KILL, killAttributeHandler);
+			
+			var h:Number = 25 + _attributes.length * 18 + 10;
+			TweenMax.to(_base, .5, {height:h, ease:Expo.easeOut});
+			TweenMax.to(_plusMenu, .5, {y:h, ease:Expo.easeOut});
+			_menu.y = h;
+			_centerY = h / 2;
+			
+			resize(attribute);
 		}
 
-		private function baseMouseDownHandler(event : MouseEvent) : void 
+		internal function addRelationship( relationship:RelationshipView ):void 
 		{
-			dispatchEvent(new Event(START_RELATIONSHIP));
+			_relationships.push(relationship);
+		}
+
+		internal function removeRelationship( relationship:RelationshipView ):void
+		{
+			if(_relationships && _relationships.indexOf(relationship) > -1)
+				_relationships.splice(_relationships.indexOf(relationship), 1);
+		}
+
+		private function organizeAttributes() : void 
+		{
+			var len:uint = _attributes.length;
+			var position:Number;
+			for(var i :uint = 0; i<len; i++)
+			{
+				position = 20 + i * 18 + 5;
+				TweenMax.to(_attributes[i], .5, {ease:Expo.easeOut, y:position });
+			}
+		}
+		
+		private function onKill():void
+		{
+			parent.removeChild(this);
+		}
+		
+		private function resize( field:DisplayObject ):void
+		{
+			if(!_maxField)
+				_maxField = DisplayObject( field );
+			else if( _maxField.width < DisplayObject( field ).width )
+			{
+				_oldMaxField = _maxField;
+				_maxField = DisplayObject( field );
+			}
+			else if(_oldMaxField && _oldMaxField.width > _maxField.width)
+				_maxField = _oldMaxField;
+				
+			_titleBase.width = Math.max(_maxField.width + 5, 100);
+			_base.width = Math.max(_maxField.width + 5, 100);
+			_centerX = _menu.x = _plusMenu.x = _base.width / 2;
+			
+			var len: uint = _relationships.length;
+			for(var i:uint=0; i<len; i++)
+				_relationships[i].update();
+		}
+
+		private function create( name:String ):void
+		{
+			_base = new Sprite();
+			//_base.graphics.beginFill(0xFFCC99);
+			_base.graphics.beginFill(0xFFFFFF);
+			_base.graphics.drawRect(0, 0, 100, 30);
+			_base.graphics.endFill();
+			_base.scaleY = 0;
+			addChild( _base );
+			//base.addEventListener(MouseEvent.MOUSE_DOWN, baseMouseDownHandler);
+			
+			_titleBase = new Sprite();
+			//_titleBase.graphics.beginFill(0xFF9965);
+			_titleBase.graphics.beginFill(0x00CBFF);
+			_titleBase.graphics.drawRect(0, 0, 100, 25);
+			_titleBase.graphics.endFill();
+			_titleBase.scaleY = 0;
+			_titleBase.buttonMode = true;
+			addChild( _titleBase );
+			_titleBase.addEventListener(MouseEvent.MOUSE_DOWN, titleMouseDownHandler);
+			
+			_title = new TableText(TableText.TYPE_TITLE, name || "table_"+_id, !name);
+			_title.addEventListener(Event.RESIZE, resizeHandler);
+			addChild( _title);
+			
+			_plusMenu = Library.get("plus_menu", {alpha:0});
+			_menu.x = _plusMenu.x = _base.width / 2;
+			_menu.y = _plusMenu.y = 30;
+			addChild(_plusMenu);
+			_plusMenu.buttonMode = true;
+			_plusMenu.addEventListener(MouseEvent.MOUSE_DOWN, baseClickHandler);
+			addEventListener(MouseEvent.ROLL_OVER, rollOverHandler);
+			addEventListener(MouseEvent.ROLL_OUT, rollOutHandler);
+			
+			_centerX = 50;
+			_centerY = 12;
+			 _attributes = [];
+			 
+			TweenMax.to(this, .3, { glowFilter:{color:0x999999, alpha:.8, blurX:6, blurY:6, strength:2 }});
+		}
+
+		private function rollOutHandler(event : MouseEvent) : void 
+		{
+			TweenMax.to(_plusMenu, .3, {alpha:0});
+		}
+
+		private function rollOverHandler(event : MouseEvent) : void 
+		{
+			TweenMax.to(_plusMenu, .3, {alpha:1});
+		}
+
+		private function resizeHandler(event : Event) : void 
+		{
+			resize(DisplayObject( event.target ));
+		}
+
+		private function selectDeleteHandler(event : MenuEvent) : void 
+		{
+			kill();
+		}
+
+		private function selectEditTitleHandler(event : MenuEvent) : void 
+		{
+			_title.edit();
+		}
+
+		private function baseClickHandler(event : MouseEvent) : void 
+		{
+			if(StageModeling.isDrawingRelationship)
+				return;
+				
+			addChild(_menu);
+			_menu.show();
+		}
+
+		private function createRelationshipHandler(event : MenuEvent) : void 
+		{
+			dispatchEvent(new MenuEvent(START_RELATIONSHIP, event.data, false ));
 		}
 
 		private function clickHandler(event : MouseEvent) : void 
@@ -68,18 +288,57 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		private function titleMouseDownHandler(event : MouseEvent) : void 
 		{
 			parent.addChild(this);
-			TweenMax.to(this, .3, {scaleX:1.1, scaleY:1.1, dropShadowFilter:{color:0x000000, alpha:.8, blurX:12, blurY:12, distance:10}});
 			startDrag();
 			stage.addEventListener(MouseEvent.MOUSE_UP, mouseUpHandler);
 			addEventListener(Event.ENTER_FRAME, draggingHandler);
+			TweenMax.to(this, .2, { glowFilter:{color:0x00CBFF, alpha:.8, blurX:6, blurY:6, strength:2}});
+			
+			var len: uint = _relationships.length;
+			for(var i:uint = 0; i<len; i++)
+				TweenMax.to(_relationships[i], .2, { glowFilter:{color:0x00CBFF, alpha:.8, blurX:6, blurY:6, strength:2}});
 		}
 
 		private function mouseUpHandler(event : MouseEvent) : void 
 		{
-			TweenMax.to(this, .3, {scaleX:1, scaleY:1,dropShadowFilter:{color:null, alpha:0, blurX:0, blurY:0, distance:0}, ease:Bounce.easeOut});
 			stopDrag();
 			stage.removeEventListener(MouseEvent.MOUSE_UP, mouseUpHandler);
 			removeEventListener(Event.ENTER_FRAME, draggingHandler);
+			TweenMax.to(this, .3, { glowFilter:{color:0x999999, alpha:.8, blurX:6, blurY:6, strength:2 }});
+			
+			var len: uint = _relationships.length;
+			for(var i:uint = 0; i<len; i++)
+				TweenMax.to(_relationships[i], .3, { glowFilter:{color:null, alpha:0, blurX:0, blurY:0, strength:0}});
+		}
+
+		private function selectPlusHandler(event : MenuEvent) : void 
+		{
+			addAttribute( new TableAttribute() );
+		}
+
+		private function killAttributeHandler(event : Event) : void 
+		{
+			var i: uint = _attributes.indexOf(event.target);
+			var yPosition:Number;
+			_attributes.splice(i,1);
+			var len:uint = _attributes.length;
+			for(i; i<len; i++)
+			{
+				yPosition = 20 + i * 18 + 5;
+				TweenMax.to(_attributes[i], .4, {y:yPosition, ease:Expo.easeOut, delay:i*.05});
+			}
+			
+			var h:Number = _titleBase.height + _attributes.length * 18 + 10;
+			TweenMax.to(_base, .5, {height:h, ease:Expo.easeOut, delay:i*.05});
+			TweenMax.to(_plusMenu, .5, {y:h, ease:Expo.easeOut, delay:i*.05});
+			_menu.y = h;
+			_centerY = h / 2;
+			
+			if(!_relationships)
+				return;
+				
+			var len: uint = _relationships.length;
+			for(var i:uint=0; i<len; i++)
+				_relationships[i].update();
 		}
 	}
 }

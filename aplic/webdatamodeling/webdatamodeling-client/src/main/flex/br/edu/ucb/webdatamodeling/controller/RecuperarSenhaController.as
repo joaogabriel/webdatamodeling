@@ -3,8 +3,9 @@ package br.edu.ucb.webdatamodeling.controller
 	import br.edu.ucb.webdatamodeling.components.RecuperarSenha;
 	import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
 	import br.edu.ucb.webdatamodeling.events.CustomEvent;
-	import br.edu.ucb.webdatamodeling.other.pfp.rsscube.models.MainModel;
 	import br.edu.ucb.webdatamodeling.service.UsuarioService;
+	
+	import pfp.rsscube.models.MainModel;
 	
 	import mx.controls.Alert;
 	import mx.resources.IResourceManager;

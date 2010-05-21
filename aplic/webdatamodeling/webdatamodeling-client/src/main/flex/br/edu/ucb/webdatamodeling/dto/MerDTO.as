@@ -1,5 +1,6 @@
 package br.edu.ucb.webdatamodeling.dto
 {
+	[Bindable]
 	[RemoteClass(alias="br.edu.ucb.webdatamodeling.dto.MerDTO")]
 	public class MerDTO
 	{

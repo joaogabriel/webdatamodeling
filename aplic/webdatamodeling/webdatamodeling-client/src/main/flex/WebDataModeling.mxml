@@ -12,6 +12,17 @@
 	    
 	<mx:Script>
 		<![CDATA[
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.AsyncToken;
+			import br.edu.ucb.webdatamodeling.tree.FolderNode;
+			import br.edu.ucb.webdatamodeling.service.UsuarioService;
+			import br.edu.ucb.webdatamodeling.service.PastaService;
+			import br.edu.ucb.webdatamodeling.tree.FileNode;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.FaultEvent;
+			import br.edu.ucb.webdatamodeling.events.CustomEvent;
+			import mx.events.TreeEvent;
+			import br.edu.ucb.webdatamodeling.dto.PastaDTO;
 			import br.edu.ucb.webdatamodeling.tree.FileSystemTreeDataDescriptor;
 			import br.edu.ucb.webdatamodeling.controller.TreeViewController;
 			import mx.managers.CursorManager;
@@ -24,7 +35,9 @@
 			public function init():void
 			{
 				_controller = new WebDataModelingController(this);
-				_controller.init()
+				_controller.init();
+				
+				init2();
 			}
 
 			private function initTreeView():void
@@ -40,6 +53,102 @@
 				}
 				_controller.verificarUsuarioAutenticado();
 			}
+			
+			
+			
+			
+			
+			
+			// aqui
+			[Bindable]
+		private var files:ArrayCollection;
+	
+		private var _pastaService:PastaService = PastaService.getInstance();
+		
+		private var _usuarioService:UsuarioService = UsuarioService.getInstance();
+		
+		public function init2():void
+		{
+			/* var node1:FileNode = new FileNode();
+			node1.size = 5;
+			node1.Name = "nó 1";
+			node1.fullName = "";
+			node1.createdOn = new Date();
+			node1.lastAccessedOn = new Date();
+			node1.lastWrittenOn = new Date();
+
+			var folder2:FolderNode = new FolderNode();
+			folder2.Name = "Pasta 2";
+			
+			var folder1:FolderNode = new FolderNode();
+			folder1.Name = "Pasta 1";
+			folder1.items.addItem(node1);
+			folder1.items.addItem(folder2);
+			
+			files = new ArrayCollection();
+			files.addItem(folder1); */
+			_usuarioService.addEventListener("login", initHandler);
+		}
+		
+		public function initHandler(event:CustomEvent):void
+		{
+			_pastaService.addEventListener("getPastas", processRootStructure);
+			_pastaService.getPastasByUsuarioAutenticado();
+		}
+		
+		private function processRootStructure(result:CustomEvent):void
+		{
+			if (result == null) {
+				files = new ArrayCollection();
+				files.addItem(new FileNode());
+			} else {
+				files = result.data;
+			}					
+		}
+		
+		private function gotError(fault:FaultEvent):void
+		{
+			Alert.show("Server reported an error - " + fault.fault.faultString);
+		}
+		
+		public function handleTreeChange( event:Event ):void
+		{
+			var selectedItem:Object = Tree(event.target).selectedItem;
+			
+			if (selectedItem is PastaDTO) {
+				fetchFolderInfo(PastaDTO(selectedItem));
+			}
+		}
+		
+		public function handleRetrieve(event:TreeEvent):void
+		{
+			if (event.item is FolderNode && event.opening) {
+				fetchFolderInfo(PastaDTO(event.item));
+			}
+		}
+		
+		private function fetchFolderInfo(folder:PastaDTO):void
+		{Alert.show("teste");
+			if (folder.arquivos.length != 0) {
+				return;
+			}
+			
+			// escrever service	
+			var asyncToken:AsyncToken = null;//fileSystemService.getDirectory( folder.fullName );
+			
+			asyncToken.addResponder( new mx.rpc.Responder(
+                function( event:ResultEvent ):void
+                {
+                	folder.arquivos = new ArrayCollection(event.result as Array);
+                	treeView.validateNow();
+                	treeView.expandItem( folder, true );	                	
+                },
+                function( fault:FaultEvent):void
+                {
+                	gotError( fault );
+                }
+            ));				
+		}
 		]]>
 	</mx:Script>
 	<mx:VBox width="100%" height="100%">
@@ -51,15 +160,14 @@
 		</mx:ApplicationControlBar>
 		<mx:Canvas id="content" width="100%" height="100%">
 			<mx:HBox id="subContent" width="100%" height="100%">
-				<mx:Tree id="treeView" width="25%" height="100%" backgroundAlpha="0.49" creationComplete="initTreeView()"
+				<mx:Tree id="treeView" width="25%" height="100%" backgroundAlpha="0.49"
                                        dataDescriptor="{new FileSystemTreeDataDescriptor()}"
-                                       dataProvider="{_controllerTreeView.files}"
-                                       change="_controllerTreeView.handleTreeChange(event)"
-                                       itemOpening="_controllerTreeView.handleRetrieve(event)"
-                                       labelField="Name">
+                                       dataProvider="{files}"
+                                       change="handleTreeChange(event)"
+                                       itemOpening="handleRetrieve(event)"
+                                       labelField="nome">
                </mx:Tree>
 				<mx:Canvas id="fileView" width="75%" height="100%" backgroundColor="white" backgroundAlpha="0.49">
-					
 				</mx:Canvas>
 			</mx:HBox>
 		</mx:Canvas>

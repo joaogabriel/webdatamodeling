@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="init()" close="_controller.fecharPopup()" layout="absolute" width="566" height="364" title="Compartilhar" showCloseButton="true">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import br.edu.ucb.webdatamodeling.controller.CompartilharMERController;
+			
+			private var _controller:CompartilharMERController;
+			
+			private function init():void
+			{
+				_controller = new CompartilharMERController(this);
+			}
+		]]>
+	</mx:Script>
+	<mx:TextInput id="txtBusca" x="194" y="20" width="269"/>
+	<mx:Button x="471" y="20" label="Buscar" click="_controller.buscar()"/>
+	<mx:DataGrid id="tblBusca" x="19" y="50" width="517" height="118" dragEnabled="true" dropEnabled="true">
+		<mx:columns>
+			<mx:DataGridColumn headerText="Resultado" dataField="nome"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:DataGrid id="tblCompartilhados" dragEnabled="true" dropEnabled="true" x="19" dragEnter="_controller.teste(event)" y="176" width="517" height="108">
+		<mx:columns>
+			<mx:DataGridColumn headerText="Compartilhar com" dataField="nome"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:Button x="240" y="292" label="Salvar" click="_controller.fecharPopup()"/>
+	<mx:Label x="19" y="22" text="Pesquise por nome ou e-mail:"/>
+</mx:TitleWindow>

@@ -1,5 +1,7 @@
 package br.edu.ucb.webdatamodeling.dto
 {
+	import mx.collections.ArrayCollection;
+	
 	[RemoteClass(alias="br.edu.ucb.webdatamodeling.dto.PastaDTO")]
 	public class PastaDTO
 	{
@@ -10,7 +12,7 @@ package br.edu.ucb.webdatamodeling.dto
 		private var _dataCriacao:Date;
 		private var _dataUltimaAlteracao:Date;
 		private var _usuario:UsuarioDTO;
-		private var _arquivos:Array;
+		private var _arquivos:ArrayCollection;
 		
 		public function PastaDTO()
 		{
@@ -76,12 +78,12 @@ package br.edu.ucb.webdatamodeling.dto
 			_usuario = value;
 		}
 		
-		public function get arquivos():Array
+		public function get arquivos():ArrayCollection
 		{
 			return _arquivos;
 		}
 		
-		public function set arquivos(value:Array):void 
+		public function set arquivos(value:ArrayCollection):void 
 		{
 			_arquivos = value;
 		}

@@ -2,8 +2,9 @@ package br.edu.ucb.webdatamodeling.controller
 {
 	import br.edu.ucb.webdatamodeling.components.CadastrarUsuario;
 	import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
-	import br.edu.ucb.webdatamodeling.other.pfp.rsscube.models.MainModel;
 	import br.edu.ucb.webdatamodeling.service.UsuarioService;
+	
+	import pfp.rsscube.models.MainModel;
 	
 	import flash.events.Event;
 	import flash.events.TimerEvent;
@@ -63,10 +64,11 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		public function validarCadastro():void
 		{
-			if ( Validator.validateAll([_view.valNome,_view.valEmail,_view.valSenha]).length == 0 )
+			if (Validator.validateAll([_view.valNome, _view.valEmail, _view.valSenha]).length == 0) {
 				cadastrar();
-			else
+			} else {
 				Alert.show("Algum campo não foi preenchido corretamente.\n\nTodos os campos com * são obrigatorios.");
+			}
 		} 
 		
 		public function cadastrar():void

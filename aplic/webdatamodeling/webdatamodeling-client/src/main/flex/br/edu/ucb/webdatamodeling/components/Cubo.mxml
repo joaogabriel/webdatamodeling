@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="320"
-	xmlns:components="br.edu.ucb.webdatamodeling.other.pfp.components.*"
+	xmlns:components="pfp.components.*"
 	xmlns:display="br.edu.ucb.webdatamodeling.components.*">
 	
 	<mx:Script>
 		<![CDATA[
-			import br.edu.ucb.webdatamodeling.other.pfp.components.CubeStack;
-			import br.edu.ucb.webdatamodeling.other.pfp.rsscube.models.MainModel;
+			import pfp.components.CubeStack;
+			import pfp.rsscube.models.MainModel;
 			import mx.controls.Alert;
 			import com.adobe.viewsource.ViewSource;
 			
