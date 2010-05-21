@@ -13,7 +13,7 @@ import br.edu.ucb.webdatamodeling.framework.dao.persistence.Persistence;
 public class TabelaDAOImpl extends AbstractObjectDAO<Tabela> implements TabelaDAO {
 
 	@Resource(name = "persistence")
-	public void setPersistence(Persistence persistence) {
+	public void setPersistence(Persistence<Tabela> persistence) {
 		super.setPersistence(persistence);
 	}
 	

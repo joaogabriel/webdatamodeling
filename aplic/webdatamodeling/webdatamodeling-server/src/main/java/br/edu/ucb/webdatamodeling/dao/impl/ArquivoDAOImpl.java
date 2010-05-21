@@ -13,7 +13,7 @@ import br.edu.ucb.webdatamodeling.framework.dao.persistence.Persistence;
 public class ArquivoDAOImpl extends AbstractObjectDAO<Arquivo> implements ArquivoDAO {
 
 	@Resource(name = "persistence")
-	public void setPersistence(Persistence persistence) {
+	public void setPersistence(Persistence<Arquivo> persistence) {
 		super.setPersistence(persistence);
 	}
 	

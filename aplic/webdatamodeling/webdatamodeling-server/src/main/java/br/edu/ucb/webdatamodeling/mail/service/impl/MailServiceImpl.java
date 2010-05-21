@@ -83,7 +83,9 @@ public class MailServiceImpl implements MailService {
 		message.append("<span style=\"font-family: Verdana; font-size: small\">Olá ").append(usuario.getNome()).append(",</span>");
 		message.append("<br>");
 		message.append("<br>");
-		message.append("<span style=\"font-family: Verdana; font-size: small\">A sua senha para acesso ao Web Data Modeling é: <b>").append(usuario.getSenha()).append("</b></span>");
+		message.append("<span style=\"font-family: Verdana; font-size: small\">A sua nova senha para acesso ao Web Data Modeling é: <b>").append(usuario.getSenha()).append("</b></span>");
+		message.append("<br>");
+		message.append("<span style=\"font-family: Verdana; font-size: small\">Esta senha foi gerada automaticamente.</span>");
 		message.append("<br>");
 		message.append("<br>");
 		message.append("<span style=\"font-family: Verdana; font-size: small\">Atenciosamente,</span>");

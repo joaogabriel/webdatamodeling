@@ -6,7 +6,7 @@ import java.util.List;
 import br.edu.ucb.webdatamodeling.entity.TipoCampo;
 import br.edu.ucb.webdatamodeling.framework.dto.AbstractDTO;
 
-public class TipoCampoDTO extends AbstractDTO<TipoCampo> {
+public class TipoCampoDTO extends AbstractDTO<TipoCampo, Long> {
 	
 	private Long id;
 	private String descricao;
@@ -19,7 +19,7 @@ public class TipoCampoDTO extends AbstractDTO<TipoCampo> {
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.id = doDefineIdValue(id);
 	}
 
 	public String getDescricao() {

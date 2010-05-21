@@ -6,7 +6,7 @@ import java.util.List;
 import br.edu.ucb.webdatamodeling.entity.Pasta;
 import br.edu.ucb.webdatamodeling.framework.dto.AbstractDTO;
 
-public class PastaDTO extends AbstractDTO<Pasta> {
+public class PastaDTO extends AbstractDTO<Pasta, Long> {
 	
 	private Long id;
 	private String nome;
@@ -21,7 +21,7 @@ public class PastaDTO extends AbstractDTO<Pasta> {
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.id = doDefineIdValue(id);
 	}
 
 	public String getNome() {

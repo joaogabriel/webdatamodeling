@@ -1,5 +1,7 @@
 package br.edu.ucb.webdatamodeling.service;
 
+import java.util.List;
+
 import br.edu.ucb.webdatamodeling.dao.UsuarioDAO;
 import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
 import br.edu.ucb.webdatamodeling.entity.Usuario;
@@ -15,5 +17,9 @@ public interface UsuarioService extends ObjectService<Usuario, UsuarioDTO, Usuar
 	UsuarioDTO verificarUsuarioAutenticado();
 	
 	Boolean efetuarLogout();
+	
+	List<UsuarioDTO> findByNomeOuEmail(UsuarioDTO usuarioDTO);
+	
+	UsuarioDTO getUsuarioAutenticado();
 	
 }

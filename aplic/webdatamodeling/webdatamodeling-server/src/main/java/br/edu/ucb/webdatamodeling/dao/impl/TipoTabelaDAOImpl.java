@@ -13,7 +13,7 @@ import br.edu.ucb.webdatamodeling.framework.dao.persistence.Persistence;
 public class TipoTabelaDAOImpl extends AbstractObjectDAO<TipoTabela> implements TipoTabelaDAO {
 
 	@Resource(name = "persistence")
-	public void setPersistence(Persistence persistence) {
+	public void setPersistence(Persistence<TipoTabela> persistence) {
 		super.setPersistence(persistence);
 	}
 	

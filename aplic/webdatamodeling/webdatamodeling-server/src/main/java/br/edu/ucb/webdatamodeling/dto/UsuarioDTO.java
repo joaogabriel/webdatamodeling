@@ -6,7 +6,7 @@ import java.util.List;
 import br.edu.ucb.webdatamodeling.entity.Usuario;
 import br.edu.ucb.webdatamodeling.framework.dto.AbstractDTO;
 
-public class UsuarioDTO extends AbstractDTO<Usuario> {
+public class UsuarioDTO extends AbstractDTO<Usuario, Long> {
 	
 	private Long id;
 	private String nome;
@@ -23,7 +23,7 @@ public class UsuarioDTO extends AbstractDTO<Usuario> {
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.id = doDefineIdValue(id);
 	}
 
 	public String getNome() {

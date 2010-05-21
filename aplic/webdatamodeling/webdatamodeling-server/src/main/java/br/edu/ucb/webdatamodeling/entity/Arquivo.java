@@ -2,12 +2,17 @@ package br.edu.ucb.webdatamodeling.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -16,6 +21,7 @@ import br.edu.ucb.webdatamodeling.framework.entity.AbstractEntity;
 
 @Entity
 @Table(name="arquivo")
+@SuppressWarnings("serial")
 public class Arquivo extends AbstractEntity<Long> {
 	
 	private Long id;
@@ -30,6 +36,8 @@ public class Arquivo extends AbstractEntity<Long> {
 
 	@Id
 	@Column(name="id_arquivo")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "sequence")
+	@SequenceGenerator(name = "sequence", sequenceName = "arquivo_id_arquivo_seq", allocationSize = 0)
 	public Long getId() {
 		return id;
 	}
@@ -85,7 +93,7 @@ public class Arquivo extends AbstractEntity<Long> {
 		this.dataUltimaAlteracao = dataUltimaAlteracao;
 	}
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name="id_pasta")
 	public Pasta getPasta() {
 		return pasta;
@@ -95,7 +103,7 @@ public class Arquivo extends AbstractEntity<Long> {
 		this.pasta = pasta;
 	}
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name="id_tipo_arquivo")
 	public TipoArquivo getTipo() {
 		return tipo;
@@ -105,7 +113,7 @@ public class Arquivo extends AbstractEntity<Long> {
 		this.tipo = tipo;
 	}
 	
-	@OneToOne(mappedBy="arquivo")
+	@OneToOne(mappedBy="arquivo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public Mer getMer() {
 		return mer;
 	}

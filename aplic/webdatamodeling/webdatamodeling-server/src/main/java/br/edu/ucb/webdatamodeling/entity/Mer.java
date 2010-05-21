@@ -3,20 +3,28 @@ package br.edu.ucb.webdatamodeling.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import br.edu.ucb.webdatamodeling.framework.entity.AbstractEntity;
 
 @Entity
+@Table(name="mer")
+@SuppressWarnings("serial")
 public class Mer extends AbstractEntity<Long> {
 	
 	private Long id;
@@ -28,6 +36,8 @@ public class Mer extends AbstractEntity<Long> {
 
 	@Id
 	@Column(name="id_mer")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "sequence")
+	@SequenceGenerator(name = "sequence", sequenceName = "mer_id_mer_seq", allocationSize = 0)
 	public Long getId() {
 		return id;
 	}
@@ -55,7 +65,7 @@ public class Mer extends AbstractEntity<Long> {
 		this.dataUltimaExportacao = dataUltimaExportacao;
 	}
 
-	@OneToOne(optional=false)
+	@OneToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name="id_arquivo", referencedColumnName="id_arquivo")
 	public Arquivo getArquivo() {
 		return arquivo;
@@ -65,7 +75,7 @@ public class Mer extends AbstractEntity<Long> {
 		this.arquivo = arquivo;
 	}
 
-	@OneToMany(mappedBy="mer")
+	@OneToMany(mappedBy="mer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public List<Tabela> getTabelas() {
 		return tabelas;
 	}
@@ -74,7 +84,7 @@ public class Mer extends AbstractEntity<Long> {
 		this.tabelas = tabelas;
 	}
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name="compartilhamento",
 		joinColumns=@JoinColumn(name="id_mer"),
 		inverseJoinColumns=@JoinColumn(name="id_usuario"))

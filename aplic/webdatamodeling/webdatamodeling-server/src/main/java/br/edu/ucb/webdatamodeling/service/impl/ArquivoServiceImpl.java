@@ -12,8 +12,8 @@ import br.edu.ucb.webdatamodeling.framework.service.AbstractObjectService;
 import br.edu.ucb.webdatamodeling.framework.service.ServiceException;
 import br.edu.ucb.webdatamodeling.service.ArquivoService;
 
-@RemotingDestination
 @Service(value = "ArquivoService")
+@RemotingDestination(channels = {"webdatamodeling-amf"})
 public class ArquivoServiceImpl extends AbstractObjectService<Arquivo, ArquivoDTO, ArquivoDAO> implements ArquivoService {
 
 	@Override

@@ -5,7 +5,7 @@ import java.util.List;
 import br.edu.ucb.webdatamodeling.entity.TipoTabela;
 import br.edu.ucb.webdatamodeling.framework.dto.AbstractDTO;
 
-public class TipoTabelaDTO extends AbstractDTO<TipoTabela> {
+public class TipoTabelaDTO extends AbstractDTO<TipoTabela, Long> {
 	
 	private Long id;
 	private String descricao;
@@ -16,7 +16,7 @@ public class TipoTabelaDTO extends AbstractDTO<TipoTabela> {
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.id = doDefineIdValue(id);
 	}
 
 	public String getDescricao() {

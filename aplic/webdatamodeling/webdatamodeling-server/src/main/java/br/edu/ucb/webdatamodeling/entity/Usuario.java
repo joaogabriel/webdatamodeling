@@ -3,8 +3,10 @@ package br.edu.ucb.webdatamodeling.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +21,7 @@ import br.edu.ucb.webdatamodeling.framework.entity.AbstractEntity;
 
 @Entity
 @Table(name = "usuario")
+@SuppressWarnings("serial")
 public class Usuario extends AbstractEntity<Long> {
 	
 	private Long id;
@@ -99,7 +102,7 @@ public class Usuario extends AbstractEntity<Long> {
 		this.dataNascimento = dataNascimento;
 	}
 
-	@OneToMany(mappedBy="usuario")
+	@OneToMany(mappedBy="usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public List<Pasta> getPastas() {
 		return pastas;
 	}
@@ -108,7 +111,7 @@ public class Usuario extends AbstractEntity<Long> {
 		this.pastas = pastas;
 	}
 
-	@ManyToMany(mappedBy="usuarios")
+	@ManyToMany(mappedBy="usuarios", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public List<Mer> getMers() {
 		return mers;
 	}

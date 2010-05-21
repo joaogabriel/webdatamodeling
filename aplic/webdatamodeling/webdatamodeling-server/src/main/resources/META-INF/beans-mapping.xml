@@ -1,35 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://dozer.sourceforge.net
-          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+<!DOCTYPE mappings PUBLIC "-//DOZER//DTD MAPPINGS//EN"
+   "http://dozer.sourceforge.net/dtd/dozerbeanmapping.dtd">
+   
+<mappings>
 
 	<configuration>
 		<stop-on-errors>true</stop-on-errors>
 		<date-format>dd/MM/yyyy</date-format>
-<!--		<wildcard>true</wildcard>-->
+		<wildcard>true</wildcard>
 	</configuration>
 	
-	<mapping>
+	<mapping map-null="true">
 		<class-a>br.edu.ucb.webdatamodeling.entity.Usuario</class-a>
 		<class-b>br.edu.ucb.webdatamodeling.dto.UsuarioDTO</class-b>
-		<field>
+		<field relationship-type="cumulative">
 			<a>pastas</a>
 			<b>pastas</b>
+			<a-hint>br.edu.ucb.webdatamodeling.entity.Pasta</a-hint>
+			<b-hint>br.edu.ucb.webdatamodeling.dto.PastaDTO</b-hint>
 		</field>
-		<field>
+		<field relationship-type="cumulative">
 			<a>mers</a>
 			<b>mers</b>
+			<a-hint>br.edu.ucb.webdatamodeling.entity.Mer</a-hint>
+			<b-hint>br.edu.ucb.webdatamodeling.dto.MerDTO</b-hint>
 		</field>
 	</mapping>
 
-	<mapping wildcard="false">
-		<class-a>org.dozer.vo.TestObjectFoo
-		</class-a>
-		<class-b>org.dozer.vo.TestObjectFooPrime
-		</class-b>
-		<field>
-			<a>oneFoo</a>
-			<b>oneFooPrime</b>
+	<mapping map-null="true">
+		<class-a>br.edu.ucb.webdatamodeling.entity.Mer</class-a>
+		<class-b>br.edu.ucb.webdatamodeling.dto.MerDTO</class-b>
+		<field relationship-type="cumulative">
+			<a>arquivo</a>
+			<b>arquivo</b>
+			<a-hint>br.edu.ucb.webdatamodeling.entity.Arquivo</a-hint>
+			<b-hint>br.edu.ucb.webdatamodeling.dto.ArquivoDTO</b-hint>
+		</field>
+		<field relationship-type="cumulative">
+			<a>tabelas</a>
+			<b>tabelas</b>
+			<a-hint>br.edu.ucb.webdatamodeling.entity.Tabela</a-hint>
+			<b-hint>br.edu.ucb.webdatamodeling.dto.TabelaDTO</b-hint>
+		</field>
+		<field relationship-type="cumulative">
+			<a>usuarios</a>
+			<b>usuarios</b>
+			<a-hint>br.edu.ucb.webdatamodeling.entity.Usuario</a-hint>
+			<b-hint>br.edu.ucb.webdatamodeling.dto.UsuarioDTO</b-hint>
+		</field>
+	</mapping>
+
+	<mapping map-null="true">
+		<class-a>br.edu.ucb.webdatamodeling.entity.Tabela</class-a>
+		<class-b>br.edu.ucb.webdatamodeling.dto.TabelaDTO</class-b>
+		<field relationship-type="cumulative">
+			<a>mer</a>
+			<b>mer</b>
+			<a-hint>br.edu.ucb.webdatamodeling.entity.Mer</a-hint>
+			<b-hint>br.edu.ucb.webdatamodeling.dto.MerDTO</b-hint>
+		</field>
+		<field relationship-type="cumulative">
+			<a>tipo</a>
+			<b>tipo</b>
+			<a-hint>br.edu.ucb.webdatamodeling.entity.TipoTabela</a-hint>
+			<b-hint>br.edu.ucb.webdatamodeling.dto.TipoTabelaDTO</b-hint>
+		</field>
+		<field relationship-type="cumulative">
+			<a>campos</a>
+			<b>campos</b>
+			<a-hint>br.edu.ucb.webdatamodeling.entity.Campo</a-hint>
+			<b-hint>br.edu.ucb.webdatamodeling.dto.CampoDTO</b-hint>
+		</field>
+	</mapping>
+	
+	<mapping map-null="true">
+		<class-a>br.edu.ucb.webdatamodeling.entity.TipoTabela</class-a>
+		<class-b>br.edu.ucb.webdatamodeling.dto.TipoTabelaDTO</class-b>
+		<field relationship-type="cumulative">
+			<a>tabelas</a>
+			<b>tabelas</b>
+			<a-hint>br.edu.ucb.webdatamodeling.entity.Tabela</a-hint>
+			<b-hint>br.edu.ucb.webdatamodeling.dto.TabelaDTO</b-hint>
+		</field>
+	</mapping>
+
+	<mapping map-null="true">
+		<class-a>br.edu.ucb.webdatamodeling.entity.Campo</class-a>
+		<class-b>br.edu.ucb.webdatamodeling.dto.CampoDTO</class-b>
+		<field relationship-type="cumulative">
+			<a>tabela</a>
+			<b>tabela</b>
+			<a-hint>br.edu.ucb.webdatamodeling.entity.Tabela</a-hint>
+			<b-hint>br.edu.ucb.webdatamodeling.dto.TabelaDTO</b-hint>
+		</field>
+		<field relationship-type="cumulative">
+			<a>tipo</a>
+			<b>tipo</b>
+			<a-hint>br.edu.ucb.webdatamodeling.entity.TipoCampo</a-hint>
+			<b-hint>br.edu.ucb.webdatamodeling.dto.TipoCampoDTO</b-hint>
 		</field>
 	</mapping>
 
