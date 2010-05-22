@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas 
+  xmlns:mx="http://www.adobe.com/2006/mxml"
+  xmlns:views="com.pfp.rsscube.views.*" 
+  width="400" height="450"
+  creationPolicy="all"
+  horizontalScrollPolicy="off"
+  verticalScrollPolicy="off">
+  <mx:Script>
+    <![CDATA[
+      import com.pfp.rsscube.vos.RssItem;
+      import mx.collections.ArrayCollection;
+      import com.pfp.rsscube.models.MainModel;
+      import mx.rpc.events.ResultEvent;
+      
+      [Bindable]  
+      private var rssItems:ArrayCollection;
+      
+      [Bindable]
+      private var feedName:String;
+      
+      public function set RssSource(value:String):void
+      {
+        if(!value)
+          return;
+          
+        rssService.url = value;
+        rssService.send();
+      }
+      
+      private var model:MainModel = MainModel.GetInstance();
+      
+      private function handleRss(event:ResultEvent):void
+      {
+        var items:Object = event.result.rss.channel.item;
+        feedName = event.result.rss.channel.title;
+        
+        rssItems = new ArrayCollection();
+        var item:RssItem;
+        
+        for(var i:int = 0; i < items.length; i++)
+        {
+          if(i == 15)
+            break;
+          
+          item = new RssItem();
+          item.title = items[i].title;
+          item.link = items[i].guid.value;
+          item.author = items[i].creator;
+          item.date = items[i].pubDate;
+          rssItems.addItem(item);
+        }
+      }
+      
+    ]]>
+  </mx:Script>
+  <mx:HTTPService id="rssService" result="handleRss(event)" />
+  <mx:Label x="5" text="{feedName}" styleName="FeedTitle" />
+  <mx:Button 
+    top="2" right="2" height="20" label="SOTC" 
+    click="model.cubeSide = 'Top';"/>
+  <mx:List 
+    x="2" y="24" width="{width - 9}" height="{height - 52}" 
+    styleName="RssPostList" dataProvider="{rssItems}" 
+    itemRenderer="com.pfp.rsscube.views.RssPost" 
+    horizontalScrollPolicy="off" />
+  <mx:Button 
+    bottom="3" left="3" height="20" label="Feed List" 
+    click="model.cubeSide = 'Front'"/>
+  <mx:Button 
+    right="2" bottom="2" height="20" label="Info" 
+    click="model.cubeSide = 'Bottom';"/>
+</mx:Canvas>

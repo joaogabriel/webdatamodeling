@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%">
+  <mx:Script>
+    <![CDATA[
+      import flash.net.navigateToURL;
+      import com.pfp.rsscube.vos.RssItem;
+      
+      [Bindable]
+      private var rssdata:RssItem;
+    
+      override public function set data(value:Object):void
+      {
+        rssdata = value as RssItem;
+        
+        author.text = "Written by " + rssdata.author;
+        if(rssdata.date)
+          author.text += (", " + rssdata.date); 
+      }
+      
+      private function followPostLink():void
+      {
+        var req:URLRequest = new URLRequest(rssdata.link);
+        navigateToURL(req, "_self");
+      }
+    ]]>
+  </mx:Script>
+  <mx:Label 
+    styleName="RssTitle" text="{rssdata.title}" 
+    truncateToFit="true" maxWidth="350"
+    click="followPostLink()" useHandCursor="true"
+    buttonMode="true" mouseChildren="false" />
+  <mx:Label id="author" styleName="RssAuthor"/>
+</mx:VBox>
