@@ -175,7 +175,7 @@
 			<mx:Label text="Usuário:" />
 			<mx:Text id="txtNomeUsuario" selectable="false" />
 			<mx:VBox horizontalAlign="right" width="100%">
-				<mx:Image click="_controller.logout()" source="@Embed(source='../resources/assets/images/logout.png')" autoLoad="true" scaleContent="true" width="30" height="30"/>
+				<mx:Image click="_controller.logout()" buttonMode="true" useHandCursor="true" source="@Embed(source='../resources/assets/images/logout.png')" autoLoad="true" scaleContent="true" width="30" height="30"/>
 			</mx:VBox>	
 		</mx:ApplicationControlBar>
 	</mx:VBox>
