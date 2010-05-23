@@ -1,7 +1,12 @@
 package br.edu.ucb.webdatamodeling.service
 {
 	import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
+	import br.edu.ucb.webdatamodeling.events.CustomEvent;
 	
+	import flash.events.EventDispatcher;
+	
+	import mx.messaging.ChannelSet;
+	import mx.rpc.events.ResultEvent;
 	import mx.rpc.remoting.mxml.RemoteObject;
 	
 	public class ArquivoService extends EventDispatcher
@@ -32,11 +37,11 @@ package br.edu.ucb.webdatamodeling.service
             dispatchEvent(new CustomEvent("insert", event.result));
         }
         
-        public static function getInstance():PastaService
+        public static function getInstance():ArquivoService
         {
             if (_instance == null) 
             {
-                _instance = new PastaService();
+                _instance = new ArquivoService();
             }
             return _instance;
         }

@@ -2,7 +2,7 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"
 	xmlns:display="flash.display.*"
 	xmlns:components="com.pfp.components.*"
-	creationComplete="init()" applicationComplete="verificarUsuarioAutenticado()">
+	creationComplete="init()" applicationComplete="verificarUsuarioAutenticado()" xmlns:components1="br.edu.ucb.webdatamodeling.components.*">
 	
 	<mx:Style source="../resources/assets/style/style.css"/>
 	
@@ -12,6 +12,7 @@
 	    
 	<mx:Script>
 		<![CDATA[
+			import br.edu.ucb.webdatamodeling.components.ArvoreVazia;
 			import mx.rpc.events.ResultEvent;
 			import mx.rpc.AsyncToken;
 			import br.edu.ucb.webdatamodeling.tree.FolderNode;
@@ -98,9 +99,10 @@
 		
 		private function processRootStructure(result:CustomEvent):void
 		{
-			if (result == null) {
-				files = new ArrayCollection();
-				files.addItem(new FileNode());
+			var pastas:ArrayCollection = result.data;
+			
+			if (pastas.length == 0) {
+				msgEstruturaVazia.visible = true;
 			} else {
 				files = result.data;
 			}					
@@ -128,7 +130,9 @@
 		}
 		
 		private function fetchFolderInfo(folder:PastaDTO):void
-		{Alert.show("teste");
+		{
+			Alert.show("teste123");
+			
 			if (folder.arquivos.length != 0) {
 				return;
 			}
@@ -153,29 +157,37 @@
 	</mx:Script>
 	<mx:VBox width="100%" height="100%">
 		<mx:ApplicationControlBar width="100%" height="40">
-			<mx:HBox horizontalGap="950" horizontalAlign="center" verticalAlign="middle">
-				<mx:Text text="WEB DATA MODELING" fontFamily="Verdana" fontSize="15" fontWeight="bold"/>
-				<mx:Text text="versão 1.0 beta" enabled="true" textAlign="left" bottom=""/>
+			<mx:HBox horizontalAlign="center" verticalAlign="middle" width="100%">
+				<mx:VBox>
+					<mx:Text text="WEB DATA MODELING" fontFamily="Verdana" fontSize="15" fontWeight="bold"/>
+				</mx:VBox>
+				<mx:VBox horizontalAlign="right" width="100%">
+					<mx:Text text="versão 1.0 beta" enabled="true" textAlign="left"/>
+				</mx:VBox>
 			</mx:HBox>
 		</mx:ApplicationControlBar>
 		<mx:Canvas id="content" width="100%" height="100%">
-			<mx:HBox id="subContent" width="100%" height="100%">
-				<mx:Tree id="treeView" width="25%" height="100%" backgroundAlpha="0.49"
-                                       dataDescriptor="{new FileSystemTreeDataDescriptor()}"
-                                       dataProvider="{files}"
-                                       change="handleTreeChange(event)"
-                                       itemOpening="handleRetrieve(event)"
-                                       labelField="nome">
-               </mx:Tree>
-				<mx:Canvas id="fileView" width="75%" height="100%" backgroundColor="white" backgroundAlpha="0.49">
-				</mx:Canvas>
-			</mx:HBox>
+			<mx:HDividedBox id="subContent" width="100%" height="100%">
+				<mx:VBox width="25%" height="100%">
+					<mx:Label id="msgEstruturaVazia" height="5%" text="Você ainda não criou nenhum pasta ou arquivo" textAlign="center" color="#FF0000" fontWeight="bold" fontSize="10" visible="false" width="100%"/>
+					<mx:Label text="Estrutura de arquivos" height="5%" textAlign="center" width="100%" fontWeight="bold" fontSize="10"/>
+					<mx:Tree id="treeView" width="100%" height="80%" backgroundAlpha="0.49"
+	                                       dataDescriptor="{new FileSystemTreeDataDescriptor()}"
+	                                       dataProvider="{files}"
+	                                       change="handleTreeChange(event)"
+	                                       itemOpening="handleRetrieve(event)"
+	                                       labelField="nome">
+	               </mx:Tree>
+	               <components1:NovoArquivo width="100%" height="10%"/>
+               </mx:VBox>
+				<mx:Canvas id="fileView" width="75%" height="100%" backgroundColor="white" backgroundAlpha="0.49"/>
+			</mx:HDividedBox>
 		</mx:Canvas>
 		<mx:ApplicationControlBar width="100%" height="40">
 			<mx:Label text="Usuário:" />
 			<mx:Text id="txtNomeUsuario" selectable="false" />
 			<mx:VBox horizontalAlign="right" width="100%">
-				<mx:Image click="_controller.logout()" buttonMode="true" useHandCursor="true" source="@Embed(source='../resources/assets/images/logout.png')" autoLoad="true" scaleContent="true" width="30" height="30"/>
+				<mx:Image click="_controller.logout()" buttonMode="true" useHandCursor="true" source="@Embed(source='../resources/assets/images/exit.png')" autoLoad="true" scaleContent="true" width="30" height="30"/>
 			</mx:VBox>	
 		</mx:ApplicationControlBar>
 	</mx:VBox>

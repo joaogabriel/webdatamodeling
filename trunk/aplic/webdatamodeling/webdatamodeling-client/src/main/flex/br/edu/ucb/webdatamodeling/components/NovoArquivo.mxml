@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" add="init()" xmlns:local="*" xmlns:components="br.edu.ucb.webdatamodeling.components.*">
+
+	<mx:Script>
+		<![CDATA[
+			import br.edu.ucb.webdatamodeling.controller.NovoArquivoController;
+			
+			private var _controller:NovoArquivoController;
+			
+			private function init():void
+			{
+				_controller = new NovoArquivoController(this);
+			}
+		]]>
+	</mx:Script>
+    <mx:Fade id="fade" duration="1000"/>
+	<mx:VBox horizontalAlign="center" width="100%" height="100%">
+		<mx:HBox horizontalAlign="center" width="100%">
+			<mx:Image width="22" height="22" id="imagem" completeEffect="fade"/>
+			<mx:TextInput id="txtNomeArquivo"/>
+		</mx:HBox>
+		<components:CustomPopUpButton id="btnTipoArquivo" creationComplete="_controller.initMenu()" click="_controller.inserirArquivo(event)"/>
+	</mx:VBox>
+</mx:Canvas>

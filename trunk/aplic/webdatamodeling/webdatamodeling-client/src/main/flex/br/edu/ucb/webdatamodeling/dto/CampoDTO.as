@@ -1,17 +1,19 @@
 package br.edu.ucb.webdatamodeling.dto
 {
 	[RemoteClass(alias="br.edu.ucb.webdatamodeling.dto.CampoDTO")]
-	public class CampoDTO
+	public class CampoDTO extends AbstractDTO
 	{
 		private var _id:Number;
 		private var _descricao:String;
 		private var _valorPadrao:String;
 		private var _comentario:String;
+		private var _tamanho:Number;
 		private var _naoNulo:Boolean;
 		private var _autoIncremento:Boolean;
 		private var _chavePrimaria:Boolean;
 		private var _chaveEstrangeira:Boolean;
 		private var _tabela:TabelaDTO;
+		private var _tabelaEstrangeira:TabelaDTO;
 		private var _tipo:TipoCampoDTO;
 		
 		public function CampoDTO()
@@ -58,6 +60,16 @@ package br.edu.ucb.webdatamodeling.dto
 			_comentario = value;
 		}
 
+		public function get tamanho():Number
+		{
+			return _tamanho;
+		}	
+			
+		public function set tamanho(value:Number):void
+		{
+			_tamanho = value;
+		}
+		
 		public function get naoNulo():Boolean
 		{
 			return _naoNulo;
@@ -106,6 +118,16 @@ package br.edu.ucb.webdatamodeling.dto
 		public function set tabela(value:TabelaDTO):void 
 		{
 			_tabela = value;
+		}
+		
+		public function get tabelaEstrangeira():TabelaDTO
+		{
+			return _tabelaEstrangeira;
+		}
+		
+		public function set tabelaEstrangeira(value:TabelaDTO):void 
+		{
+			_tabelaEstrangeira = value;
 		}
 		
 		public function get tipo():TipoCampoDTO

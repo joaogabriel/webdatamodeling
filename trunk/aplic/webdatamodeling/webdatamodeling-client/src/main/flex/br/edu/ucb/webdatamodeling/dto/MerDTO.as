@@ -2,7 +2,7 @@ package br.edu.ucb.webdatamodeling.dto
 {
 	[Bindable]
 	[RemoteClass(alias="br.edu.ucb.webdatamodeling.dto.MerDTO")]
-	public class MerDTO
+	public class MerDTO extends AbstractDTO
 	{
 		
 		private var _id:Number;
