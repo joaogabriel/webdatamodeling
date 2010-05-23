@@ -1,7 +1,7 @@
 package br.edu.ucb.webdatamodeling.dto
 {
 	[RemoteClass(alias="br.edu.ucb.webdatamodeling.dto.ArquivoDTO")]
-	public class ArquivoDTO
+	public class ArquivoDTO extends AbstractDTO
 	{
 		private var _id:Number;
 		private var _versao:String;
@@ -10,7 +10,6 @@ package br.edu.ucb.webdatamodeling.dto
 		private var _dataCriacao:Date;
 		private var _dataUltimaAlteracao:Date;
 		private var _pasta:PastaDTO;
-		private var _tipo:TipoArquivoDTO;
 		private var _mer:MerDTO;
 		
 		public function ArquivoDTO()
@@ -85,16 +84,6 @@ package br.edu.ucb.webdatamodeling.dto
 		public function set pasta(value:PastaDTO):void 
 		{
 			_pasta = value;
-		}
-		
-		public function get tipo():TipoArquivoDTO
-		{
-			return _tipo;
-		}
-		
-		public function set tipo(value:TipoArquivoDTO):void 
-		{
-			_tipo = value;
 		}
 		
 		public function get mer():MerDTO

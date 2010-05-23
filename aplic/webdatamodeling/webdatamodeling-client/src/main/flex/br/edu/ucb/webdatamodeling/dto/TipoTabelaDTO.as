@@ -1,7 +1,7 @@
 package br.edu.ucb.webdatamodeling.dto
 {
 	[RemoteClass(alias="br.edu.ucb.webdatamodeling.dto.TipoTabelaDTO")]
-	public class TipoTabelaDTO
+	public class TipoTabelaDTO extends AbstractDTO
 	{
 		
 		private var _id:Number;

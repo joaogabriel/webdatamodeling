@@ -18,7 +18,7 @@
 			<mx:TextInput id="txtEmail" width="100%" text="jgs.esteves@gmail.com"/>
 		</mx:FormItem>
 		<mx:FormItem label="{resourceManager.getString('messages', 'usuario.senha')}" width="100%" required="true">
-			<mx:TextInput id="txtSenha" displayAsPassword="true" width="100%" text="12345"/>
+			<mx:TextInput id="txtSenha" displayAsPassword="true" width="100%" text="fvufimiu6c"/>
 		</mx:FormItem>
 		<mx:VBox horizontalAlign="center" width="100%">
 			<mx:Spacer height="15"/>

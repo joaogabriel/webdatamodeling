@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:PopUpButton xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Object id="aux"/>
+</mx:PopUpButton>
