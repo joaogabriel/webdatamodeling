@@ -31,7 +31,6 @@ public class Arquivo extends AbstractEntity<Long> {
 	private Date dataCriacao;
 	private Date dataUltimaAlteracao;
 	private Pasta pasta;
-	private TipoArquivo tipo;
 	private Mer mer;
 
 	@Id
@@ -103,16 +102,6 @@ public class Arquivo extends AbstractEntity<Long> {
 		this.pasta = pasta;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name="id_tipo_arquivo")
-	public TipoArquivo getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(TipoArquivo tipo) {
-		this.tipo = tipo;
-	}
-	
 	@OneToOne(mappedBy="arquivo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public Mer getMer() {
 		return mer;

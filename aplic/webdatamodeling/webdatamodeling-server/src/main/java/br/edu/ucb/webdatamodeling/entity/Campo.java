@@ -23,11 +23,13 @@ public class Campo extends AbstractEntity<Long> {
 	private String descricao;
 	private String valorPadrao;
 	private String comentario;
+	private Integer tamanho;
 	private Boolean naoNulo;
 	private Boolean autoIncremento;
 	private Boolean chavePrimaria;
 	private Boolean chaveEstrangeira;
 	private Tabela tabela;
+	private Tabela tabelaEstrangeira;
 	private TipoCampo tipo;
 
 	@Id
@@ -67,6 +69,15 @@ public class Campo extends AbstractEntity<Long> {
 
 	public void setComentario(String comentario) {
 		this.comentario = comentario;
+	}
+	
+	@Column(name="tamanho")
+	public Integer getTamanho() {
+		return tamanho;
+	}
+
+	public void setTamanho(Integer tamanho) {
+		this.tamanho = tamanho;
 	}
 
 	@Column(name="nao_nulo")
@@ -113,6 +124,16 @@ public class Campo extends AbstractEntity<Long> {
 
 	public void setTabela(Tabela tabela) {
 		this.tabela = tabela;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name="id_tabela_fk")
+	public Tabela getTabelaEstrangeira() {
+		return tabelaEstrangeira;
+	}
+
+	public void setTabelaEstrangeira(Tabela tabelaEstrangeira) {
+		this.tabelaEstrangeira = tabelaEstrangeira;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

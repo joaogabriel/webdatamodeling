@@ -14,7 +14,6 @@ public class ArquivoDTO extends AbstractDTO<Arquivo, Long> {
 	private Date dataCriacao;
 	private Date dataUltimaAlteracao;
 	private PastaDTO pasta;
-	private TipoArquivoDTO tipo;
 	private MerDTO mer;
 
 	public Long getId() {
@@ -73,14 +72,6 @@ public class ArquivoDTO extends AbstractDTO<Arquivo, Long> {
 		this.pasta = pasta;
 	}
 
-	public TipoArquivoDTO getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(TipoArquivoDTO tipo) {
-		this.tipo = tipo;
-	}
-	
 	public MerDTO getMer() {
 		return mer;
 	}
