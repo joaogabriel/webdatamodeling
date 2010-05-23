@@ -1,15 +1,10 @@
 package br.edu.ucb.webdatamodeling.entity;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -22,7 +17,6 @@ public class TipoArquivo extends AbstractEntity<Long> {
 	
 	private Long id;
 	private String descricao;
-	private List<Arquivo> arquivos;
 
 	@Id
 	@Column(name="id_tipo_arquivo")
@@ -43,15 +37,6 @@ public class TipoArquivo extends AbstractEntity<Long> {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	@OneToMany(mappedBy="tipo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	public List<Arquivo> getArquivos() {
-		return arquivos;
-	}
-
-	public void setArquivos(List<Arquivo> arquivos) {
-		this.arquivos = arquivos;
 	}
 
 }

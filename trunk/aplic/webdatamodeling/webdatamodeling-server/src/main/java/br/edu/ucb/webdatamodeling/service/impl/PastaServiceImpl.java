@@ -25,6 +25,13 @@ public class PastaServiceImpl extends AbstractObjectService<Pasta, PastaDTO, Pas
 	private UsuarioService usuarioService;
 	
 	@Override
+	public PastaDTO insert(PastaDTO dto) throws ServiceException {
+		UsuarioDTO usuarioAutenticado = usuarioService.getUsuarioAutenticado();
+		dto.setUsuario(usuarioAutenticado);
+		return super.insert(dto);
+	}
+	
+	@Override
 	public List<PastaDTO> getPastasByUsuarioAutenticado() {
 		List<PastaDTO> pastas = null;
 		UsuarioDTO usuarioPersistente = null;
@@ -35,9 +42,9 @@ public class PastaServiceImpl extends AbstractObjectService<Pasta, PastaDTO, Pas
 				usuarioPersistente = usuarioService.findById(usuarioAutenticado.getId());
 				pastas = usuarioPersistente.getPastas();
 				
-				if (pastas != null && pastas.isEmpty()) {
+				/*if (pastas != null && pastas.isEmpty()) {
 					getEstruturaHardCode(pastas);
-				}
+				}*/
 			}
 		} catch (ServiceException e) {
 			e.printStackTrace();
@@ -84,6 +91,11 @@ public class PastaServiceImpl extends AbstractObjectService<Pasta, PastaDTO, Pas
 	@Resource(name = "UsuarioService")
 	public void setUsuarioService(UsuarioService usuarioService) {
 		this.usuarioService = usuarioService;
+	}
+	
+	@Resource(name = "PastaDAO")
+	public void setDao(PastaDAO dao) {
+		super.setDao(dao);
 	}
 	
 }

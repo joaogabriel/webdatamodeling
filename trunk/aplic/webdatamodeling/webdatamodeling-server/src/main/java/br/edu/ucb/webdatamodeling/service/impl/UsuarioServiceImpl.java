@@ -50,7 +50,7 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 		senhaCriptografada = criptografiaService.criptografarSenha(dto.getSenha());
 		
 		// armazena a senha criptografada
-		dto.setSenha(senhaCriptografada);
+		//dto.setSenha(senhaCriptografada);
 		
 		dto.setId(null);
 		

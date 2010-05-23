@@ -9,11 +9,13 @@ public class CampoDTO extends AbstractDTO<Campo, Long> {
 	private String descricao;
 	private String valorPadrao;
 	private String comentario;
+	private Integer tamanho;
 	private Boolean naoNulo;
 	private Boolean autoIncremento;
 	private Boolean chavePrimaria;
 	private Boolean chaveEstrangeira;
 	private TabelaDTO tabela;
+	private TabelaDTO tabelaEstrangeira;
 	private TipoCampoDTO tipo;
 
 	public Long getId() {
@@ -46,6 +48,14 @@ public class CampoDTO extends AbstractDTO<Campo, Long> {
 
 	public void setComentario(String comentario) {
 		this.comentario = comentario;
+	}
+	
+	public Integer getTamanho() {
+		return tamanho;
+	}
+
+	public void setTamanho(Integer tamanho) {
+		this.tamanho = tamanho;
 	}
 
 	public Boolean getNaoNulo() {
@@ -86,6 +96,14 @@ public class CampoDTO extends AbstractDTO<Campo, Long> {
 
 	public void setTabela(TabelaDTO tabela) {
 		this.tabela = tabela;
+	}
+	
+	public TabelaDTO getTabelaEstrangeira() {
+		return tabelaEstrangeira;
+	}
+
+	public void setTabelaEstrangeira(TabelaDTO tabelaEstrangeira) {
+		this.tabelaEstrangeira = tabelaEstrangeira;
 	}
 
 	public TipoCampoDTO getTipo() {
