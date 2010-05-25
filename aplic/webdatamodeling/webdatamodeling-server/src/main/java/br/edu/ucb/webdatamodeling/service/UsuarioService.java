@@ -18,7 +18,7 @@ public interface UsuarioService extends ObjectService<Usuario, UsuarioDTO, Usuar
 	
 	Boolean efetuarLogout();
 	
-	List<UsuarioDTO> findByNomeOuEmail(UsuarioDTO usuarioDTO);
+	List<UsuarioDTO> findByNomeOuEmail(UsuarioDTO usuarioDTO) throws ServiceException;
 	
 	UsuarioDTO getUsuarioAutenticado();
 	

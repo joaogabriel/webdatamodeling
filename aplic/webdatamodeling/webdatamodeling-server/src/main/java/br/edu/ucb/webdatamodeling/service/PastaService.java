@@ -6,9 +6,10 @@ import br.edu.ucb.webdatamodeling.dao.PastaDAO;
 import br.edu.ucb.webdatamodeling.dto.PastaDTO;
 import br.edu.ucb.webdatamodeling.entity.Pasta;
 import br.edu.ucb.webdatamodeling.framework.service.ObjectService;
+import br.edu.ucb.webdatamodeling.framework.service.ServiceException;
 
 public interface PastaService extends ObjectService<Pasta, PastaDTO, PastaDAO> {
 
-	List<PastaDTO> getPastasByUsuarioAutenticado();
+	List<PastaDTO> getPastasByUsuarioAutenticado() throws ServiceException;
 	
 }

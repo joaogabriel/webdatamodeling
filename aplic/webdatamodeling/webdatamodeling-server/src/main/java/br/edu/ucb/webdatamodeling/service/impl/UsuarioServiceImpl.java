@@ -2,7 +2,6 @@ package br.edu.ucb.webdatamodeling.service.impl;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import javax.annotation.Resource;
 
@@ -50,7 +49,7 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 		senhaCriptografada = criptografiaService.criptografarSenha(dto.getSenha());
 		
 		// armazena a senha criptografada
-		//dto.setSenha(senhaCriptografada);
+		dto.setSenha(senhaCriptografada);
 		
 		dto.setId(null);
 		
@@ -86,7 +85,7 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 		try {
 			usuario = parseEntity(usuarioDTO);
 			senhaCriptografada = criptografiaService.criptografarSenha(usuarioDTO.getSenha());
-			//usuario.setSenha(senhaCriptografada);
+			usuario.setSenha(senhaCriptografada);
 			usuario = getObjectDAO().findByEmailESenha(usuario);
 			if (usuario != null) {
 				usuarioDTO = parseDTO(usuario);
@@ -110,7 +109,7 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 	@Override
 	public UsuarioDTO recuperarSenha(UsuarioDTO usuarioDTO) throws ServiceException {
 		Usuario usuario = null;
-		String novaSenha = gerarNovaSenha();
+		String novaSenha = criptografiaService.gerarNovaSenha();
 		
 		try {
 			usuario = parseEntity(usuarioDTO);
@@ -138,16 +137,6 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 		}
 		
 		return usuarioDTO;
-	}
-	
-	private String gerarNovaSenha() {
-		String senha = null;
-		
-		do {
-			senha = Long.toString(new Random().nextLong(), Character.MAX_RADIX).substring(0, 10);
-		} while (senha.startsWith("-"));
-		
-		return senha.substring(0, 10);
 	}
 	
 	@Resource(name = "MailService")
@@ -180,7 +169,6 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 	@Override
 	public Boolean efetuarLogout() {
 		getFlexSession().setAttribute(USUARIO_SESSAO, null);
-		
 		return true;
 	}
 
@@ -193,18 +181,20 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 	}
 
 	@Override
-	public List<UsuarioDTO> findByNomeOuEmail(UsuarioDTO usuarioDTO) {
+	public List<UsuarioDTO> findByNomeOuEmail(UsuarioDTO usuarioDTO) throws ServiceException {
 		List<Usuario> resultSearch = null;
 		List<UsuarioDTO> usuarios = null;
 		try {
 			resultSearch = getObjectDAO().findByNomeOuEmail(parseEntity(usuarioDTO));
 			usuarios = parseDTOs(resultSearch);
 		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			usuarioDTO.setErro(Boolean.TRUE);
+			usuarioDTO.setMensagemErro(e.getMessage());
+			throw new ServiceException("Erro durante a execução da pesquisa.");
 		} catch (ObjectDAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			usuarioDTO.setErro(Boolean.TRUE);
+			usuarioDTO.setMensagemErro(e.getMessage());
+			throw new ServiceException("Erro durante a execução da pesquisa.");
 		}
 		
 		return usuarios;
