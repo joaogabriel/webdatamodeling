@@ -1,6 +1,5 @@
 package br.edu.ucb.webdatamodeling.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -9,7 +8,6 @@ import org.springframework.flex.remoting.RemotingDestination;
 import org.springframework.stereotype.Service;
 
 import br.edu.ucb.webdatamodeling.dao.PastaDAO;
-import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
 import br.edu.ucb.webdatamodeling.dto.PastaDTO;
 import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
 import br.edu.ucb.webdatamodeling.entity.Pasta;
@@ -32,7 +30,7 @@ public class PastaServiceImpl extends AbstractObjectService<Pasta, PastaDTO, Pas
 	}
 	
 	@Override
-	public List<PastaDTO> getPastasByUsuarioAutenticado() {
+	public List<PastaDTO> getPastasByUsuarioAutenticado() throws ServiceException {
 		List<PastaDTO> pastas = null;
 		UsuarioDTO usuarioPersistente = null;
 		UsuarioDTO usuarioAutenticado = usuarioService.getUsuarioAutenticado();
@@ -47,13 +45,13 @@ public class PastaServiceImpl extends AbstractObjectService<Pasta, PastaDTO, Pas
 				}*/
 			}
 		} catch (ServiceException e) {
-			e.printStackTrace();
+			throw new ServiceException("Erro durante a pesquisa das pastas do usuário autenticado.");
 		}
 		
 		return pastas;
 	}
 
-	private void getEstruturaHardCode(List<PastaDTO> pastas) {
+	/*private void getEstruturaHardCode(List<PastaDTO> pastas) {
 		ArquivoDTO arquivo1 = new ArquivoDTO();
 		arquivo1.setNome("Arquivo 1");
 		
@@ -86,7 +84,7 @@ public class PastaServiceImpl extends AbstractObjectService<Pasta, PastaDTO, Pas
 		
 		pastas.add(pastaA);
 		pastas.add(pastaB);
-	}
+	}*/
 
 	@Resource(name = "UsuarioService")
 	public void setUsuarioService(UsuarioService usuarioService) {
