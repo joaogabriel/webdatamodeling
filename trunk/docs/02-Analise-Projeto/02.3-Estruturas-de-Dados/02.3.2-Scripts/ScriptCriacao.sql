@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     20/05/2010 09:57:38                          */
+/* Created on:     25/5/2010 08:57:59                           */
 /*==============================================================*/
 
 
@@ -172,7 +172,7 @@ create table USUARIO (
    DS_USUARIO           VARCHAR(30)          null,
    DS_SOBRENOME         VARCHAR(30)          null,
    DS_EMAIL             VARCHAR(50)          null,
-   DS_SENHA             VARCHAR(20)          null,
+   DS_SENHA             VARCHAR(28)          null,
    DT_CADASTRO          DATE                 null,
    DT_NASCIMENTO        DATE                 null,
    constraint PK_USUARIO primary key (ID_USUARIO)
