@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     25/5/2010 08:57:59                           */
+/* Created on:     26/05/2010 02:35:34                          */
 /*==============================================================*/
 
 
@@ -60,7 +60,7 @@ create table CAMPO (
    DS_VALOR_PADRAO      VARCHAR(50)          null,
    DS_COMENTARIO        VARCHAR(80)          null,
    CHAVE_PRIMARIA       BOOL                 null,
-   TAMANHO              INT50                null,
+   TAMANHO              INT                  null,
    constraint PK_CAMPO primary key (ID_CAMPO)
 );
 
@@ -172,7 +172,7 @@ create table USUARIO (
    DS_USUARIO           VARCHAR(30)          null,
    DS_SOBRENOME         VARCHAR(30)          null,
    DS_EMAIL             VARCHAR(50)          null,
-   DS_SENHA             VARCHAR(28)          null,
+   DS_SENHA             CHAR(28)             null,
    DT_CADASTRO          DATE                 null,
    DT_NASCIMENTO        DATE                 null,
    constraint PK_USUARIO primary key (ID_USUARIO)
