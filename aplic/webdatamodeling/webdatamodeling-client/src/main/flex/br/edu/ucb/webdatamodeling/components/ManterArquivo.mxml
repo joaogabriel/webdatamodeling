@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TabNavigator xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:components="br.edu.ucb.webdatamodeling.components.*">
+	
+	<mx:VBox label="Dados do Arquivo">
+		<components:DadosArquivo/>
+	</mx:VBox>
+	
+	<mx:VBox label="Dados do Arquivo">
+		<components:Script/>
+	</mx:VBox>
+	
+</mx:TabNavigator>
