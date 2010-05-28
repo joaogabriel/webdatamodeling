@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     26/05/2010 02:35:34                          */
+/* Created on:     28/05/2010 15:30:14                          */
 /*==============================================================*/
 
 
@@ -116,8 +116,8 @@ create table TABELA (
    ID_TABELA            SERIAL               not null,
    ID_TIPO_TABELA       INT4                 null,
    ID_MER               INT4                 null,
-   DS_TABELA            VARCHAR(10)          null,
-   DS_COMENTARIO        VARCHAR(30)          null,
+   DS_TABELA            VARCHAR(50)          null,
+   DS_COMENTARIO        VARCHAR(100)         null,
    COORDENADA_X         NUMERIC(5)           null,
    COORDENADA_Y         NUMERIC(5)           null,
    constraint PK_TABELA primary key (ID_TABELA)
