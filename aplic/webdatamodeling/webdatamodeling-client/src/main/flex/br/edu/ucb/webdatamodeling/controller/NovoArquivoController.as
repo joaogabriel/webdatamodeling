@@ -45,15 +45,21 @@ package br.edu.ucb.webdatamodeling.controller
 			
 			if (nomeArquivo == null) {
 				// vir do arquivo de mensagens
-				Alert.show("É necessário informar um nome");
+				Alert.show("É necessário informar um nome.");
+				return;
 			}
 			
 			if (_view.btnTipoArquivo.aux.toString() == INDEX_ARQUIVO) {
-				arquivo = new ArquivoDTO();
-				arquivo.nome = nomeArquivo;
-				
-				//arquivo.pasta = 
-				_arquivoService.insert(arquivo);
+				if (_tree.selectedItem is PastaDTO) {
+					arquivo = new ArquivoDTO();
+					arquivo.nome = nomeArquivo;
+					arquivo.pasta = _tree.selectedItem as PastaDTO;
+					
+					_arquivoService.insert(arquivo);
+				} else {
+					// vir do arquivo de mensagens
+					Alert.show("É necessário selecionar uma pasta.");
+				}
 			} else if (_view.btnTipoArquivo.aux.toString() == INDEX_PASTA) {
 				pasta = new PastaDTO();
 				pasta.nome = nomeArquivo;
