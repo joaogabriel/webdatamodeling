@@ -11,6 +11,7 @@ package br.edu.ucb.webdatamodeling.controller
 	
 	import mx.controls.Alert;
 	import mx.controls.Menu;
+	import mx.controls.Tree;
 	import mx.events.MenuEvent;
 	import mx.resources.IResourceManager;
 	import mx.resources.ResourceManager;
@@ -20,6 +21,8 @@ package br.edu.ucb.webdatamodeling.controller
 		private var _view:NovoArquivo;
 		private var _menuData:Object;
 		private var _menuButton:Menu;
+		
+		private var _tree:Tree;
 		
 		private static const INDEX_ARQUIVO:String = "index_arquivo";
 		private static const INDEX_PASTA:String = "index_pasta";
@@ -109,6 +112,11 @@ package br.edu.ucb.webdatamodeling.controller
 			_view.btnTipoArquivo.label = label;
 			_view.btnTipoArquivo.close();
 			_menuButton.selectedIndex = event.index;
+		}
+		
+		public function set tree(tree:Tree):void
+		{
+			_tree = tree;
 		}
 	}
 }

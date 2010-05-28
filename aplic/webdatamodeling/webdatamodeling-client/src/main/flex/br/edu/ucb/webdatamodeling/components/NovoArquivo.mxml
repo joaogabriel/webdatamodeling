@@ -3,6 +3,7 @@
 
 	<mx:Script>
 		<![CDATA[
+			import mx.controls.Tree;
 			import br.edu.ucb.webdatamodeling.controller.NovoArquivoController;
 			
 			private var _controller:NovoArquivoController;
@@ -10,6 +11,11 @@
 			private function init():void
 			{
 				_controller = new NovoArquivoController(this);
+			}
+			
+			public function set tree(value:Tree):void
+			{
+				_controller.tree = value;
 			}
 		]]>
 	</mx:Script>

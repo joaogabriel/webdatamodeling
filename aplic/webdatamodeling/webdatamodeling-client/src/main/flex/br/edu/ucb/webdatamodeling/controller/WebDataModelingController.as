@@ -12,7 +12,6 @@ package br.edu.ucb.webdatamodeling.controller
 	import br.edu.ucb.webdatamodeling.service.UsuarioService;
 	
 	import flash.events.Event;
-	import flash.net.FileReference;
 	
 	import mx.core.IFlexDisplayObject;
 	import mx.managers.PopUpManager;
@@ -45,20 +44,30 @@ package br.edu.ucb.webdatamodeling.controller
 		 
 		public function init():void
 		{
-			_usuarioService.addEventListener("login", loginHandler);
-			if (!_usuarioLogado) {
-				
+			//_usuarioService.addEventListener("login", loginHandler);
+			
+			_usuarioService.verificarUsuarioAutenticado();
+			_usuarioService.addEventListener("usuarioLogado", usuarioLogadoHandler);
+			
+				// modelagem
 				/*var ui:UIComponent = new UIComponent();
 				_modeling = new StageModeling();
 				ui.addChild(_modeling);
 				_view.content.addChild(ui);
 	            _modeling.addEventListener(Event.COMPLETE, modelingCreatedHandler);
 	            _modeling.addEventListener(ModelingEvent.SAVE, modelingSaveHandler);*/
-	            
+		}
+		
+		private function usuarioLogadoHandler(event:CustomEvent):void
+		{
+			if (event.data == null)
+			{
 				_popup = PopUpManager.createPopUp(_view, Cubo, true);
 	            PopUpManager.centerPopUp(_popup);
 	            _view.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-   			}
+	  		} else {
+	  			_view.txtNomeUsuario.text = event.data.nome;
+	  		}
 		}
 		
 		private function modelingSaveHandler(event:ModelingEvent):void
@@ -258,12 +267,6 @@ package br.edu.ucb.webdatamodeling.controller
 			 _modeling.openMer(r);
 		}
 		
-		public function verificarUsuarioAutenticado():void
-		{
-			_usuarioService.verificarUsuarioAutenticado();
-			_usuarioService.addEventListener("usuarioLogado", usuarioLogadoHandler);
-		}
-		
 		public function addedToStageHandler(event:Event):void
 		{
 			_view.stage.addEventListener(Event.RESIZE, resizeHandler);
@@ -273,16 +276,6 @@ package br.edu.ucb.webdatamodeling.controller
 		{
 			if (event.data != null) {
 				PopUpManager.removePopUp(_popup);
-				_view.txtNomeUsuario.text = event.data.nome;
-			}
-		}
-		
-		public function usuarioLogadoHandler(event:CustomEvent):void
-		{
-			if (event.data != null) {
-				PopUpManager.removePopUp(_popup);
-				_view.txtNomeUsuario.text = event.data.nome;
-				_usuarioLogado = true;
 			}
 		}
 		
