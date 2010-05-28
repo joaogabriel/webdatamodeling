@@ -5,6 +5,7 @@ package br.edu.ucb.webdatamodeling.service
 	
 	import flash.events.EventDispatcher;
 	
+	import mx.controls.Alert;
 	import mx.messaging.ChannelSet;
 	import mx.rpc.events.ResultEvent;
 	import mx.rpc.remoting.mxml.RemoteObject;
@@ -34,6 +35,7 @@ package br.edu.ucb.webdatamodeling.service
         public function insertHandler(event:ResultEvent):void
         {
             dispatchEvent(new CustomEvent("insert", event.result));
+            _remoteObject.removeEventListener(ResultEvent.RESULT, insertHandler);
         }
         
         public function efetuarLogin(usuario:UsuarioDTO):void
@@ -46,6 +48,7 @@ package br.edu.ucb.webdatamodeling.service
         {                   
             var usuarioDTO:UsuarioDTO = event.result as UsuarioDTO;
             dispatchEvent(new CustomEvent("login", usuarioDTO));
+            _remoteObject.removeEventListener(ResultEvent.RESULT, efetuarLoginHandler);
         }
         
         public function recuperarSenha(usuario:UsuarioDTO):void
@@ -56,32 +59,35 @@ package br.edu.ucb.webdatamodeling.service
         
         public function recuperarSenhaHandler(event:ResultEvent):void
         {
-        	var usuarioDTO:UsuarioDTO = event.result as UsuarioDTO;
-            dispatchEvent(new CustomEvent("recuperarSenha", usuarioDTO));
+            dispatchEvent(new CustomEvent("recuperarSenha", event.result));
+            _remoteObject.removeEventListener(ResultEvent.RESULT, recuperarSenhaHandler);
         } 
 
         public function efetuarLogout():void
         {
         	_remoteObject.addEventListener("result", efetuarLogoutHandler);
         	_remoteObject.efetuarLogout();
+        	_remoteObject.removeEventListener(ResultEvent.RESULT, efetuarLoginHandler);
         }
         
         public function efetuarLogoutHandler(event:ResultEvent):void
         {
-            var result:Boolean = event.result as Boolean;
-            dispatchEvent(new CustomEvent("logout", result));
+            dispatchEvent(new CustomEvent("logout", event.result));
+            _remoteObject.removeEventListener(ResultEvent.RESULT, efetuarLoginHandler);
         }
         
 		public function verificarUsuarioAutenticado():void
         {
+        	Alert.show("1");
         	_remoteObject.addEventListener("result", verificarUsuarioAutenticadoHandler);
         	_remoteObject.verificarUsuarioAutenticado();
         }
         
         public function verificarUsuarioAutenticadoHandler(event:ResultEvent):void
         {
-            var usuarioDTO:UsuarioDTO = event.result as UsuarioDTO;
-            dispatchEvent(new CustomEvent("usuarioLogado", usuarioDTO));
+        	Alert.show("2");
+            dispatchEvent(new CustomEvent("usuarioLogado", event.result));
+            _remoteObject.removeEventListener(ResultEvent.RESULT, verificarUsuarioAutenticadoHandler);
         }
         
         public function findByNomeOuEmail(usuario:UsuarioDTO):void
@@ -92,7 +98,8 @@ package br.edu.ucb.webdatamodeling.service
         
         public function findByNomeOuEmailHandler(event:ResultEvent):void
         {
-            dispatchEvent(new CustomEvent("resultSearch", event.result));
+			dispatchEvent(new CustomEvent("resultSearch", event.result));
+			_remoteObject.removeEventListener(ResultEvent.RESULT, findByNomeOuEmailHandler);
         }
         
         public function findAll():void
@@ -104,6 +111,7 @@ package br.edu.ucb.webdatamodeling.service
         public function findAllHandler(event:ResultEvent):void
         {
             dispatchEvent(new CustomEvent("findAll", event.result));
+            _remoteObject.removeEventListener(ResultEvent.RESULT, findAllHandler);
         }
         
         public static function getInstance():UsuarioService
