@@ -5,6 +5,8 @@ package br.edu.ucb.webdatamodeling.controller
 	import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
 	import br.edu.ucb.webdatamodeling.service.ArquivoService;
 	
+	import flash.net.FileReference;
+	
 	import mx.controls.Alert;
 	import mx.core.IFlexDisplayObject;
 	import mx.managers.PopUpManager;
@@ -50,6 +52,9 @@ package br.edu.ucb.webdatamodeling.controller
 		public function exportar():void
 		{
 			Alert.show("Implementar!!!");
+			
+			var fileReference:FileReference = new FileReference();
+			//fileReference.save(listaArquivos.selectedItem.byteArray, listaArquivos.selectedItem.nomeArquivo);
 		}
 		
 		public function compartilhar():void
