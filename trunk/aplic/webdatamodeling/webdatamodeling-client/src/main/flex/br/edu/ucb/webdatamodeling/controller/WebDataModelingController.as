@@ -67,6 +67,10 @@ package br.edu.ucb.webdatamodeling.controller
 	            _view.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 	  		} else {
 	  			_view.txtNomeUsuario.text = event.data.nome;
+	  			
+	  			if (_popup != null) {
+	  				PopUpManager.removePopUp(_popup);
+	  			}
 	  		}
 		}
 		

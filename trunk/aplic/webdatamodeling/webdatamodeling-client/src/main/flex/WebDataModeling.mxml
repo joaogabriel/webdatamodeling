@@ -12,6 +12,8 @@
 	    
 	<mx:Script>
 		<![CDATA[
+			import br.edu.ucb.webdatamodeling.components.DadosArquivo;
+			import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
 			import br.edu.ucb.webdatamodeling.components.ArvoreVazia;
 			import mx.rpc.events.ResultEvent;
 			import mx.rpc.AsyncToken;
@@ -103,7 +105,7 @@
 		{
 			var pastas:ArrayCollection = result.data;
 			
-			if (pastas.length == 0) {
+			if (pastas == null || pastas.length == 0) {
 				msgEstruturaVazia.visible = true;
 			} else {
 				files = result.data;
@@ -119,8 +121,13 @@
 		{
 			var selectedItem:Object = Tree(event.target).selectedItem;
 			
-			if (selectedItem is PastaDTO) {
+			if (selectedItem is PastaDTO)
+			{
 				fetchFolderInfo(PastaDTO(selectedItem));
+			}
+			else if (selectedItem is ArquivoDTO)
+			{
+				fetchFileInfo(ArquivoDTO(selectedItem));
 			}
 		}
 		
@@ -133,14 +140,11 @@
 		
 		private function fetchFolderInfo(folder:PastaDTO):void
 		{
-			Alert.show("teste123");
-			
 			if (folder.arquivos.length != 0) {
 				return;
 			}
-			
 			// escrever service	
-			var asyncToken:AsyncToken = null;//fileSystemService.getDirectory( folder.fullName );
+			/* var asyncToken:AsyncToken = null;//fileSystemService.getDirectory( folder.fullName );
 			
 			asyncToken.addResponder( new mx.rpc.Responder(
                 function( event:ResultEvent ):void
@@ -153,7 +157,15 @@
                 {
                 	gotError( fault );
                 }
-            ));				
+            ));*/
+		}
+		
+		private function fetchFileInfo(file:ArquivoDTO):void
+		{
+			var dadosArquivoView:DadosArquivo = new DadosArquivo();
+			dadosArquivoView.arquivo = file;
+			
+			fileView.addChild(dadosArquivoView);
 		}
 		]]>
 	</mx:Script>

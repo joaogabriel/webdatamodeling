@@ -33,8 +33,7 @@ package br.edu.ucb.webdatamodeling.service
         
         public function insertHandler(event:ResultEvent):void
         {
-            var usuarioDTO:UsuarioDTO = event.result as UsuarioDTO;
-            dispatchEvent(new CustomEvent("insert", usuarioDTO));
+            dispatchEvent(new CustomEvent("insert", event.result));
         }
         
         public function efetuarLogin(usuario:UsuarioDTO):void
@@ -60,15 +59,6 @@ package br.edu.ucb.webdatamodeling.service
         	var usuarioDTO:UsuarioDTO = event.result as UsuarioDTO;
             dispatchEvent(new CustomEvent("recuperarSenha", usuarioDTO));
         } 
-
-        public static function getInstance():UsuarioService
-        {
-            if (_instance == null) 
-            {
-                _instance = new UsuarioService();
-            }
-            return _instance;
-        }
 
         public function efetuarLogout():void
         {
@@ -114,6 +104,15 @@ package br.edu.ucb.webdatamodeling.service
         public function findAllHandler(event:ResultEvent):void
         {
             dispatchEvent(new CustomEvent("findAll", event.result));
+        }
+        
+        public static function getInstance():UsuarioService
+        {
+            if (_instance == null) 
+            {
+                _instance = new UsuarioService();
+            }
+            return _instance;
         }
         
 	}

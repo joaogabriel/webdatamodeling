@@ -34,7 +34,7 @@ package br.edu.ucb.webdatamodeling.controller
 		private function findUsuariosCompartilhados(event:CustomEvent):void
 		{
 			_usuariosCompartilhados = event.data;
-			_view.tblCompartilhados.dataProvider = _usuariosCompartilhados;
+			//_view.tblCompartilhados.dataProvider = _usuariosCompartilhados;
 		}
 		
 		public function buscar():void
