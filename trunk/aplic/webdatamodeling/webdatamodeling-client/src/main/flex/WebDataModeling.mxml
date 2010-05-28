@@ -38,7 +38,8 @@
 				_controller = new WebDataModelingController(this);
 				_controller.init();
 				
-				init2();
+				
+				 init2();
 			}
 
 			private function initTreeView():void
@@ -52,7 +53,8 @@
 				if (_controller == null) {
 					_controller = new WebDataModelingController(this);
 				}
-				_controller.verificarUsuarioAutenticado();
+				
+				novoArquivo.tree = treeView;
 			}
 			
 			
@@ -178,7 +180,7 @@
 	                                       itemOpening="handleRetrieve(event)"
 	                                       labelField="nome">
 	               </mx:Tree>
-	               <components1:NovoArquivo width="100%" height="10%"/>
+	               <components1:NovoArquivo id="novoArquivo" width="100%" height="10%" tree="{treeView}"/>
                </mx:VBox>
 				<mx:Canvas id="fileView" width="75%" height="100%" backgroundColor="white" backgroundAlpha="0.49"/>
 			</mx:HDividedBox>
