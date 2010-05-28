@@ -85,7 +85,7 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 		try {
 			usuario = parseEntity(usuarioDTO);
 			senhaCriptografada = criptografiaService.criptografarSenha(usuarioDTO.getSenha());
-			usuario.setSenha(senhaCriptografada);
+			//usuario.setSenha(senhaCriptografada);
 			usuario = getObjectDAO().findByEmailESenha(usuario);
 			if (usuario != null) {
 				usuarioDTO = parseDTO(usuario);
