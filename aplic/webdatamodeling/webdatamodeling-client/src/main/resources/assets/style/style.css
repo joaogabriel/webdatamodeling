@@ -19,3 +19,7 @@ Application
 {
 	color: blue;
 }
+
+.TituloNegrito {
+	font-weight: bold;
+}
