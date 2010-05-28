@@ -27,14 +27,14 @@ package br.edu.ucb.webdatamodeling.controller
 		{
 			_view = view;
 			
-			_usuarioService.findAll();
 			_usuarioService.addEventListener("findAll", findUsuariosCompartilhados);
+			_usuarioService.findAll();
 		}
 		
 		private function findUsuariosCompartilhados(event:CustomEvent):void
 		{
 			_usuariosCompartilhados = event.data;
-			//_view.tblCompartilhados.dataProvider = _usuariosCompartilhados;
+			_view.tblCompartilhados.dataProvider = _usuariosCompartilhados;
 		}
 		
 		public function buscar():void
@@ -45,8 +45,8 @@ package br.edu.ucb.webdatamodeling.controller
 			usuario.nome = criterio;
 			usuario.email = criterio;
 			
-			_usuarioService.findByNomeOuEmail(usuario);
 			_usuarioService.addEventListener("resultSearch", buscarHandler);
+			_usuarioService.findByNomeOuEmail(usuario);
 		}
 		
 		private function buscarHandler(event:CustomEvent):void

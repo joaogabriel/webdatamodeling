@@ -11,10 +11,10 @@ package br.edu.ucb.webdatamodeling.events
 			return _data;
 		}
 		
-		public function CustomEvent(type:String, data:*)
+		public function CustomEvent(type:String, data:*, bubbles:Boolean = false)
 		{
 			_data = data;
-			super(type);
+			super(type, bubbles);
 		}
 		
 	}

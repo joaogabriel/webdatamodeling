@@ -1,5 +1,6 @@
 package br.edu.ucb.webdatamodeling.service
 {
+	import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
 	import br.edu.ucb.webdatamodeling.dto.MerDTO;
 	import br.edu.ucb.webdatamodeling.events.CustomEvent;
 	
@@ -34,6 +35,17 @@ package br.edu.ucb.webdatamodeling.service
         public function insertHandler(event:ResultEvent):void
         {
             dispatchEvent(new CustomEvent("insert", event.result));
+        }
+        
+        public function getMerByArquivo(arquivo:ArquivoDTO):void
+        {
+        	_remoteObject.addEventListener("result", getMerByArquivoHandler);
+        	_remoteObject.getMerByArquivo(arquivo);
+        }
+        
+        public function getMerByArquivoHandler(event:ResultEvent):void
+        {
+            dispatchEvent(new CustomEvent("getByArquivo", event.result));
         }
 
 	}

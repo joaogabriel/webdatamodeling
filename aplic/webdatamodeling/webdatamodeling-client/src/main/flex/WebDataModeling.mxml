@@ -180,7 +180,7 @@
 				</mx:VBox>
 			</mx:HBox>
 		</mx:ApplicationControlBar>
-		<mx:Canvas id="content" width="100%" height="100%">
+		<mx:Canvas id="content" width="100%" height="100%" verticalScrollPolicy="auto" horizontalScrollPolicy="auto">
 			<mx:HDividedBox id="subContent" width="100%" height="100%">
 				<mx:VBox width="25%" height="100%">
 					<mx:Label id="msgEstruturaVazia" height="5%" text="Você ainda não criou nenhum pasta ou arquivo" textAlign="center" color="#FF0000" fontWeight="bold" fontSize="10" visible="false" width="100%"/>

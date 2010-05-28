@@ -3,16 +3,20 @@ package br.edu.ucb.webdatamodeling.controller
 	import br.edu.ucb.webdatamodeling.components.CompartilharMER;
 	import br.edu.ucb.webdatamodeling.components.DadosArquivo;
 	import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
+	import br.edu.ucb.webdatamodeling.events.CustomEvent;
 	import br.edu.ucb.webdatamodeling.service.ArquivoService;
 	
+	import flash.events.EventDispatcher;
 	import flash.net.FileReference;
 	
 	import mx.controls.Alert;
 	import mx.core.IFlexDisplayObject;
 	import mx.managers.PopUpManager;
 	
-	public class DadosArquivoController
+	public class DadosArquivoController extends EventDispatcher
 	{
+		public static const SHOW_MODELING = "showModeling";
+		
 		private var _view:DadosArquivo;
 		private var _arquivo:ArquivoDTO;
 		private var _arquivoService:ArquivoService = ArquivoService.getInstance();
@@ -42,11 +46,12 @@ package br.edu.ucb.webdatamodeling.controller
 		public function showModelagem():void
 		{
 			/* var ui:UIComponent = new UIComponent();
-			_modeling = new StageModeling();
-			ui.addChild(_modeling);
+			var modeling = new StageModeling();
+			ui.addChild(modeling);
 			_view.content.addChild(ui);
             _modeling.addEventListener(Event.COMPLETE, modelingCreatedHandler);
             _modeling.addEventListener(ModelingEvent.SAVE, modelingSaveHandler); */
+           _view.dispatchEvent(new CustomEvent(SHOW_MODELING, _arquivo, true));
 		}
 		
 		public function exportar():void

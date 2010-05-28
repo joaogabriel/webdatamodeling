@@ -5,12 +5,13 @@ package br.edu.ucb.webdatamodeling.controller
 	import br.edu.ucb.webdatamodeling.events.CustomEvent;
 	import br.edu.ucb.webdatamodeling.service.UsuarioService;
 	
-	import pfp.rsscube.models.MainModel;
-	
 	import mx.controls.Alert;
+	import mx.managers.PopUpManager;
 	import mx.resources.IResourceManager;
 	import mx.resources.ResourceManager;
 	import mx.validators.Validator;
+	
+	import pfp.rsscube.models.MainModel;
 	
 	public class LoginController
 	{
@@ -52,14 +53,14 @@ package br.edu.ucb.webdatamodeling.controller
 			_usuarioDTO.email = _view.txtEmail.text;
 			_usuarioDTO.senha = _view.txtSenha.text;
 			
-			_usuarioService.efetuarLogin(_usuarioDTO);
-			
 			_usuarioService.addEventListener("login", habilitarBotaoLogin);
+			_usuarioService.efetuarLogin(_usuarioDTO);
 		}
 		
 		private function habilitarBotaoLogin(event:CustomEvent):void
 		{
-			if (event.data == null) {
+			if (event.data == null)
+			{
 				Alert.show("O usuário informado não está cadastrado ou as informações preenchidas estão incorretas.");
 				_view.btnLogin.enabled = true;
 				_view.btnLogin.label = 'Login';
