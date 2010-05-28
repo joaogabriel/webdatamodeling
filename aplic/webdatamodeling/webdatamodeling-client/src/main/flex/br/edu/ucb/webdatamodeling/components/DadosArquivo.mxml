@@ -22,7 +22,7 @@
 	</mx:Script>
 	<mx:Form width="100%">
 		<mx:HBox horizontalAlign="center" width="100%">
-			<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.tltCabecalho')}" id="tltCabecalho"/>
+			<mx:FormItem styleName="TituloNegrito" label="{resourceManager.getString('messages', 'dadosArquivo.tltCabecalho')}" id="tltCabecalho"/>
 		</mx:HBox>
 		<mx:HBox width="100%">
 			<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.nome')}" width="100%" >

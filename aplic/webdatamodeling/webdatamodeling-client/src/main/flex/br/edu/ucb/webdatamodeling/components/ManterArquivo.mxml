@@ -5,7 +5,7 @@
 		<components:DadosArquivo/>
 	</mx:VBox>
 	
-	<mx:VBox label="Dados do Arquivo">
+	<mx:VBox label="Script">
 		<components:Script/>
 	</mx:VBox>
 	
