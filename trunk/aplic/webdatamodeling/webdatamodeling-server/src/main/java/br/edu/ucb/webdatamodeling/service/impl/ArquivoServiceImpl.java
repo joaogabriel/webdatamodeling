@@ -24,7 +24,7 @@ public class ArquivoServiceImpl extends AbstractObjectService<Arquivo, ArquivoDT
 
 	@Override
 	public ArquivoDTO insert(ArquivoDTO dto) throws ServiceException {
-		UsuarioDTO usuarioAutenticado = usuarioService.getUsuarioAutenticado();
+		//UsuarioDTO usuarioAutenticado = usuarioService.getUsuarioAutenticado();
 		
 		dto.setDataCriacao(new Date());
 		return super.insert(dto);
@@ -36,6 +36,7 @@ public class ArquivoServiceImpl extends AbstractObjectService<Arquivo, ArquivoDT
 		return super.update(dto);
 	}
 	
+	@Resource(name = "UsuarioService")
 	public void setUsuarioService(UsuarioService usuarioService) {
 		this.usuarioService = usuarioService;
 	}
