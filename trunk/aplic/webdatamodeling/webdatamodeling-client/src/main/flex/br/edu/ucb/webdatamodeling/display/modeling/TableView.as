@@ -1,4 +1,5 @@
 package br.edu.ucb.webdatamodeling.display.modeling {
+	import br.edu.ucb.webdatamodeling.display.modeling.events.TableEvent;
 	import br.edu.ucb.webdatamodeling.dto.TabelaDTO;
 	import flash.display.DisplayObject;
 
@@ -45,7 +46,25 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		public function get centerX() : Number {return x + _centerX;}
 		public function get centerY() : Number {return y + _centerY;}
 		public function get tableName() : String {return _title.text;}
-		public function get fk() : Array {return [TableAttribute(_attributes[0]).createFK(this)];}
+		public function get fk() : Array 
+		{
+			var r:Array = [];
+			for(var i:uint = 0; i<_attributes.length; i++)
+				if(TableAttribute(_attributes[i]).isPK)
+					r.push(TableAttribute(_attributes[i]).createFK(this));
+					
+			return r;
+		}
+		
+		public function get pk() : Array 
+		{
+			var r:Array = [];
+			for(var i:uint = 0; i<_attributes.length; i++)
+				if(TableAttribute(_attributes[i]).isPK)
+					r.push(TableAttribute(_attributes[i]));
+					
+			return r;
+		}
 		
 		public function get data():TabelaDTO{return _dto;}
 		public function get title():String{ return _title.text; }
@@ -63,7 +82,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			addEventListener(MouseEvent.CLICK, clickHandler);
 			//addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
 			create( name );
-			if(!name) addAttribute(new TableAttribute("id",null,false,true));
+			if(!name) addAttribute(new TableAttribute("id",null,false,true,false,null,false,true));
 			show();
 			
 			resize(_title);
@@ -76,8 +95,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			
 			for(var i:uint=0; i<len; i++) attributes[i] = TableAttribute(_attributes[i]).data;
 			
-			// valor maximo: 10
-			_dto.comentario = "sem come2";
+			_dto.comentario = "sem comentário";
 			_dto.coordenadaX = x;
 			_dto.coordenadaY = y;
 			_dto.descricao = _title.text;
@@ -121,13 +139,14 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			var len:uint = _attributes.length;
 			var i:uint = _attributes.length;
 			
-			if(attribute.isPK) i = 0;
+			if(attribute.isFK) i = 0;
+			/*if(attribute.isPK) i = 0;
 			else if(attribute.isFK)
 			{
 				for(i=0; i<len; i++)	
 					if(!TableAttribute(_attributes[i]).isPK) 
 						break;
-			}
+			}*/
 			
 			attribute.y = 20 + i * 18 + 5;
 			_attributes.splice(i,0,attribute);
@@ -137,6 +156,9 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			addChild(attribute);
 			attribute.addEventListener(Event.RESIZE, resizeHandler);
 			attribute.addEventListener(TableAttribute.KILL, killAttributeHandler);
+			attribute.addEventListener(TableAttribute.CHANGE_PK, changePkHandler);
+			/*if(attribute.fkTable)
+				attribute.fkTable.addEventListener(TableEvent.ADD_PK, addFkHandler);*/
 			
 			var h:Number = 25 + _attributes.length * 18 + 10;
 			TweenMax.to(_base, .5, {height:h, ease:Expo.easeOut});
@@ -146,6 +168,11 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			
 			resize(attribute);
 		}
+
+		/*private function addFkHandler(event : TableEvent) : void 
+		{
+			addAttribute(event.attribute.createFK(TableView(event.target)));
+		}*/
 
 		internal function addRelationship( relationship:RelationshipView ):void 
 		{
@@ -236,6 +263,12 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			TweenMax.to(this, .3, { glowFilter:{color:0x999999, alpha:.8, blurX:6, blurY:6, strength:2 }});
 		}
 
+		private function changePkHandler(event : Event) : void 
+		{
+			if(TableAttribute(event.target).isPK)
+				dispatchEvent(new TableEvent(TableEvent.ADD_PK, TableAttribute(event.target)));
+		}
+
 		private function rollOutHandler(event : MouseEvent) : void 
 		{
 			TweenMax.to(_plusMenu, .3, {alpha:0});
@@ -324,12 +357,13 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			for(i; i<len; i++)
 			{
 				yPosition = 20 + i * 18 + 5;
-				TweenMax.to(_attributes[i], .4, {y:yPosition, ease:Expo.easeOut, delay:i*.05});
+				TweenMax.to(_attributes[i], .4, {y:yPosition, ease:Expo.easeOut});
 			}
 			
+			trace("killAttributeHandlerkillAttributeHandler",_attributes.length)
 			var h:Number = _titleBase.height + _attributes.length * 18 + 10;
-			TweenMax.to(_base, .5, {height:h, ease:Expo.easeOut, delay:i*.05});
-			TweenMax.to(_plusMenu, .5, {y:h, ease:Expo.easeOut, delay:i*.05});
+			TweenMax.to(_base, .5, {height:h, ease:Expo.easeOut});
+			TweenMax.to(_plusMenu, .5, {y:h, ease:Expo.easeOut});
 			_menu.y = h;
 			_centerY = h / 2;
 			

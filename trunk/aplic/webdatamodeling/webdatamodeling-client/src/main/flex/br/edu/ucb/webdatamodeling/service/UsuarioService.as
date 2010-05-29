@@ -78,14 +78,12 @@ package br.edu.ucb.webdatamodeling.service
         
 		public function verificarUsuarioAutenticado():void
         {
-        	Alert.show("1");
         	_remoteObject.addEventListener("result", verificarUsuarioAutenticadoHandler);
         	_remoteObject.verificarUsuarioAutenticado();
         }
         
         public function verificarUsuarioAutenticadoHandler(event:ResultEvent):void
         {
-        	Alert.show("2");
             dispatchEvent(new CustomEvent("usuarioLogado", event.result));
             _remoteObject.removeEventListener(ResultEvent.RESULT, verificarUsuarioAutenticadoHandler);
         }

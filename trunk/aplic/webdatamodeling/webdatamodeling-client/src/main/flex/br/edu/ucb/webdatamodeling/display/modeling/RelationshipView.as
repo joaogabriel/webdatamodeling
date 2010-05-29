@@ -1,4 +1,5 @@
 package br.edu.ucb.webdatamodeling.display.modeling {
+	import br.edu.ucb.webdatamodeling.display.modeling.events.TableEvent;
 	import gs.TweenMax;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
@@ -45,7 +46,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 				point1.stage.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
 			}
 		}
-		
+
 		public function kill():void
 		{
 			TweenMax.to(this, .1, {alpha:0, onComplete:onKill});
@@ -67,26 +68,55 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			update();
 			
 			var att:Array;
+			var i:uint;
 			
 			switch( _type )
 			{
 				case TYPE_1_1:
+					point1.addEventListener(TableEvent.ADD_PK, addPKHandler);
+					point2.addEventListener(TableEvent.ADD_PK, addPKHandler);
 					_attributes = _attributes.concat(att = point1.fk);
 					point2.addAttributes(att);
 					_attributes = _attributes.concat(att = point2.fk);
 					point1.addAttributes(att);
+					for(i=0; i < _point2.pk.length; i++) _point2.pk[i].addEventListener(TableAttribute.CHANGE_PK, changePKHandler);
+					for(i=0; i < _point1.pk.length; i++) _point1.pk[i].addEventListener(TableAttribute.CHANGE_PK, changePKHandler);
 				break;
 				case TYPE_1_N:
+					point1.addEventListener(TableEvent.ADD_PK, addPKHandler);
 					_attributes = _attributes.concat(att = point1.fk);
 					point2.addAttributes(att);
+					for(i=0; i < _point1.pk.length; i++) _point1.pk[i].addEventListener(TableAttribute.CHANGE_PK, changePKHandler);
 				break;
 				case TYPE_N_1:
+					point2.addEventListener(TableEvent.ADD_PK, addPKHandler);
 					_attributes = _attributes.concat(att = point2.fk);
 					point1.addAttributes(att);
+					for(i=0; i < _point2.pk.length; i++) _point2.pk[i].addEventListener(TableAttribute.CHANGE_PK, changePKHandler);
 				break;
 			}
 		}
-		
+
+		private function addPKHandler(event : TableEvent) : void 
+		{
+			var fk:TableAttribute = event.attribute.createFK(TableView(event.target));
+			var point:TableView = event.target == point1 ? point2 : point1;
+
+			point.addAttribute(fk);
+			
+			_attributes.push( fk );
+			
+			event.attribute.addEventListener(TableAttribute.CHANGE_PK, changePKHandler);
+		}
+
+		private function changePKHandler(event : Event) : void 
+		{
+			event.target.removeEventListener(TableAttribute.CHANGE_PK, changePKHandler);
+
+			TableAttribute(event.target).fk.kill();
+			_attributes.splice(_attributes.indexOf(TableAttribute(event.target).fk), 1);
+		}
+
 		public function update():void
 		{
 			draw(new Point(_point1.centerX, _point1.centerY), new Point(_point2.centerX, _point2.centerY));
@@ -103,6 +133,8 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			graphics.lineStyle(2, 0x666666);
 			x = point1.x;
 			y = point1.y;
+
+			//graphics.lineTo(point2.x - x, 0);
 			graphics.lineTo(point2.x - x, point2.y - y);
 		}
 

@@ -23,6 +23,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 	{
 		static public const TYPE_TITLE:String = "title";
 		static public const TYPE_ATTRIBUTE:String = "attribute";
+		static public const TYPE_OTHER:String = "other";
 		static public const EDIT_FINISHED : String = "editFinished";
 
 		private var _field:TextField;
@@ -37,6 +38,8 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 				createTitle(name);
 			else if(type == TYPE_ATTRIBUTE)
 				createAttribute(name);
+			else if(type == TYPE_OTHER)
+				createOther(name);
 			
 			if(editNow)
 				addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
@@ -77,11 +80,23 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			dispatchEvent(new Event(EDIT_FINISHED));
 		}
 
-		private function createAttribute(name:String) : void 
+		private function createOther(name:String) : void 
 		{
 			var format:TextFormat = new TextFormat();
 			format.font = "Arial_10pt_st";
 			format.size = 10;
+			format.color = 0x333333;
+			createField({height:15, y:2, x:2, autoSize:TextFieldAutoSize.LEFT});
+			_field.defaultTextFormat = format;
+			_field.text = name;
+		}
+
+		private function createAttribute(name:String) : void 
+		{
+			var format:TextFormat = new TextFormat();
+			//format.font = "Arial_10pt_st";
+			format.font = "Interstate-Bold";
+			format.size = 11;
 			format.color = 0x333333;
 			createField({height:15, y:2, x:2, autoSize:TextFieldAutoSize.LEFT});
 			_field.defaultTextFormat = format;

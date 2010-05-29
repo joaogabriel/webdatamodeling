@@ -12,6 +12,7 @@
 	    
 	<mx:Script>
 		<![CDATA[
+			import br.edu.ucb.webdatamodeling.controller.NovoArquivoController;
 			import br.edu.ucb.webdatamodeling.components.DadosArquivo;
 			import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
 			import br.edu.ucb.webdatamodeling.components.ArvoreVazia;
@@ -93,9 +94,11 @@
 			files = new ArrayCollection();
 			files.addItem(folder1); */
 			_usuarioService.addEventListener("login", initHandler);
+			_controller.addEventListener(NovoArquivoController.UPDATE_TREE, initHandler);
+			treeView.addEventListener(NovoArquivoController.UPDATE_TREE, initHandler);
 		}
 		
-		public function initHandler(event:CustomEvent):void
+		public function initHandler(event:Event):void
 		{
 			_pastaService.addEventListener("getPastas", processRootStructure);
 			_pastaService.getPastasByUsuarioAutenticado();
@@ -109,7 +112,7 @@
 				msgEstruturaVazia.visible = true;
 			} else {
 				files = result.data;
-			}					
+			}
 		}
 		
 		private function gotError(fault:FaultEvent):void
@@ -117,7 +120,7 @@
 			Alert.show("Server reported an error - " + fault.fault.faultString);
 		}
 		
-		public function handleTreeChange( event:Event ):void
+		public function handleTreeChange(event:Event):void
 		{
 			var selectedItem:Object = Tree(event.target).selectedItem;
 			

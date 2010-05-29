@@ -33,6 +33,7 @@ package br.edu.ucb.webdatamodeling.service
         
         public function insertHandler(event:ResultEvent):void
         {
+            _remoteObject.removeEventListener(ResultEvent.RESULT, insertHandler);
             dispatchEvent(new CustomEvent("insert", event.result));
         }
         
@@ -45,6 +46,7 @@ package br.edu.ucb.webdatamodeling.service
 		public function getPastasByUsuarioAutenticadoHandler(event:ResultEvent):void
 		{
 			dispatchEvent(new CustomEvent("getPastas", event.result));
+			_remoteObject.removeEventListener(ResultEvent.RESULT, getPastasByUsuarioAutenticadoHandler);
 		}
 		
         public static function getInstance():PastaService

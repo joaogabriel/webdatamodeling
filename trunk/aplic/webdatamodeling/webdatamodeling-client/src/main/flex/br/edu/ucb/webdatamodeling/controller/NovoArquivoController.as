@@ -7,6 +7,8 @@ package br.edu.ucb.webdatamodeling.controller
 	import br.edu.ucb.webdatamodeling.service.ArquivoService;
 	import br.edu.ucb.webdatamodeling.service.PastaService;
 	
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
 	
 	import mx.controls.Alert;
@@ -16,8 +18,10 @@ package br.edu.ucb.webdatamodeling.controller
 	import mx.resources.IResourceManager;
 	import mx.resources.ResourceManager;
 	
-	public class NovoArquivoController
+	public class NovoArquivoController extends EventDispatcher
 	{
+		public static const UPDATE_TREE:String = "updateTree";
+		
 		private var _view:NovoArquivo;
 		private var _menuData:Object;
 		private var _menuButton:Menu;
@@ -67,6 +71,13 @@ package br.edu.ucb.webdatamodeling.controller
 				//_pastaService.addEventListener(insert, exibirMensagem);
 				_pastaService.insert(pasta);
 			}
+			_pastaService.addEventListener("insert", insertHandler);
+			_arquivoService.addEventListener("insert", insertHandler);
+		}
+		
+		private function insertHandler(event:Event):void
+		{
+			_tree.dispatchEvent(new Event(UPDATE_TREE));
 		}
 		
 		private function exibirMensagem(event:CustomEvent):void
