@@ -6,17 +6,30 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Repository;
 
+import br.edu.ucb.webdatamodeling.dao.ArquivoDAO;
 import br.edu.ucb.webdatamodeling.dao.MerDAO;
-import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
-import br.edu.ucb.webdatamodeling.entity.Arquivo;
 import br.edu.ucb.webdatamodeling.entity.Mer;
 import br.edu.ucb.webdatamodeling.framework.dao.AbstractObjectDAO;
+import br.edu.ucb.webdatamodeling.framework.dao.ObjectDAOException;
 import br.edu.ucb.webdatamodeling.framework.dao.persistence.Persistence;
 import br.edu.ucb.webdatamodeling.framework.dao.persistence.PersistenceException;
 
 @Repository(value = "MerDAO")
 public class MerDAOImpl extends AbstractObjectDAO<Mer> implements MerDAO {
 
+	private ArquivoDAO arquivoDAO;
+	
+	@Override
+	public Mer insert(Mer entity) throws ObjectDAOException {
+		entity.setArquivo(arquivoDAO.findById(entity.getArquivo().getId()));
+		return super.insert(entity);
+	}
+	
+	@Resource(name = "ArquivoDAO")
+	public void setArquivoDAO(ArquivoDAO arquivoDAO) {
+		this.arquivoDAO = arquivoDAO;
+	}
+	
 	@Resource(name = "persistence")
 	public void setPersistence(Persistence<Mer> persistence) {
 		super.setPersistence(persistence);
