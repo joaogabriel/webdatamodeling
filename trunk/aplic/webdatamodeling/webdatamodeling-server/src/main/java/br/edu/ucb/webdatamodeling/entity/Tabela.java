@@ -80,7 +80,7 @@ public class Tabela extends AbstractEntity<Long> {
 		this.coordenadaY = coordenadaY;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="id_mer")
 	public Mer getMer() {
 		return mer;

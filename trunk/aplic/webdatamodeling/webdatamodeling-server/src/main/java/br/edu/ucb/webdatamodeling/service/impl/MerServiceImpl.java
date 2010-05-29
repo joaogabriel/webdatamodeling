@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import br.edu.ucb.webdatamodeling.dao.MerDAO;
 import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
 import br.edu.ucb.webdatamodeling.dto.MerDTO;
+import br.edu.ucb.webdatamodeling.dto.TabelaDTO;
 import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
 import br.edu.ucb.webdatamodeling.entity.Mer;
 import br.edu.ucb.webdatamodeling.framework.service.AbstractObjectService;
@@ -23,7 +24,11 @@ public class MerServiceImpl extends AbstractObjectService<Mer, MerDTO, MerDAO> i
 	
 	@Override
 	public MerDTO insert(MerDTO dto) throws ServiceException {
-		dto.setArquivo(new ArquivoDTO());
+		if (dto != null) {
+			for (TabelaDTO tabelaDTO : dto.getTabelas()) {
+				tabelaDTO.setMer(dto);
+			}
+		}
 		return super.insert(dto);
 	}
 	
@@ -42,9 +47,11 @@ public class MerServiceImpl extends AbstractObjectService<Mer, MerDTO, MerDAO> i
 	public MerDTO getMerByArquivo(ArquivoDTO arquivoDTO) {
 		UsuarioDTO usuarioAutenticado = usuarioService.getUsuarioAutenticado();
 		try {
-			return parseDTO(getObjectDAO().getMerByArquivo(arquivoDTO.getId()));
+			Mer mer = getObjectDAO().getMerByArquivo(arquivoDTO.getId());
+			if (mer != null) {
+				return parseDTO(mer);
+			}
 		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

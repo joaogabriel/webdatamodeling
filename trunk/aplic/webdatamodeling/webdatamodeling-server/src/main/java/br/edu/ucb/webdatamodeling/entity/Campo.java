@@ -27,7 +27,6 @@ public class Campo extends AbstractEntity<Long> {
 	private Boolean naoNulo;
 	private Boolean autoIncremento;
 	private Boolean chavePrimaria;
-	private Boolean chaveEstrangeira;
 	private Tabela tabela;
 	private Tabela tabelaEstrangeira;
 	private TipoCampo tipo;
@@ -105,15 +104,6 @@ public class Campo extends AbstractEntity<Long> {
 
 	public void setChavePrimaria(Boolean chavePrimaria) {
 		this.chavePrimaria = chavePrimaria;
-	}
-
-	@Column(name="chave_estrangeira")
-	public Boolean isChaveEstrangeira() {
-		return chaveEstrangeira;
-	}
-
-	public void setChaveEstrangeira(Boolean chaveEstrangeira) {
-		this.chaveEstrangeira = chaveEstrangeira;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
