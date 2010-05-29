@@ -1,10 +1,12 @@
 package br.edu.ucb.webdatamodeling.controller
 {
 	import br.edu.ucb.webdatamodeling.components.CompartilharMER;
-	import br.edu.ucb.webdatamodeling.components.DadosArquivo;
+	import br.edu.ucb.webdatamodeling.components.ManterArquivo;
 	import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
 	import br.edu.ucb.webdatamodeling.events.CustomEvent;
 	import br.edu.ucb.webdatamodeling.service.ArquivoService;
+	
+	import br.edu.ucb.webdatamodeling.script.ParseScript;
 	
 	import flash.events.EventDispatcher;
 	import flash.net.FileReference;
@@ -13,20 +15,39 @@ package br.edu.ucb.webdatamodeling.controller
 	import mx.core.IFlexDisplayObject;
 	import mx.managers.PopUpManager;
 	
-	public class DadosArquivoController extends EventDispatcher
+	public class ManterArquivoController extends EventDispatcher
 	{
 		public static const SHOW_MODELING:String = "showModeling";
 		
-		private var _view:DadosArquivo;
+		private var _view:ManterArquivo;
 		private var _arquivo:ArquivoDTO;
 		private var _arquivoService:ArquivoService = ArquivoService.getInstance();
 		
-		public function DadosArquivoController(view:DadosArquivo, arquivo:ArquivoDTO)
+		public function ManterArquivoController(view:ManterArquivo, arquivo:ArquivoDTO)
 		{
 			_view = view;
 			_arquivo = arquivo;
 			
 			setDadosArquivo();
+			setScriptSQL();
+		}
+		
+		private function setScriptSQL():void
+		{
+			var ps:ParseScript = new ParseScript();
+			var script:String = null;
+			
+			if (_arquivo == null || _arquivo.mer == null || _arquivo.mer.tabelas == null)
+			{
+				script = "MER ainda não desenhado.";
+			}
+			
+			else
+			{
+				script = ps.parserScript(_arquivo.mer.tabelas);
+			}
+			
+			_view.txtScript.text = script;
 		}
 		
 		private function setDadosArquivo():void
@@ -45,12 +66,6 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		public function showModelagem():void
 		{
-			/* var ui:UIComponent = new UIComponent();
-			var modeling = new StageModeling();
-			ui.addChild(modeling);
-			_view.content.addChild(ui);
-            _modeling.addEventListener(Event.COMPLETE, modelingCreatedHandler);
-            _modeling.addEventListener(ModelingEvent.SAVE, modelingSaveHandler); */
            _view.dispatchEvent(new CustomEvent(SHOW_MODELING, _arquivo, true));
 		}
 		
@@ -72,5 +87,11 @@ package br.edu.ucb.webdatamodeling.controller
 		{
 			Alert.show("Implementar!!!");
 		}
+		
+		public function gerarScript():void
+		{
+			Alert.show("pqp!!!");
+		}
+
 	}
 }

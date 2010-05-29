@@ -115,9 +115,9 @@ package br.edu.ucb.webdatamodeling.display.modeling.ui {
 		{
 			_index = index;
 			TweenMax.to(_selected, 0, {tint:0xCCCCCC});
-			_selected = _items[index];
+			_selected = _items[-1];
 			//TweenMax.to(_selected, 0, {tint:null});
-			_containerItems.y = -_selected.y;
+			//_containerItems.y = -_selected.y;
 		}
 
 		private function clickLenHandler(event : MouseEvent) : void 

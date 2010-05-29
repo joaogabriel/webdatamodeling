@@ -1,7 +1,9 @@
-package
+package br.edu.ucb.webdatamodeling.script
 {
 	import br.edu.ucb.webdatamodeling.dto.CampoDTO;
 	import br.edu.ucb.webdatamodeling.dto.TabelaDTO;
+	
+	import mx.collections.ArrayCollection;
 	
 	public class ParseScript
 	{
@@ -45,7 +47,8 @@ package
 				_query += TAB_SPACE;
 				_query += campo.descricao;
 				_query += BLANK_SPACE;
-				_query += campo.tipo.descricao;
+				//_query += campo.tipo.descricao;
+				_query += "INTEGER";
 				_query += BLANK_SPACE;
 				_query += ABRE_PARENTESE;
 				_query += campo.tamanho;
@@ -60,10 +63,12 @@ package
 			_query += PONTO_VIRGULA;
 		}
 		
-		public function parserScript(tabela:TabelaDTO):String {
-			createTabela(tabela);
-			createCampos(tabela);
-			createEndTable();
+		public function parserScript(tabelas:ArrayCollection):String {
+			for each (var tabela:TabelaDTO in tabelas) {
+				createTabela(tabela);
+				createCampos(tabela);
+				createEndTable();
+			}
 			return _query;
 		}
 		

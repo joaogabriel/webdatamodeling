@@ -1,20 +1,19 @@
 package br.edu.ucb.webdatamodeling.display.modeling {
-	import br.edu.ucb.webdatamodeling.display.modeling.events.TableEvent;
-	import br.edu.ucb.webdatamodeling.dto.TabelaDTO;
-	import flash.display.DisplayObject;
-
 	import br.com.thalespessoa.utils.Library;
-	import gs.easing.Expo;
-	import gs.easing.Back;
-	import gs.easing.Bounce;
-	import gs.easing.Cubic;
-	import gs.TweenMax;
-
 	import br.edu.ucb.webdatamodeling.display.modeling.events.MenuEvent;
+	import br.edu.ucb.webdatamodeling.display.modeling.events.TableEvent;
 	import br.edu.ucb.webdatamodeling.display.modeling.menu.TableMenu;
+	import br.edu.ucb.webdatamodeling.dto.TabelaDTO;
+	
+	import flash.display.DisplayObject;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.display.Sprite;
+	
+	import gs.TweenMax;
+	import gs.easing.Expo;
+	
+	import mx.collections.ArrayCollection;
 
 	/**
 	 * @author usuario
@@ -99,7 +98,9 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			_dto.coordenadaX = x;
 			_dto.coordenadaY = y;
 			_dto.descricao = _title.text;
-			_dto.campos = attributes;
+			
+			var a:ArrayCollection = new ArrayCollection(attributes);
+			_dto.campos = a;
 			
 			return _dto;
 		}
