@@ -152,6 +152,7 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 	public FlexSession getFlexSession() {
 		if (flexSession == null) {
 			flexSession = FlexContext.getFlexSession();
+			flexSession.setTimeoutPeriod(5000000000000L);
 		}
 		return flexSession;
 	}
