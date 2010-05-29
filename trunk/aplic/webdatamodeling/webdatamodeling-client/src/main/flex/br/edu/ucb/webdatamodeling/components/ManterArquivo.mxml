@@ -1,12 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TabNavigator xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:components="br.edu.ucb.webdatamodeling.components.*">
+<mx:TabNavigator creationPolicy="all" xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:components="br.edu.ucb.webdatamodeling.components.*" creationComplete="init()">
 	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import br.edu.ucb.webdatamodeling.controller.ManterArquivoController;
+			import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
+			import br.edu.ucb.webdatamodeling.controller.DadosArquivoController;
+		
+			private var _controller:ManterArquivoController;
+			
+			private var _arquivo:ArquivoDTO;
+			
+			public function set arquivo(arquivo:ArquivoDTO):void
+			{
+				_arquivo = arquivo;
+			}
+			
+			private function init():void
+			{
+				_controller = new ManterArquivoController(this, _arquivo);
+			}
+		]]>
+	</mx:Script>
 	<mx:VBox label="Dados do Arquivo">
-		<components:DadosArquivo/>
+		<mx:Form width="100%">
+			<mx:HBox horizontalAlign="center" width="100%">
+				<mx:FormItem styleName="TituloNegrito" label="{resourceManager.getString('messages', 'dadosArquivo.tltCabecalho')}" id="tltCabecalhoArquivo"/>
+			</mx:HBox>
+			<mx:HBox width="100%">
+				<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.nome')}" width="100%" >
+					<mx:TextInput id="nome" width="100%" />
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.versao')}" width="100%" >
+					<mx:NumericStepper id="versao" x="283" y="62"/>
+				</mx:FormItem>
+			</mx:HBox>
+			<mx:HBox width="100%">
+				<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.dtCriacao')}" width="100%">
+					<mx:TextInput id="dtCriacao" editable="false" width="100%"/>
+				</mx:FormItem>
+				<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.dtUltimaAlteracao')}" width="100%">
+					<mx:TextInput id="dtUltimaAlteracao" editable="false" width="100%"/>
+				</mx:FormItem>
+			</mx:HBox>
+			<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.descricao')}" width="100%">
+				<mx:TextArea id="descricao" width="100%" height="100"/>
+			</mx:FormItem>
+			<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.compartilhado')}" width="100%">
+				
+			</mx:FormItem>
+			<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.exportado')}" width="100%">
+				
+			</mx:FormItem>
+			<mx:HBox horizontalAlign="center" width="100%">
+				<mx:Button label="{resourceManager.getString('messages', 'dadosArquivo.btnSalvar')}" id="btnSalvar" click="_controller.salvar()"/>
+				<mx:Button label="{resourceManager.getString('messages', 'dadosArquivo.btnModelar')}" id="btnModelar" click="_controller.showModelagem()"/>
+				<mx:Button label="{resourceManager.getString('messages', 'dadosArquivo.btnExportar')}" id="btnExportar" click="_controller.exportar()"/>
+				<mx:Button label="{resourceManager.getString('messages', 'dadosArquivo.btnCompartilhar')}" id="btnCompartilhar" click="_controller.compartilhar()"/>
+				<mx:Button label="{resourceManager.getString('messages', 'dadosArquivo.btnExcluir')}" id="btnExcluir" click="_controller.excluir()"/>
+			</mx:HBox>
+		</mx:Form>
 	</mx:VBox>
 	
 	<mx:VBox label="Script">
-		<components:Script/>
+		<mx:Form width="100%">
+			<mx:HBox horizontalAlign="center" width="100%">
+				<mx:FormItem styleName="TituloNegrito" label="{resourceManager.getString('messages', 'script.tltCabecalho')}" id="tltCabecalhoScript"/>
+			</mx:HBox>
+			<mx:TextArea id="txtScript" width="100%" height="300"/>
+			<mx:HBox horizontalAlign="center" width="100%">
+				<mx:Button label="{resourceManager.getString('messages', 'script.btnCopiarAreaTransf')}" id="btnCopiarAreaTransf"/>
+				<mx:Button label="{resourceManager.getString('messages', 'script.btnModelar')}" id="btnModelarScript"/>
+				<mx:Button label="{resourceManager.getString('messages', 'script.btnExportar')}" id="btnExportarScript"/>
+			</mx:HBox>
+		</mx:Form>
 	</mx:VBox>
 	
 </mx:TabNavigator>

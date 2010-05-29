@@ -1,5 +1,7 @@
 package br.edu.ucb.webdatamodeling.dto
 {
+	import mx.collections.ArrayCollection;
+	
 	[RemoteClass(alias="br.edu.ucb.webdatamodeling.dto.TabelaDTO")]
 	public class TabelaDTO extends AbstractDTO
 	{
@@ -11,7 +13,7 @@ package br.edu.ucb.webdatamodeling.dto
 		private var _coordenadaY:Number;
 		private var _mer:MerDTO;
 		private var _tipo:TipoTabelaDTO;
-		private var _campos:Array;
+		private var _campos:ArrayCollection;
 		
 		public function TabelaDTO()
 		{
@@ -87,12 +89,12 @@ package br.edu.ucb.webdatamodeling.dto
 			_tipo = value;
 		}
 		
-		public function get campos():Array
+		public function get campos():ArrayCollection
 		{
 			return _campos;
 		}
 		
-		public function set campos(value:Array):void 
+		public function set campos(value:ArrayCollection):void 
 		{
 			_campos = value;
 		}

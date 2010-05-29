@@ -12,6 +12,8 @@
 	    
 	<mx:Script>
 		<![CDATA[
+			import br.edu.ucb.webdatamodeling.components.Script;
+			import br.edu.ucb.webdatamodeling.components.ManterArquivo;
 			import br.edu.ucb.webdatamodeling.controller.NovoArquivoController;
 			import br.edu.ucb.webdatamodeling.components.DadosArquivo;
 			import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
@@ -111,6 +113,7 @@
 			if (pastas == null || pastas.length == 0) {
 				msgEstruturaVazia.visible = true;
 			} else {
+				msgEstruturaVazia.visible = false;
 				files = result.data;
 			}
 		}
@@ -165,10 +168,10 @@
 		
 		private function fetchFileInfo(file:ArquivoDTO):void
 		{
-			var dadosArquivoView:DadosArquivo = new DadosArquivo();
-			dadosArquivoView.arquivo = file;
+			var manterArquivoView:ManterArquivo = new ManterArquivo();
+			manterArquivoView.arquivo = file;
 			
-			fileView.addChild(dadosArquivoView);
+			fileView.addChild(manterArquivoView);
 		}
 		]]>
 	</mx:Script>
