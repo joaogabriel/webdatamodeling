@@ -11,7 +11,6 @@ package br.edu.ucb.webdatamodeling.dto
 		private var _naoNulo:Boolean;
 		private var _autoIncremento:Boolean;
 		private var _chavePrimaria:Boolean;
-		private var _chaveEstrangeira:Boolean;
 		private var _tabela:TabelaDTO;
 		private var _tabelaEstrangeira:TabelaDTO;
 		private var _tipo:TipoCampoDTO;
@@ -98,16 +97,6 @@ package br.edu.ucb.webdatamodeling.dto
 		public function set chavePrimaria(value:Boolean):void 
 		{
 			_chavePrimaria = value;
-		}
-		
-		public function get chaveEstrangeira():Boolean
-		{
-			return _chaveEstrangeira;
-		}
-		
-		public function set chaveEstrangeira(value:Boolean):void 
-		{
-			_chaveEstrangeira = value;
 		}
 		
 		public function get tabela():TabelaDTO

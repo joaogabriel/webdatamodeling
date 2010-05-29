@@ -1,5 +1,7 @@
 package br.edu.ucb.webdatamodeling.dto
 {
+	import mx.collections.ArrayCollection;
+	
 	[Bindable]
 	[RemoteClass(alias="br.edu.ucb.webdatamodeling.dto.MerDTO")]
 	public class MerDTO extends AbstractDTO
@@ -9,8 +11,8 @@ package br.edu.ucb.webdatamodeling.dto
 		private var _exportado:Boolean;
 		private var _dataUltimaExportacao:Date;
 		private var _arquivo:ArquivoDTO;
-		private var _tabelas:Array;
-		private var _usuarios:Array;
+		private var _tabelas:ArrayCollection;
+		private var _usuarios:ArrayCollection;
 		
 		public function MerDTO()
 		{
@@ -56,22 +58,22 @@ package br.edu.ucb.webdatamodeling.dto
 			_arquivo = value;
 		}
 
-		public function get tabelas():Array
+		public function get tabelas():ArrayCollection
 		{
 			return _tabelas;
 		}
 		
-		public function set tabelas(value:Array):void 
+		public function set tabelas(value:ArrayCollection):void 
 		{
 			_tabelas = value;
 		}
 
-		public function get usuarios():Array
+		public function get usuarios():ArrayCollection
 		{
 			return _usuarios;
 		}
 		
-		public function set usuarios(value:Array):void 
+		public function set usuarios(value:ArrayCollection):void 
 		{
 			_usuarios = value;
 		}

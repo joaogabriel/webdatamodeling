@@ -1,21 +1,25 @@
 package br.edu.ucb.webdatamodeling.display.modeling {
-	import br.com.stimuli.loading.BulkLoader;
-	import br.edu.ucb.webdatamodeling.display.modeling.events.MenuEvent;
-	import br.edu.ucb.webdatamodeling.display.modeling.menu.StageMenu;
+	import flash.utils.setTimeout;
 	import br.edu.ucb.webdatamodeling.dto.CampoDTO;
 	import br.edu.ucb.webdatamodeling.dto.TabelaDTO;
 	import br.edu.ucb.webdatamodeling.events.ModelingEvent;
-	
-	import flash.display.Shape;
-	import flash.display.Sprite;
-	import flash.events.Event;
-	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
+
+	import ru.etcs.utils.FontLoader;
+
+	import br.edu.ucb.webdatamodeling.display.modeling.events.MenuEvent;
+	import br.edu.ucb.webdatamodeling.display.modeling.menu.StageMenu;
+
+	import flash.system.SecurityDomain;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
-	import flash.utils.setTimeout;
-	
-	import ru.etcs.utils.FontLoader;
+
+	import br.com.stimuli.loading.BulkLoader;
+
+	import flash.display.Shape;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.display.Sprite;
 
 	/**
 	 * @author usuario
@@ -49,6 +53,8 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			_relationships = [];
 			_bg = new Shape();
 			_bg.graphics.lineStyle(1, 0xCCCCCC);
+			_bg.graphics.beginFill(0xFFFFFF);
+			_bg.graphics.drawRect(0,0,2000,1000);
 			for(var i:uint = 0; i < 300; i++)
 			{
 				_bg.graphics.moveTo(i * 10, 0);
@@ -91,9 +97,9 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			
 			for(var j:uint=0; j<lenCampos; j++)
 			{
-				if(CampoDTO(tableDTO.campos[j]).chaveEstrangeira) 
+				if(CampoDTO(tableDTO.campos[j]).tabelaEstrangeira) 
 				{
-					_relationships.push({table:table, dto:CampoDTO(tableDTO.campos[j]).tabela});
+					_relationships.push({table:table, dto:CampoDTO(tableDTO.campos[j]).tabelaEstrangeira});
 					continue;
 				}
 				attribute = new TableAttribute(CampoDTO(tableDTO.campos[j]).descricao, 
@@ -193,7 +199,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		private function relationNNHandler(event : Event) : void 
 		{
 			var table:TableView = new TableView(event.target.point1.title+"_"+event.target.point2.title);
-			table.addAttribute(new TableAttribute("id", null, false, true));
+			table.addAttribute(new TableAttribute("id", null, false, true, false, null,false,true));
 			table.x = event.target.point1.x + (event.target.point2.x - event.target.point1.x)/2;
 			table.y = event.target.point1.y + (event.target.point2.y - event.target.point1.y)/2;
 			_tables.push(table);
