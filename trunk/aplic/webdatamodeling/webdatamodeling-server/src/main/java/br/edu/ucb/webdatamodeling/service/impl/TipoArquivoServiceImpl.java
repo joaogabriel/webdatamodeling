@@ -1,5 +1,7 @@
 package br.edu.ucb.webdatamodeling.service.impl;
 
+import javax.annotation.Resource;
+
 import org.springframework.flex.remoting.RemotingDestination;
 import org.springframework.stereotype.Service;
 
@@ -13,4 +15,9 @@ import br.edu.ucb.webdatamodeling.service.TipoArquivoService;
 @Service(value = "TipoArquivoService")
 public class TipoArquivoServiceImpl extends AbstractObjectService<TipoArquivo, TipoArquivoDTO, TipoArquivoDAO> implements TipoArquivoService {
 
+	@Resource(name = "TipoArquivoDAO")
+	public void setDao(TipoArquivoDAO dao) {
+		super.setDao(dao);
+	}
+	
 }

@@ -7,6 +7,6 @@ import br.edu.ucb.webdatamodeling.framework.service.ObjectService;
 
 public interface ArquivoService extends ObjectService<Arquivo, ArquivoDTO, ArquivoDAO> {
 
-	byte[] gerarArquivoParaExportacao(String nomeArquivo, String tipoArquivo, String script);
+	byte[] gerarArquivoParaExportacao(String nomeArquivo, String script);
 	
 }

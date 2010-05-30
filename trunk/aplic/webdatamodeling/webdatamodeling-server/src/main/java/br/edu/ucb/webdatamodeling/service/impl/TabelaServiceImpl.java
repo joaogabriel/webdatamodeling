@@ -1,5 +1,7 @@
 package br.edu.ucb.webdatamodeling.service.impl;
 
+import javax.annotation.Resource;
+
 import org.springframework.flex.remoting.RemotingDestination;
 import org.springframework.stereotype.Service;
 
@@ -13,4 +15,9 @@ import br.edu.ucb.webdatamodeling.service.TabelaService;
 @Service(value = "TabelaService")
 public class TabelaServiceImpl extends AbstractObjectService<Tabela, TabelaDTO, TabelaDAO> implements TabelaService {
 
+	@Resource(name = "TabelaDAO")
+	public void setDao(TabelaDAO dao) {
+		super.setDao(dao);
+	}
+	
 }

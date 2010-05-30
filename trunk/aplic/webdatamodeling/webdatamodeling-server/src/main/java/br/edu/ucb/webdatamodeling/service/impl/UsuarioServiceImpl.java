@@ -1,5 +1,6 @@
 package br.edu.ucb.webdatamodeling.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import flex.messaging.FlexSession;
 public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDTO, UsuarioDAO> implements UsuarioService {
 
 	private static final String USUARIO_SESSAO = "USUARIO_SESSAO";
+	
 	private MailServiceImpl mailService;
 	private CriptografiaService criptografiaService;
 	private FlexSession flexSession;
@@ -34,16 +36,16 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 	public UsuarioDTO insert(UsuarioDTO dto) throws ServiceException {
 		String senhaCriptografada = null;
 		
+		//verifica se o usuário informou a senha 
+		if (dto.getSenha() == null || dto.getSenha().isEmpty()) {
+			throw new ServiceException("A senha é obrigatória.");
+		}
+		
 		// armazena a data atual na data de cadastro
 		dto.setDataCadastro(new Date());
 		
 		// valida se o e-mail ja esta cadastrado
 		verificarEmailCadastrado(dto);
-
-		//verifica se o usuário informou a senha 
-		if (dto.getSenha() == null || dto.getSenha().isEmpty()) {
-			throw new ServiceException("A senha é obrigatória.");
-		}
 		
 		// criptografa a senha
 		senhaCriptografada = criptografiaService.criptografarSenha(dto.getSenha());
@@ -51,13 +53,12 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 		// armazena a senha criptografada
 		dto.setSenha(senhaCriptografada);
 		
-		dto.setId(null);
-		
 		return super.insert(dto);
 	}
 
 	private void verificarEmailCadastrado(UsuarioDTO dto) throws ServiceException {
 		Usuario usuario = null;
+		
 		try {
 			usuario = parseEntity(dto);
 			usuario = getObjectDAO().findByEmail(usuario);
@@ -68,13 +69,12 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 		} catch (ObjectDAOException e) {
 			dto.setErro(Boolean.TRUE);
 			dto.setMensagemErro(e.getMessage());
-			throw new ServiceException("Erro durante o acesso a Base de Dados.");
+			throw new ServiceException("Erro durante o acesso a Base de Dados.", e);
 		} catch (ServiceException e) {
 			dto.setErro(Boolean.TRUE);
 			dto.setMensagemErro(e.getMessage());
-			throw new ServiceException("O e-mail já está cadastrado na Base de Dados.");
+			throw new ServiceException("O e-mail já está cadastrado na Base de Dados.", e);
 		}
-		
 	}
 
 	@Override
@@ -87,6 +87,7 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 			senhaCriptografada = criptografiaService.criptografarSenha(usuarioDTO.getSenha());
 			usuario.setSenha(senhaCriptografada);
 			usuario = getObjectDAO().findByEmailESenha(usuario);
+			
 			if (usuario != null) {
 				usuarioDTO = parseDTO(usuario);
 				getFlexSession().setAttribute(USUARIO_SESSAO, usuarioDTO);
@@ -96,11 +97,11 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 		} catch (ObjectDAOException e) {
 			usuarioDTO.setErro(Boolean.TRUE);
 			usuarioDTO.setMensagemErro(e.getMessage());
-			throw new ServiceException("Erro durante a autenticação.");
+			throw new ServiceException("Erro durante a autenticação.", e);
 		} catch (ServiceException e) {
 			usuarioDTO.setErro(Boolean.TRUE);
 			usuarioDTO.setMensagemErro(e.getMessage());
-			throw new ServiceException("Erro durante a autenticação.");
+			throw new ServiceException("Erro durante a autenticação.", e);
 		}
 		
 		return usuarioDTO;
@@ -115,8 +116,11 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 			usuario = parseEntity(usuarioDTO);
 			usuario = getObjectDAO().findByEmail(usuario);
 			usuario.setSenha(novaSenha);
+			
 			update(parseDTO(usuario));
+			
 			if (usuario != null) {
+				// envia e-mail com a nova senha
 				mailService.send(usuario);
 				usuarioDTO = parseDTO(usuario);
 			} else {
@@ -139,6 +143,50 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 		return usuarioDTO;
 	}
 	
+	@Override
+	public Boolean efetuarLogout() throws ServiceException {
+		try {
+			getFlexSession().setAttribute(USUARIO_SESSAO, null);
+		} catch (Exception e) {
+			throw new ServiceException("Erro durante o logout.", e);
+		}
+		return true;
+	}
+
+	@Override
+	public UsuarioDTO verificarUsuarioAutenticado() throws ServiceException {
+		if (getFlexSession().getAttribute(USUARIO_SESSAO) != null) {
+			return (UsuarioDTO) getFlexSession().getAttribute(USUARIO_SESSAO);
+		}
+		return null;
+	}
+
+	@Override
+	public List<UsuarioDTO> findByNomeOuEmail(UsuarioDTO usuarioDTO) throws ServiceException {
+		List<Usuario> resultSearch = null;
+		List<UsuarioDTO> usuarios = null;
+		
+		try {
+			resultSearch = getObjectDAO().findByNomeOuEmail(parseEntity(usuarioDTO));
+			usuarios = parseDTOs(resultSearch);
+		} catch (ServiceException e) {
+			usuarioDTO.setErro(Boolean.TRUE);
+			usuarioDTO.setMensagemErro(e.getMessage());
+			throw new ServiceException("Erro durante a execução da pesquisa.", e);
+		} catch (ObjectDAOException e) {
+			usuarioDTO.setErro(Boolean.TRUE);
+			usuarioDTO.setMensagemErro(e.getMessage());
+			throw new ServiceException("Erro durante a execução da pesquisa.", e);
+		}
+		
+		return usuarios;
+	}
+
+	@Override
+	public UsuarioDTO getUsuarioAutenticado() throws ServiceException {
+		return (UsuarioDTO) getFlexSession().getAttribute(USUARIO_SESSAO);
+	}
+	
 	@Resource(name = "MailService")
 	public void setMailService(MailServiceImpl mailService) {
 		this.mailService = mailService;
@@ -149,12 +197,16 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 		this.criptografiaService = criptografiaService;
 	}
 	
-	public FlexSession getFlexSession() {
+	public FlexSession getFlexSession() throws ServiceException {
 		if (flexSession == null) {
 			flexSession = FlexContext.getFlexSession();
-			flexSession.setTimeoutPeriod(5000000000000L);
+			flexSession.setTimeoutPeriod(300000L); // 5 minutos
+			return flexSession;
+		} else if (flexSession.isValid()) {
+			return flexSession;
+		} else {
+			throw new ServiceException("Sessão inválida.");
 		}
-		return flexSession;
 	}
 
 	public void setFlexSession(FlexSession flexSession) {
@@ -168,42 +220,17 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 	}
 
 	@Override
-	public Boolean efetuarLogout() {
-		getFlexSession().setAttribute(USUARIO_SESSAO, null);
-		return true;
-	}
-
-	@Override
-	public UsuarioDTO verificarUsuarioAutenticado() {
-		if (getFlexSession().getAttribute(USUARIO_SESSAO) != null) {
-			return (UsuarioDTO) getFlexSession().getAttribute(USUARIO_SESSAO);
-		}
-		return null;
-	}
-
-	@Override
-	public List<UsuarioDTO> findByNomeOuEmail(UsuarioDTO usuarioDTO) throws ServiceException {
-		List<Usuario> resultSearch = null;
-		List<UsuarioDTO> usuarios = null;
-		try {
-			resultSearch = getObjectDAO().findByNomeOuEmail(parseEntity(usuarioDTO));
-			usuarios = parseDTOs(resultSearch);
-		} catch (ServiceException e) {
-			usuarioDTO.setErro(Boolean.TRUE);
-			usuarioDTO.setMensagemErro(e.getMessage());
-			throw new ServiceException("Erro durante a execução da pesquisa.");
-		} catch (ObjectDAOException e) {
-			usuarioDTO.setErro(Boolean.TRUE);
-			usuarioDTO.setMensagemErro(e.getMessage());
-			throw new ServiceException("Erro durante a execução da pesquisa.");
-		}
+	public List<UsuarioDTO> getUsuariosPossivelCompartilhamento() throws ServiceException {
+		List<UsuarioDTO> resultList = findAll();
+		UsuarioDTO usuarioAutenticado = getUsuarioAutenticado();
 		
-		return usuarios;
-	}
+		for (UsuarioDTO usuario : new ArrayList<UsuarioDTO>(resultList)) {
+			if (usuario.getId().equals(usuarioAutenticado.getId())) {
+				resultList.remove(usuario);
+			}
+		}
 
-	@Override
-	public UsuarioDTO getUsuarioAutenticado() {
-		return (UsuarioDTO) getFlexSession().getAttribute(USUARIO_SESSAO);
+		return resultList;
 	}
 
 }
