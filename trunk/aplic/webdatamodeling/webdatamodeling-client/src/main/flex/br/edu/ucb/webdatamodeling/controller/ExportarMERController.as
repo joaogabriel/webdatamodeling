@@ -63,9 +63,9 @@ package br.edu.ucb.webdatamodeling.controller
 			var fileReference:FileReference = new FileReference();
 			fileReference.save(byteArray, _nomeArquivo);
 			
-			/* _arquivo.mer.exportado = true;
+			_arquivo.mer.exportado = true;
 			_arquivoService.addEventListener("update", updateHandler);
-			_arquivoService.update(_arquivo); */
+			_arquivoService.update(_arquivo);
 		}
 		
 		private function updateHandler(event:CustomEvent):void

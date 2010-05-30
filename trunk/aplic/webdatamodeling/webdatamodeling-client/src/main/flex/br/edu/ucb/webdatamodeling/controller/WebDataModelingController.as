@@ -8,6 +8,7 @@ package br.edu.ucb.webdatamodeling.controller
 	import br.edu.ucb.webdatamodeling.events.CustomEvent;
 	import br.edu.ucb.webdatamodeling.events.ModelingEvent;
 	import br.edu.ucb.webdatamodeling.service.MERService;
+	import br.edu.ucb.webdatamodeling.service.TipoCampoService;
 	import br.edu.ucb.webdatamodeling.service.UsuarioService;
 	
 	import flash.events.Event;
@@ -25,6 +26,8 @@ package br.edu.ucb.webdatamodeling.controller
 		private var _model:MainModel = MainModel.GetInstance();
 		
 		private var _usuarioService:UsuarioService = UsuarioService.getInstance();
+		
+		private var _tipoCampoService:TipoCampoService = TipoCampoService.getInstance();
 		
 		private var _popup:IFlexDisplayObject;
 		
@@ -137,6 +140,15 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		private function modelingCreatedHandler(event:Event):void
 		{
+			_tipoCampoService.addEventListener("findAll", tipoCampoHandler);
+			_tipoCampoService.findAll();
+			
+		}
+		
+		private function tipoCampoHandler(event:CustomEvent):void
+		{
+			_modeling.loadFieldTypes(event.data);
+			
 			if (_mer != null)
 			{
 				_modeling.openMer(_mer.tabelas.toArray());

@@ -61,7 +61,7 @@ package br.edu.ucb.webdatamodeling.controller
 			var resultList:ArrayCollection = event.data;
 			var dataProvider:ArrayCollection = new ArrayCollection();
 			
-			for each (var usuario:UsuarioDTO in resultList)
+			/* for each (var usuario:UsuarioDTO in resultList)
 			{
 				for each (var usu:UsuarioDTO in _mer.usuarios)
 				{
@@ -70,9 +70,9 @@ package br.edu.ucb.webdatamodeling.controller
 						dataProvider.addItem(usuario);
 					}
 				}
-			}
+			} */
 			
-			_view.tblBusca.dataProvider = dataProvider;
+			_view.tblBusca.dataProvider = resultList;
 		}
 		
 		public function buscar():void
