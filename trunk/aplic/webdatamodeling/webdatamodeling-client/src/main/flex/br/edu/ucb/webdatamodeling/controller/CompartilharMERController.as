@@ -1,19 +1,21 @@
 package br.edu.ucb.webdatamodeling.controller
 {
 	import br.edu.ucb.webdatamodeling.components.CompartilharMER;
+	import br.edu.ucb.webdatamodeling.dto.MerDTO;
 	import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
 	import br.edu.ucb.webdatamodeling.events.CustomEvent;
+	import br.edu.ucb.webdatamodeling.service.MERService;
 	import br.edu.ucb.webdatamodeling.service.UsuarioService;
 	
 	import mx.collections.ArrayCollection;
-	import mx.controls.Alert;
-	import mx.events.DragEvent;
-	import mx.managers.DragManager;
 	import mx.managers.PopUpManager;
+	import mx.utils.ArrayUtil;
 	
 	public class CompartilharMERController
 	{
 		private var _usuarioService:UsuarioService = UsuarioService.getInstance();
+		
+		private var _merService:MERService = MERService.getInstance();
 		
 		private var _view:CompartilharMER;
 		
@@ -23,18 +25,54 @@ package br.edu.ucb.webdatamodeling.controller
 		[Bindable]
 		private var _usuariosPesquisados:ArrayCollection;
 		
-		public function CompartilharMERController(view:CompartilharMER)
+		private var _usuarioSelecionado:UsuarioDTO;
+		
+		private var _mer:MerDTO;
+		
+		public function CompartilharMERController(view:CompartilharMER, mer:MerDTO)
 		{
 			_view = view;
+			_mer = mer;
 			
-			_usuarioService.addEventListener("findAll", findUsuariosCompartilhados);
-			_usuarioService.findAll();
+			_usuarioService.addEventListener("usuarioPossivelCompartilhamento", getUsuariosHandler);
+			_usuarioService.getUsuariosPossivelCompartilhamento();
+			
+			if (_mer != null && _mer.usuarios != null && _mer.usuarios.length > 0)
+			{
+				_view.tblCompartilhados.dataProvider = _mer.usuarios;
+			}
 		}
 		
-		private function findUsuariosCompartilhados(event:CustomEvent):void
+		public function salvar():void
 		{
-			_usuariosCompartilhados = event.data;
-			_view.tblCompartilhados.dataProvider = _usuariosCompartilhados;
+			_mer.usuarios = _view.tblCompartilhados.dataProvider as ArrayCollection;
+			
+			_merService.addEventListener("update", updateHandler);
+			_merService.update(_mer);
+		}
+		
+		private function updateHandler(event:CustomEvent):void
+		{
+			_view.msgSucesso.visible = true;
+		}
+		
+		private function getUsuariosHandler(event:CustomEvent):void
+		{
+			var resultList:ArrayCollection = event.data;
+			var dataProvider:ArrayCollection = new ArrayCollection();
+			
+			for each (var usuario:UsuarioDTO in resultList)
+			{
+				for each (var usu:UsuarioDTO in _mer.usuarios)
+				{
+					if (!usuario.id == usu.id)
+					{
+						dataProvider.addItem(usuario);
+					}
+				}
+			}
+			
+			_view.tblBusca.dataProvider = dataProvider;
 		}
 		
 		public function buscar():void
@@ -51,6 +89,8 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		private function buscarHandler(event:CustomEvent):void
 		{
+			_view.msgSucesso.visible = false;
+			
 			_usuariosPesquisados = event.data;
 			_view.tblBusca.dataProvider = _usuariosPesquisados;
 		}
@@ -60,17 +100,22 @@ package br.edu.ucb.webdatamodeling.controller
 			PopUpManager.removePopUp(_view);
 		}
 		
+		/* public function dragStartHandler(event:DragEvent):void
+		{
+			var dataGrid:DataGrid = event.target as DataGrid;
+			_usuarioSelecionado = dataGrid.selectedItem as UsuarioDTO;
+		}
+		
 		public function teste(event:DragEvent):void
 		{
 			var lista:ArrayCollection = _view.tblCompartilhados.dataProvider as ArrayCollection;
-			var obj:Object = event.dragInitiator;
 			
-			if (lista.contains(obj)) {
-				Alert.show("Nao");
+			if (lista != null && _usuarioSelecionado != null && lista.contains(_usuarioSelecionado)) {
+				event.stopPropagation();
 			} else {
-				Alert.show("Sim");
+				//Alert.show("bode");
 			}
-		}
+		} */
 		
 	}
 }
