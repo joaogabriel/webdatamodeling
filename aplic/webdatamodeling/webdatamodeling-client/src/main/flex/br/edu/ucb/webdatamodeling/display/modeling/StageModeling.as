@@ -1,25 +1,21 @@
 package br.edu.ucb.webdatamodeling.display.modeling {
-	import flash.utils.setTimeout;
+	import br.com.stimuli.loading.BulkLoader;
+	import br.edu.ucb.webdatamodeling.display.modeling.events.MenuEvent;
+	import br.edu.ucb.webdatamodeling.display.modeling.menu.StageMenu;
 	import br.edu.ucb.webdatamodeling.dto.CampoDTO;
 	import br.edu.ucb.webdatamodeling.dto.TabelaDTO;
 	import br.edu.ucb.webdatamodeling.events.ModelingEvent;
-	import flash.net.URLRequest;
-
-	import ru.etcs.utils.FontLoader;
-
-	import br.edu.ucb.webdatamodeling.display.modeling.events.MenuEvent;
-	import br.edu.ucb.webdatamodeling.display.modeling.menu.StageMenu;
-
-	import flash.system.SecurityDomain;
-	import flash.system.ApplicationDomain;
-	import flash.system.LoaderContext;
-
-	import br.com.stimuli.loading.BulkLoader;
-
+	
 	import flash.display.Shape;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.display.Sprite;
+	import flash.net.URLRequest;
+	import flash.system.ApplicationDomain;
+	import flash.system.LoaderContext;
+	import flash.utils.setTimeout;
+	
+	import ru.etcs.utils.FontLoader;
 
 	/**
 	 * @author usuario
@@ -70,6 +66,11 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			addEventListener(MenuEvent.SELECT_CREATE_TABLE, createTableHandler);
 			addEventListener(MenuEvent.SELECT_SAVE, selectSaveHandler);
 			addEventListener(MenuEvent.SELECT_GENERETE_CODE, selectGenerateHandler);
+		}
+		
+		public function loadFieldTypes(array:Array):void
+		{
+			
 		}
 		
 		public function openMer( tables:Array ):void

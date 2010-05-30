@@ -57,6 +57,7 @@ package br.edu.ucb.webdatamodeling.service
         private function gerarArquivoParaExportacaoHandler(event:ResultEvent):void
         {
 			dispatchEvent(new CustomEvent("exportarArquivo", event.result));
+			_remoteObject.removeEventListener(ResultEvent.RESULT, gerarArquivoParaExportacaoHandler);
         }
         
         public static function getInstance():ArquivoService
