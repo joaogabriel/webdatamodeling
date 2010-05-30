@@ -32,9 +32,20 @@ package br.edu.ucb.webdatamodeling.service
         	_remoteObject.insert(mer);
         }
         
-        public function insertHandler(event:ResultEvent):void
+        private function insertHandler(event:ResultEvent):void
         {
             dispatchEvent(new CustomEvent("insert", event.result));
+        }
+        
+        public function update(mer:MerDTO):void
+        {
+        	_remoteObject.addEventListener("result", updateHandler);
+        	_remoteObject.update(mer);
+        }
+        
+        private function updateHandler(event:ResultEvent):void
+        {
+            dispatchEvent(new CustomEvent("update", event.result));
         }
         
         public function getMerByArquivo(arquivo:ArquivoDTO):void
@@ -43,9 +54,18 @@ package br.edu.ucb.webdatamodeling.service
         	_remoteObject.getMerByArquivo(arquivo);
         }
         
-        public function getMerByArquivoHandler(event:ResultEvent):void
+        private function getMerByArquivoHandler(event:ResultEvent):void
         {
             dispatchEvent(new CustomEvent("getByArquivo", event.result));
+        }
+        
+        public static function getInstance():MERService
+        {
+            if (_instance == null) 
+            {
+                _instance = new MERService();
+            }
+            return _instance;
         }
 
 	}

@@ -32,7 +32,7 @@ package br.edu.ucb.webdatamodeling.service
         	_remoteObject.insert(usuario);
         }
         
-        public function insertHandler(event:ResultEvent):void
+        private function insertHandler(event:ResultEvent):void
         {
             dispatchEvent(new CustomEvent("insert", event.result));
             _remoteObject.removeEventListener(ResultEvent.RESULT, insertHandler);
@@ -44,7 +44,7 @@ package br.edu.ucb.webdatamodeling.service
         	_remoteObject.efetuarLogin(usuario);
         }
         
-        public function efetuarLoginHandler(event:ResultEvent):void
+        private function efetuarLoginHandler(event:ResultEvent):void
         {                   
             var usuarioDTO:UsuarioDTO = event.result as UsuarioDTO;
             dispatchEvent(new CustomEvent("login", usuarioDTO));
@@ -57,7 +57,7 @@ package br.edu.ucb.webdatamodeling.service
         	_remoteObject.recuperarSenha(usuario);
         }
         
-        public function recuperarSenhaHandler(event:ResultEvent):void
+        private function recuperarSenhaHandler(event:ResultEvent):void
         {
             dispatchEvent(new CustomEvent("recuperarSenha", event.result));
             _remoteObject.removeEventListener(ResultEvent.RESULT, recuperarSenhaHandler);
@@ -70,7 +70,7 @@ package br.edu.ucb.webdatamodeling.service
         	_remoteObject.removeEventListener(ResultEvent.RESULT, efetuarLoginHandler);
         }
         
-        public function efetuarLogoutHandler(event:ResultEvent):void
+        private function efetuarLogoutHandler(event:ResultEvent):void
         {
             dispatchEvent(new CustomEvent("logout", event.result));
             _remoteObject.removeEventListener(ResultEvent.RESULT, efetuarLoginHandler);
@@ -82,7 +82,7 @@ package br.edu.ucb.webdatamodeling.service
         	_remoteObject.verificarUsuarioAutenticado();
         }
         
-        public function verificarUsuarioAutenticadoHandler(event:ResultEvent):void
+        private function verificarUsuarioAutenticadoHandler(event:ResultEvent):void
         {
             dispatchEvent(new CustomEvent("usuarioLogado", event.result));
             _remoteObject.removeEventListener(ResultEvent.RESULT, verificarUsuarioAutenticadoHandler);
@@ -94,7 +94,7 @@ package br.edu.ucb.webdatamodeling.service
         	_remoteObject.findByNomeOuEmail(usuario);
         }
         
-        public function findByNomeOuEmailHandler(event:ResultEvent):void
+        private function findByNomeOuEmailHandler(event:ResultEvent):void
         {
 			dispatchEvent(new CustomEvent("resultSearch", event.result));
 			_remoteObject.removeEventListener(ResultEvent.RESULT, findByNomeOuEmailHandler);
@@ -106,10 +106,35 @@ package br.edu.ucb.webdatamodeling.service
         	_remoteObject.findAll();
         }
         
-        public function findAllHandler(event:ResultEvent):void
+        private function findAllHandler(event:ResultEvent):void
         {
             dispatchEvent(new CustomEvent("findAll", event.result));
             _remoteObject.removeEventListener(ResultEvent.RESULT, findAllHandler);
+        }
+        
+        public function getUsuarioAutenticado():void
+        {
+        	_remoteObject.addEventListener("result", getUsuarioAutenticadoHandler);
+        	_remoteObject.getUsuarioAutenticado();
+        }
+        
+        private function getUsuarioAutenticadoHandler(event:ResultEvent):void
+        {
+            dispatchEvent(new CustomEvent("usuarioAutenticado", event.result));
+            _remoteObject.removeEventListener(ResultEvent.RESULT, getUsuarioAutenticadoHandler);
+        }
+        
+        
+        public function getUsuariosPossivelCompartilhamento():void
+        {
+        	_remoteObject.addEventListener("result", getUsuariosPossivelCompartilhamentoHandler);
+        	_remoteObject.getUsuariosPossivelCompartilhamento();
+        }
+        
+        private function getUsuariosPossivelCompartilhamentoHandler(event:ResultEvent):void
+        {
+            dispatchEvent(new CustomEvent("usuarioPossivelCompartilhamento", event.result));
+            _remoteObject.removeEventListener(ResultEvent.RESULT, getUsuariosPossivelCompartilhamentoHandler);
         }
         
         public static function getInstance():UsuarioService

@@ -200,7 +200,7 @@
 	               </mx:Tree>
 	               <components1:NovoArquivo id="novoArquivo" width="100%" height="10%" tree="{treeView}"/>
                </mx:VBox>
-				<mx:Canvas id="fileView" width="75%" height="100%" backgroundColor="white" backgroundAlpha="0.49"/>
+				<mx:Canvas id="fileView" width="75%" height="100%" backgroundColor="white" backgroundAlpha="0.49" cornerRadius="20"/>
 			</mx:HDividedBox>
 		</mx:Canvas>
 		<mx:ApplicationControlBar width="100%" height="40">

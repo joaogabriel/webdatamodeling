@@ -28,13 +28,35 @@ package br.edu.ucb.webdatamodeling.service
 
         public function insert(arquivo:ArquivoDTO):void
         {
-        	_remoteObject.addEventListener("result", insertHandler);
-        	_remoteObject.insert(arquivo);
+			_remoteObject.addEventListener("result", insertHandler);
+			_remoteObject.insert(arquivo);
         }
         
-        public function insertHandler(event:ResultEvent):void
+        private function insertHandler(event:ResultEvent):void
         {
-            dispatchEvent(new CustomEvent("insert", event.result));
+			dispatchEvent(new CustomEvent("insert", event.result));
+        }
+        
+        public function update(arquivo:ArquivoDTO):void
+        {
+			_remoteObject.addEventListener("result", updateHandler);
+			_remoteObject.update(arquivo);
+        }
+        
+        private function updateHandler(event:ResultEvent):void
+        {
+			dispatchEvent(new CustomEvent("update", event.result));
+        }
+        
+        public function gerarArquivoParaExportacao(nomeArquivo:String, script:String):void
+        {
+			_remoteObject.addEventListener("result", gerarArquivoParaExportacaoHandler);
+			_remoteObject.gerarArquivoParaExportacao(nomeArquivo, script);
+        }
+        
+        private function gerarArquivoParaExportacaoHandler(event:ResultEvent):void
+        {
+			dispatchEvent(new CustomEvent("exportarArquivo", event.result));
         }
         
         public static function getInstance():ArquivoService

@@ -16,7 +16,6 @@ package br.edu.ucb.webdatamodeling.script
 		private static const CARRIAGE_RETURN:String = "\n";
 		private static const CREATE_TABLE:String = "CREATE TABLE";
 		
-		// objeto �nico da classe
 		private static var _instance:ParseScript;
 		
 		private var _query:String;
@@ -26,7 +25,7 @@ package br.edu.ucb.webdatamodeling.script
 			_query = new String();
 		}
 		
-		public static function get instance():ParseScript {
+		public static function getInstance():ParseScript {
 			if (_instance == null) {
 				_instance = new ParseScript();
 			}
@@ -68,6 +67,7 @@ package br.edu.ucb.webdatamodeling.script
 				createTabela(tabela);
 				createCampos(tabela);
 				createEndTable();
+				_query += CARRIAGE_RETURN + CARRIAGE_RETURN;
 			}
 			return _query;
 		}

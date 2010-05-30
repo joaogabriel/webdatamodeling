@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TabNavigator creationPolicy="all" xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:components="br.edu.ucb.webdatamodeling.components.*" creationComplete="init()">
+<mx:TabNavigator backgroundAlpha="0" creationPolicy="all" xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:components="br.edu.ucb.webdatamodeling.components.*" creationComplete="init()">
 	
 	<mx:Script>
 		<![CDATA[
@@ -33,7 +33,8 @@
 					<mx:TextInput id="nome" width="100%" />
 				</mx:FormItem>
 				<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.versao')}" width="100%" >
-					<mx:NumericStepper id="versao" x="283" y="62"/>
+					<!--<mx:NumericStepper id="versao" x="283" y="62"/>-->
+					<mx:NumericStepper id="versao" minimum="0.1" maximum="100.0" stepSize="0.1"/>
 				</mx:FormItem>
 			</mx:HBox>
 			<mx:HBox width="100%">
@@ -48,10 +49,10 @@
 				<mx:TextArea id="descricao" width="100%" height="100"/>
 			</mx:FormItem>
 			<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.compartilhado')}" width="100%">
-				
+				<mx:Image id="imgCompartilhado"/>
 			</mx:FormItem>
 			<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.exportado')}" width="100%">
-				
+				<mx:Image id="imgExportado"/>
 			</mx:FormItem>
 			<mx:HBox horizontalAlign="center" width="100%">
 				<mx:Button label="{resourceManager.getString('messages', 'dadosArquivo.btnSalvar')}" id="btnSalvar" click="_controller.salvar()"/>
@@ -70,7 +71,7 @@
 			</mx:HBox>
 			<mx:TextArea id="txtScript" width="100%" height="300"/>
 			<mx:HBox horizontalAlign="center" width="100%">
-				<mx:Button label="{resourceManager.getString('messages', 'script.btnCopiarAreaTransf')}" id="btnCopiarAreaTransf"/>
+				<mx:Button label="{resourceManager.getString('messages', 'script.btnCopiarAreaTransf')}" id="btnCopiarAreaTransf" click="_controller.copiarParaAreaDeTransferencia()"/>
 				<mx:Button label="{resourceManager.getString('messages', 'script.btnModelar')}" id="btnModelarScript"/>
 				<mx:Button label="{resourceManager.getString('messages', 'script.btnExportar')}" id="btnExportarScript"/>
 			</mx:HBox>
