@@ -14,12 +14,14 @@ public interface UsuarioService extends ObjectService<Usuario, UsuarioDTO, Usuar
 	
 	UsuarioDTO recuperarSenha(UsuarioDTO usuarioDTO) throws ServiceException;
 	
-	UsuarioDTO verificarUsuarioAutenticado();
+	UsuarioDTO verificarUsuarioAutenticado() throws ServiceException;
 	
-	Boolean efetuarLogout();
+	Boolean efetuarLogout() throws ServiceException;
 	
 	List<UsuarioDTO> findByNomeOuEmail(UsuarioDTO usuarioDTO) throws ServiceException;
 	
-	UsuarioDTO getUsuarioAutenticado();
+	UsuarioDTO getUsuarioAutenticado() throws ServiceException;
+	
+	List<UsuarioDTO> getUsuariosPossivelCompartilhamento() throws ServiceException;
 	
 }
