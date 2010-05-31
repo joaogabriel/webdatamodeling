@@ -93,7 +93,7 @@ public abstract class AbstractObjectService<E extends Entity<?>, T extends DTO<E
 		} catch (ObjectDAOException e) {
 			dto.setErro(Boolean.TRUE);
 			dto.setMensagemErro(e.getMessage());
-			throw new ServiceException("Erro a remover no Banco de Dados a entidade com id: " + entity.getId());
+			throw new ServiceException("Erro a remover no Banco de Dados a entidade com id: " + entity.getId(), e);
 		}
 	}
 
