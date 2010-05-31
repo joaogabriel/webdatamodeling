@@ -48,6 +48,17 @@ package br.edu.ucb.webdatamodeling.service
 			dispatchEvent(new CustomEvent("update", event.result));
         }
         
+        public function remove(arquivo:ArquivoDTO):void
+        {
+			_remoteObject.addEventListener("result", removeHandler);
+			_remoteObject.remove(arquivo);
+        }
+        
+        private function removeHandler(event:ResultEvent):void
+        {
+			dispatchEvent(new CustomEvent("remove", null));
+        }
+        
         public function gerarArquivoParaExportacao(nomeArquivo:String, script:String):void
         {
 			_remoteObject.addEventListener("result", gerarArquivoParaExportacaoHandler);

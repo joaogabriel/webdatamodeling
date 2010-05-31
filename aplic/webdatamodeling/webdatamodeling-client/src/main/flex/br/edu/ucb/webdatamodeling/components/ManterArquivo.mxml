@@ -30,11 +30,10 @@
 			</mx:HBox>
 			<mx:HBox width="100%">
 				<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.nome')}" width="100%" >
-					<mx:TextInput id="nome" width="100%" />
+					<mx:TextInput id="txtNome" width="100%" />
 				</mx:FormItem>
 				<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.versao')}" width="100%" >
-					<!--<mx:NumericStepper id="versao" x="283" y="62"/>-->
-					<mx:NumericStepper id="versao" minimum="0.1" maximum="100.0" stepSize="0.1"/>
+					<mx:NumericStepper id="txtVersao" minimum="0.1" maximum="100.0" stepSize="0.1"/>
 				</mx:FormItem>
 			</mx:HBox>
 			<mx:HBox width="100%">
@@ -46,7 +45,7 @@
 				</mx:FormItem>
 			</mx:HBox>
 			<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.descricao')}" width="100%">
-				<mx:TextArea id="descricao" width="100%" height="100"/>
+				<mx:TextArea id="txtDescricao" width="100%" height="100"/>
 			</mx:FormItem>
 			<mx:FormItem label="{resourceManager.getString('messages', 'dadosArquivo.compartilhado')}" width="100%">
 				<mx:Image id="imgCompartilhado"/>
@@ -62,6 +61,10 @@
 				<mx:Button label="{resourceManager.getString('messages', 'dadosArquivo.btnExcluir')}" id="btnExcluir" click="_controller.excluir()"/>
 			</mx:HBox>
 		</mx:Form>
+		
+		<mx:HBox horizontalAlign="center" width="100%">
+			<mx:Label id="msgStatus" visible="false"/>
+		</mx:HBox>
 	</mx:VBox>
 	
 	<mx:VBox label="Script">

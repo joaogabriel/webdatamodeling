@@ -8,10 +8,13 @@ package br.edu.ucb.webdatamodeling.controller
 	import br.edu.ucb.webdatamodeling.script.ParseScript;
 	import br.edu.ucb.webdatamodeling.service.ArquivoService;
 	
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.MouseEvent;
 	import flash.system.System;
 	
 	import mx.controls.Alert;
+	import mx.events.CloseEvent;
 	import mx.formatters.DateFormatter;
 	import mx.managers.PopUpManager;
 	
@@ -67,11 +70,11 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		private function setDadosArquivo():void
 		{
-			_view.nome.text = _arquivo.nome;
+			_view.txtNome.text = _arquivo.nome;
 			_view.dtCriacao.text = formatarData(_arquivo.dataCriacao);
 			_view.dtUltimaAlteracao.text = formatarData(_arquivo.dataUltimaAlteracao);
-			_view.descricao.text = _arquivo.descricao;
-			_view.versao.value = _arquivo.versao as Number;
+			_view.txtDescricao.text = _arquivo.descricao;
+			_view.txtVersao.value = new Number(_arquivo.versao); 
 		}
 		
 		private function setScriptSQL():void
@@ -98,7 +101,18 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		public function salvar():void
 		{
+			_arquivo.nome = _view.txtNome.text;
+			_arquivo.descricao = _view.txtDescricao.text;
+			_arquivo.versao = _view.txtVersao.value.toString();
 			
+			_arquivoService.addEventListener("update", updateHandler);
+			_arquivoService.update(_arquivo);
+		}
+		
+		private function updateHandler(event:CustomEvent):void
+		{
+			_view.msgStatus.text = "Operação realizada com sucesso.";
+			_view.msgStatus.visible = true;
 		}
 		
 		public function showModelagem():void
@@ -122,7 +136,23 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		public function excluir():void
 		{
-			Alert.show("Implementar!!!");
+			Alert.show("Deseja realmente excluir o arquivo?", "Aviso", Alert.NO | Alert.YES, null, alertListener);
+		}
+		
+		private function alertListener(event:CloseEvent):void
+		{
+			if (event.detail == Alert.YES)
+			{
+			    _arquivoService.addEventListener("remove", excluirHandler);
+				_arquivoService.remove(_arquivo);
+				
+				_view.visible = false;
+			}
+		}
+		
+		private function excluirHandler(event:CustomEvent):void
+		{
+			_view.dispatchEvent(new Event(NovoArquivoController.UPDATE_TREE));
 		}
 		
 		public function gerarScript():void
