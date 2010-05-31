@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     28/05/2010 15:30:14                          */
+/* Created on:     31/5/2010 19:49:53                           */
 /*==============================================================*/
 
 
@@ -11,6 +11,8 @@ drop table CAMPO;
 drop table COMPARTILHAMENTO;
 
 drop table MER;
+
+drop table NOTAS;
 
 drop table PASTA;
 
@@ -94,6 +96,15 @@ create table MER (
 alter table MER owner to WDM_USER
 ;
 /*==============================================================*/
+/* Table: NOTAS                                                 */
+/*==============================================================*/
+create table NOTAS (
+   ID_MER               INT4                 null,
+   ID_NOTA              SERIAL               null,
+   DS_NOTA              VARCHAR(200)         null
+);
+
+/*==============================================================*/
 /* Table: PASTA                                                 */
 /*==============================================================*/
 create table PASTA (
@@ -175,6 +186,7 @@ create table USUARIO (
    DS_SENHA             CHAR(28)             null,
    DT_CADASTRO          DATE                 null,
    DT_NASCIMENTO        DATE                 null,
+   NOVO_COMPARTILHAMENTO BOOL                 null,
    constraint PK_USUARIO primary key (ID_USUARIO)
 );
 
@@ -214,6 +226,11 @@ alter table COMPARTILHAMENTO
 alter table MER
    add constraint FK_MER_PK_ARQUIV_ARQUIVO foreign key (ID_ARQUIVO)
       references ARQUIVO (ID_ARQUIVO)
+      on delete restrict on update restrict;
+
+alter table NOTAS
+   add constraint FK_NOTAS_PK_NOTA_M_MER foreign key (ID_MER)
+      references MER (ID_MER)
       on delete restrict on update restrict;
 
 alter table PASTA
