@@ -58,7 +58,8 @@ package br.edu.ucb.webdatamodeling.controller
 					arquivo = new ArquivoDTO();
 					arquivo.nome = nomeArquivo;
 					arquivo.pasta = _tree.selectedItem as PastaDTO;
-					
+			
+					_arquivoService.addEventListener("insert", insertHandler);		
 					_arquivoService.insert(arquivo);
 				} else {
 					// vir do arquivo de mensagens
@@ -68,11 +69,10 @@ package br.edu.ucb.webdatamodeling.controller
 				pasta = new PastaDTO();
 				pasta.nome = nomeArquivo;
 				
-				//_pastaService.addEventListener(insert, exibirMensagem);
+				_pastaService.addEventListener("insert", insertHandler);
 				_pastaService.insert(pasta);
 			}
-			_pastaService.addEventListener("insert", insertHandler);
-			_arquivoService.addEventListener("insert", insertHandler);
+			
 		}
 		
 		private function insertHandler(event:Event):void
