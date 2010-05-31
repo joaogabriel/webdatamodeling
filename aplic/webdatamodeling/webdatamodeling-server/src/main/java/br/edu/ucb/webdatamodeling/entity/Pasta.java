@@ -18,6 +18,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cascade;
+
 import br.edu.ucb.webdatamodeling.framework.entity.AbstractEntity;
 
 @Entity
@@ -83,8 +85,9 @@ public class Pasta extends AbstractEntity<Long> {
 		this.dataUltimaAlteracao = dataUltimaAlteracao;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name="id_usuario")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@Cascade(value = org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	public Usuario getUsuario() {
 		return usuario;
 	}

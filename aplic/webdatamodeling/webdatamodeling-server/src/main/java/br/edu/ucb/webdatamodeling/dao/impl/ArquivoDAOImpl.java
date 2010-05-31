@@ -24,6 +24,12 @@ public class ArquivoDAOImpl extends AbstractObjectDAO<Arquivo> implements Arquiv
 		return super.insert(entity);
 	}
 	
+	@Override
+	public void remove(Arquivo entity) throws ObjectDAOException {
+		entity = findById(entity.getId());
+		super.remove(entity);
+	}
+	
 	@Resource(name = "PastaDAO")
 	public void setPastaDAO(PastaDAO pastaDAO) {
 		this.pastaDAO = pastaDAO;
