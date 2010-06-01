@@ -1,9 +1,12 @@
 package br.edu.ucb.webdatamodeling.script
 {
 	import br.edu.ucb.webdatamodeling.dto.CampoDTO;
+	import br.edu.ucb.webdatamodeling.dto.MerDTO;
 	import br.edu.ucb.webdatamodeling.dto.TabelaDTO;
 	
 	import mx.collections.ArrayCollection;
+	import mx.resources.IResourceManager;
+	import mx.resources.ResourceManager;
 	
 	public class ParseScript
 	{
@@ -12,6 +15,7 @@ package br.edu.ucb.webdatamodeling.script
 		private static const TAB_SPACE:String = "	";
 		private static const ABRE_PARENTESE:String = "(";
 		private static const FECHA_PARENTESE:String = ")";
+		private static const VIRGULA:String = ",";
 		private static const PONTO_VIRGULA:String = ";";
 		private static const CARRIAGE_RETURN:String = "\n";
 		private static const CREATE_TABLE:String = "CREATE TABLE";
@@ -19,20 +23,39 @@ package br.edu.ucb.webdatamodeling.script
 		private static var _instance:ParseScript;
 		
 		private var _query:String;
+		
+		private var _highlight:Boolean;
+		
+		private var _scriptsAlterTableFKs:ArrayCollection;
+		
+		private var _resourceManager:IResourceManager = ResourceManager.getInstance();
 			
 		public function ParseScript()
 		{
 			_query = new String();
 		}
 		
-		public static function getInstance():ParseScript {
-			if (_instance == null) {
+		public static function getInstance():ParseScript
+		{
+			if (_instance == null)
+			{
 				_instance = new ParseScript();
 			}
 			return _instance;
 		}
 
-		private function createTabela(tabela:TabelaDTO):void {
+		private function createComentarioInicial(mer:MerDTO):void
+		{
+			_query = "/*==============================================================*/";
+		}
+		
+		private function createComentarioTabela(tabela:TabelaDTO):void
+		{
+			
+		}
+		
+		private function createTabela(tabela:TabelaDTO):void
+		{
 			_query += CREATE_TABLE;
 			_query += BLANK_SPACE;
 			_query += tabela.descricao;
@@ -40,9 +63,11 @@ package br.edu.ucb.webdatamodeling.script
 			_query += ABRE_PARENTESE;
 			_query += CARRIAGE_RETURN;
 		}
-	
-		private function createCampos(tabela:TabelaDTO):void {
-			for each(var campo:CampoDTO in tabela.campos) {
+		
+		private function createCampos(tabela:TabelaDTO):void
+		{
+			for each(var campo:CampoDTO in tabela.campos)
+			{
 				_query += TAB_SPACE;
 				_query += campo.descricao;
 				_query += BLANK_SPACE;
@@ -52,23 +77,45 @@ package br.edu.ucb.webdatamodeling.script
 				_query += ABRE_PARENTESE;
 				_query += campo.tamanho;
 				_query += FECHA_PARENTESE;
-				_query += PONTO_VIRGULA;
+				_query += VIRGULA;
 				_query += CARRIAGE_RETURN;
 			}
 		}
+		
+		private function createConstraints(tabela:TabelaDTO):void
+		{
+			
+		}
 	
-		private function createEndTable():void {
+		private function createEndTable():void
+		{
 			_query += FECHA_PARENTESE;
 			_query += PONTO_VIRGULA;
+			_query += CARRIAGE_RETURN + CARRIAGE_RETURN;
 		}
 		
-		public function parserScript(tabelas:ArrayCollection):String {
-			for each (var tabela:TabelaDTO in tabelas) {
-				createTabela(tabela);
-				createCampos(tabela);
-				createEndTable();
-				_query += CARRIAGE_RETURN + CARRIAGE_RETURN;
+		public function parserScript(mer:MerDTO, highlight:Boolean = false):String
+		{
+			_highlight = highlight;
+			
+			if (mer != null && mer.tabelas != null && mer.tabelas.length > 0)
+			{
+				_query = "";
+				
+				createComentarioInicial(mer);
+				
+				for each (var tabela:TabelaDTO in mer.tabelas)
+				{
+					createComentarioTabela(tabela);
+					createTabela(tabela);
+					createCampos(tabela);
+					createConstraints(tabela);
+					createEndTable();
+				}
+				
+				//createForeingKeys(mer);
 			}
+			
 			return _query;
 		}
 		
