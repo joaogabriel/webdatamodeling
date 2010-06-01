@@ -1,5 +1,7 @@
 package br.edu.ucb.webdatamodeling.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.flex.remoting.RemotingDestination;
@@ -11,6 +13,7 @@ import br.edu.ucb.webdatamodeling.dto.CampoDTO;
 import br.edu.ucb.webdatamodeling.dto.MerDTO;
 import br.edu.ucb.webdatamodeling.dto.TabelaDTO;
 import br.edu.ucb.webdatamodeling.dto.TipoCampoDTO;
+import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
 import br.edu.ucb.webdatamodeling.entity.Mer;
 import br.edu.ucb.webdatamodeling.framework.service.AbstractObjectService;
 import br.edu.ucb.webdatamodeling.framework.service.ServiceException;
@@ -63,6 +66,20 @@ public class MerServiceImpl extends AbstractObjectService<Mer, MerDTO, MerDAO> i
 		}
 		
 		return merDTO;
+	}
+	
+	@Override
+	public Boolean compartilhar(MerDTO mer, List<UsuarioDTO> usuarios) {
+		final String PREFIXO_NOME_PASTA = "Arquivos compartilhados com ";
+		// criar a pasta do usuário
+		// setar o boolean do usuário
+		
+		for (UsuarioDTO usuario : usuarios) {
+			if (!mer.getUsuarios().contains(usuario)) {
+				// criar compartilhamento
+			}
+		}
+		return null;
 	}
 	
 	@Override
