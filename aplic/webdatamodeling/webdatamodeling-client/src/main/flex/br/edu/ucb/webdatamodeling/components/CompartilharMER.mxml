@@ -25,21 +25,21 @@
 	<mx:VBox width="100%" height="100%" horizontalAlign="center">
 		<mx:Spacer height="3%"/>
 		<mx:HBox width="95%">
-			<mx:Label text="Pesquise por nome ou e-mail:"/>
+			<mx:Label text="{resourceManager.getString('messages', 'compartilhar.campoPesquisa')}"/>
 			<mx:TextInput id="txtBusca" width="100%"/>
-			<mx:Button label="Buscar" click="_controller.buscar()"/>
+			<mx:Button label="{resourceManager.getString('messages', 'compartilhar.btnPesquisar')}" click="_controller.buscar()"/>
 		</mx:HBox>
 		<mx:DataGrid id="tblBusca" width="95%" height="110" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true">
 			<mx:columns>
-				<mx:DataGridColumn headerText="Resultado" dataField="nome"/>
+				<mx:DataGridColumn headerText="{resourceManager.getString('messages', 'compartilhar.tltGridResultado')}" dataField="nome"/>
 			</mx:columns>
 		</mx:DataGrid>
 		<mx:DataGrid id="tblCompartilhados" dragEnabled="true" dropEnabled="true" width="95%" height="110" dragMoveEnabled="true">
 			<mx:columns>
-				<mx:DataGridColumn headerText="Compartilhar com" dataField="nome"/>
+				<mx:DataGridColumn headerText="{resourceManager.getString('messages', 'compartilhar.tltGridCompartilhamentos')}" dataField="nome"/>
 			</mx:columns>
 		</mx:DataGrid>
-		<mx:Button label="Salvar" click="_controller.salvar()"/>
-		<mx:Label id="msgSucesso" text="Compartilhamento salvo." visible="false"/>
+		<mx:Button label="{resourceManager.getString('messages', 'compartilhar.btnSalvar')}" click="_controller.salvar()"/>
+		<mx:Label id="msgSucesso" text="{resourceManager.getString('messages', 'compartilhar.msgSucesso')}" visible="false"/>
 	</mx:VBox>
 </mx:TitleWindow>
