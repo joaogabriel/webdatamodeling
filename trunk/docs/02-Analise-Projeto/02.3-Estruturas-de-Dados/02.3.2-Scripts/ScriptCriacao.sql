@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     31/5/2010 19:49:53                           */
+/* Created on:     11/06/2010 09:14:16                          */
 /*==============================================================*/
 
 
@@ -100,8 +100,9 @@ alter table MER owner to WDM_USER
 /*==============================================================*/
 create table NOTAS (
    ID_MER               INT4                 null,
-   ID_NOTA              SERIAL               null,
-   DS_NOTA              VARCHAR(200)         null
+   ID_NOTA              SERIAL               not null,
+   DS_NOTA              VARCHAR(200)         null,
+   constraint PK_NOTAS primary key (ID_NOTA)
 );
 
 /*==============================================================*/
