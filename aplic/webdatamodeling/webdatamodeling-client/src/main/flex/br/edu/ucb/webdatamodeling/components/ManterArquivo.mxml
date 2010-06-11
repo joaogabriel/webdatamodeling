@@ -81,4 +81,13 @@
 		</mx:Form>
 	</mx:VBox>
 	
+	<mx:StringValidator id="valNome" source="{txtNome}" property="text" required="true"
+				  requiredFieldError="Campo obrigatório."
+				  tooLongError="Limite máximo de 30 caracteres."
+				  maxLength="30" />
+				  
+	<mx:StringValidator id="valDescricao" source="{txtDescricao}" property="text" required="true"
+				  requiredFieldError="Campo obrigatório."
+				  tooLongError="Limite máximo de 100 caracteres."
+				  maxLength="100"/>
 </mx:TabNavigator>
