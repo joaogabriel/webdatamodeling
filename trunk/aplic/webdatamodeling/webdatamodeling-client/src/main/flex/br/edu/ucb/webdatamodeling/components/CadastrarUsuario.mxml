@@ -66,8 +66,7 @@
 	<mx:StringValidator id="valNome" source="{txtNome}" property="text" required="true"
 				  requiredFieldError="Campo obrigatório."
 				  tooLongError="Limite máximo de 30 caracteres."
-				  maxLength="30"
-				  minLength="5" />
+				  maxLength="30" />
 				  
 	<mx:StringValidator id="valSobrenome" source="{txtSobrenome}" property="text" required="false"
 				  tooLongError="Limite máximo de 30 caracteres."
@@ -76,9 +75,9 @@
 	<mx:StringValidator id="valSenha" source="{txtSenha}" property="text" required="true" 
 				  requiredFieldError="Campo obrigatório."
 				  tooLongError="Limite máximo de 20 caracteres."
-				  tooShortError="Limite mínimo de 5 caracteres."
+				  tooShortError="Limite mínimo de 6 caracteres."
 				  maxLength="20"
-				  minLength="5" />
+				  minLength="6" />
 							
 	<!--<mx:Binding source="{_controller.cont}" destination="msgCadastroCont.text"/>-->
 </mx:Panel>
