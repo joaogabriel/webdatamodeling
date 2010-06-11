@@ -15,10 +15,10 @@
 	</mx:Script>
 	<mx:Form width="100%">
 		<mx:FormItem label="E-mail" width="100%" required="true">
-			<mx:TextInput id="txtEmail" width="100%" text="jgs.esteves@gmail.com"/>
+			<mx:TextInput id="txtEmail" width="100%" />
 		</mx:FormItem>
 		<mx:FormItem label="{resourceManager.getString('messages', 'usuario.senha')}" width="100%" required="true">
-			<mx:TextInput id="txtSenha" displayAsPassword="true" width="100%" text="12345"/>
+			<mx:TextInput id="txtSenha" displayAsPassword="true" width="100%" />
 		</mx:FormItem>
 		<mx:VBox horizontalAlign="center" width="100%">
 			<mx:Spacer height="15"/>
@@ -51,8 +51,8 @@
 	<mx:StringValidator id="valSenha" source="{txtSenha}" property="text" required="true" 
 				  requiredFieldError="Campo obrigatório."
 				  tooLongError="Limite máximo de 20 caracteres."
-				  tooShortError="Limite mínimo de 5 caracteres."
+				  tooShortError="Limite mínimo de 6 caracteres."
 				  maxLength="20"
-				  minLength="5" />
+				  minLength="6" />
 
 </mx:Panel>
