@@ -89,7 +89,7 @@ package br.edu.ucb.webdatamodeling.controller
 			
 			else
 			{
-				_script = _parser.parserScript(_arquivo.mer.tabelas);
+				_script = _parser.parserScript(_arquivo.mer);
 			}
 			
 			_view.txtScript.text = _script;

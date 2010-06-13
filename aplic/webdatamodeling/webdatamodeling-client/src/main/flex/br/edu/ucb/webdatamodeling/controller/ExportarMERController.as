@@ -48,7 +48,7 @@ package br.edu.ucb.webdatamodeling.controller
 			var scriptParser:ParseScript = ParseScript.getInstance();
 			var tipoArquivoSelecionado:TipoArquivoDTO = _view.cbxTipoArquivo.selectedItem as TipoArquivoDTO;
 			var tipoArquivo:String = tipoArquivoSelecionado.descricao;
-			var script:String = scriptParser.parserScript(_arquivo.mer.tabelas);
+			var script:String = scriptParser.parserScript(_arquivo.mer);
 			
 			_nomeArquivo = _view.txtNomeArquivo.text + "." + tipoArquivo.toLowerCase(); 
 			
