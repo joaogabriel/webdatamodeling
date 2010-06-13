@@ -41,7 +41,7 @@ package br.edu.ucb.webdatamodeling.controller
 			if ( Validator.validateAll([_view.valEmail]).length == 0 )
 				recuperarSenha();
 			else
-				Alert.show("Algum campo não foi preenchido corretamente.\n\nTodos os campos com * são obrigatorios.");
+				Alert.show(_resourceManager.getString('messages', 'recuperarSenhaConrtoler.msg_1'));
 		}
 		
 		public function recuperarSenha():void

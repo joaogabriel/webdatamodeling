@@ -67,7 +67,7 @@ package br.edu.ucb.webdatamodeling.controller
 			if (Validator.validateAll([_view.valNome, _view.valEmail, _view.valSenha]).length == 0) {
 				cadastrar();
 			} else {
-				Alert.show("Algum campo não foi preenchido corretamente.\n\nTodos os campos com * são obrigatorios.");
+				Alert.show(_resourceManager.getString('messages', 'usuarioConrtoler.msg_1'));
 			}
 		} 
 		

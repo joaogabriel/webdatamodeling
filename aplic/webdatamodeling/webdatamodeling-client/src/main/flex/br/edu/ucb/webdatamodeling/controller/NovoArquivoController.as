@@ -49,7 +49,7 @@ package br.edu.ucb.webdatamodeling.controller
 			
 			if (nomeArquivo == null) {
 				// vir do arquivo de mensagens
-				Alert.show("É necessário informar um nome.");
+				Alert.show(_resourceManager.getString('messages', 'novoArquivoConrtoler.msg_1'));
 				return;
 			}
 			
@@ -63,7 +63,7 @@ package br.edu.ucb.webdatamodeling.controller
 					_arquivoService.insert(arquivo);
 				} else {
 					// vir do arquivo de mensagens
-					Alert.show("É necessário selecionar uma pasta.");
+					Alert.show(_resourceManager.getString('messages', 'novoArquivoConrtoler.msg_2'));
 				}
 			} else if (_view.btnTipoArquivo.aux.toString() == INDEX_PASTA) {
 				pasta = new PastaDTO();
