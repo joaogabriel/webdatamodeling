@@ -10,13 +10,14 @@ package br.edu.ucb.webdatamodeling.controller
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.events.MouseEvent;
 	import flash.system.System;
 	
 	import mx.controls.Alert;
 	import mx.events.CloseEvent;
 	import mx.formatters.DateFormatter;
 	import mx.managers.PopUpManager;
+	import mx.resources.IResourceManager;
+	import mx.resources.ResourceManager;
 	
 	public class ManterArquivoController extends EventDispatcher
 	{
@@ -27,6 +28,8 @@ package br.edu.ucb.webdatamodeling.controller
 		private var _arquivoService:ArquivoService = ArquivoService.getInstance();
 		private var _parser:ParseScript = ParseScript.getInstance();
 		private var _script:String;
+		
+		private var _resourceManager:IResourceManager = ResourceManager.getInstance();
 		
 		public function ManterArquivoController(view:ManterArquivo, arquivo:ArquivoDTO)
 		{
@@ -81,7 +84,7 @@ package br.edu.ucb.webdatamodeling.controller
 		{
 			if (_arquivo == null || _arquivo.mer == null || _arquivo.mer.tabelas == null)
 			{
-				_script = "MER ainda não desenhado.";
+				_script = _resourceManager.getString('messages', 'manterArquivoConrtoler.msg_1');
 			}
 			
 			else
@@ -111,7 +114,7 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		private function updateHandler(event:CustomEvent):void
 		{
-			_view.msgStatus.text = "Operação realizada com sucesso.";
+			_view.msgStatus.text = _resourceManager.getString('messages', 'manterArquivoConrtoler.msg_2');
 			_view.msgStatus.visible = true;
 		}
 		
@@ -136,7 +139,7 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		public function excluir():void
 		{
-			Alert.show("Deseja realmente excluir o arquivo?", "Aviso", Alert.NO | Alert.YES, null, alertListener);
+			Alert.show(_resourceManager.getString('messages', 'manterArquivoConrtoler.msg_3'), "Aviso", Alert.NO | Alert.YES, null, alertListener);
 		}
 		
 		private function alertListener(event:CloseEvent):void

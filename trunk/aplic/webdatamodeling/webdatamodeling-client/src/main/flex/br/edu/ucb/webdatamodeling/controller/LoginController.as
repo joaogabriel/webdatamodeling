@@ -42,7 +42,7 @@ package br.edu.ucb.webdatamodeling.controller
 			if ( Validator.validateAll([_view.valEmail,_view.valSenha]).length == 0 )
 				login();
 			else
-				Alert.show("Algum campo não foi preenchido corretamente.\n\nTodos os campos com * são obrigatorios.");
+				Alert.show(_resourceManager.getString('messages', 'usuarioConrtoler.msg_1'));
 		}
 		
 		public function login():void
@@ -61,7 +61,7 @@ package br.edu.ucb.webdatamodeling.controller
 		{
 			if (event.data == null)
 			{
-				Alert.show("O usuário informado não está cadastrado ou as informações preenchidas estão incorretas.");
+				Alert.show(_resourceManager.getString('messages', 'usuarioConrtoler.msg_2'));
 				_view.btnLogin.enabled = true;
 				_view.btnLogin.label = 'Login';
 			}
