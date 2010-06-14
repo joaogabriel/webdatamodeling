@@ -81,12 +81,12 @@
 	</mx:VBox>
 	
 	<mx:StringValidator id="valNome" source="{txtNome}" property="text" required="true"
-				  requiredFieldError="Campo obrigatório."
-				  tooLongError="Limite máximo de 30 caracteres."
+				  requiredFieldError="{resourceManager.getString('messages', 'dadosArquivo.campoObrigatorio')}"
+				  tooLongError="{resourceManager.getString('messages', 'dadosArquivo.limiteMaxNome')}"
 				  maxLength="30" />
 				  
 	<mx:StringValidator id="valDescricao" source="{txtDescricao}" property="text" required="true"
-				  requiredFieldError="Campo obrigatório."
-				  tooLongError="Limite máximo de 100 caracteres."
+				  requiredFieldError="{resourceManager.getString('messages', 'dadosArquivo.campoObrigatorio')}"
+				  tooLongError="{resourceManager.getString('messages', 'dadosArquivo.limiteMaxDescricao')}"
 				  maxLength="100"/>
 </mx:TabNavigator>

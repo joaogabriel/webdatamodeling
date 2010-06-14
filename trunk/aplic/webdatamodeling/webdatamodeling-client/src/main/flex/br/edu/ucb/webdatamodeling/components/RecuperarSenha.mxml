@@ -28,13 +28,13 @@
 	</mx:VBox>
 	
 	<mx:EmailValidator id="valEmail" source="{txtEmail}" property="text" required="true" 
-						missingAtSignError="O e-mail deve conter apenas: - _ . +" 
-						missingPeriodInDomainError="O e-mail deve conter apenas: - _ . +" 
-						missingUsernameError="O e-mail deve conter apenas: - _ . +"
-						invalidCharError="O e-mail deve conter apenas: - _ . +"
-						invalidDomainError="O e-mail deve conter apenas: - _ . +" 
-						invalidIPDomainError="O e-mail deve conter apenas: - _ . +"
-						invalidPeriodsInDomainError="O e-mail deve conter apenas: - _ . +"
-						tooManyAtSignsError="O e-mail deve conter apenas: - _ . +"
-						requiredFieldError="Campo obrigatório."  />
+						missingAtSignError="{resourceManager.getString('messages', 'recuperar.formatoEmail')}" 
+						missingPeriodInDomainError="{resourceManager.getString('messages', 'recuperar.formatoEmail')}" 
+						missingUsernameError="{resourceManager.getString('messages', 'recuperar.formatoEmail')}"
+						invalidCharError="{resourceManager.getString('messages', 'recuperar.formatoEmail')}"
+						invalidDomainError="{resourceManager.getString('messages', 'recuperar.formatoEmail')}" 
+						invalidIPDomainError="{resourceManager.getString('messages', 'recuperar.formatoEmail')}"
+						invalidPeriodsInDomainError="{resourceManager.getString('messages', 'recuperar.formatoEmail')}"
+						tooManyAtSignsError="{resourceManager.getString('messages', 'recuperar.formatoEmail')}"
+						requiredFieldError="{resourceManager.getString('messages', 'recuperar.campoObrigatorio')}"  />
 </mx:Panel>

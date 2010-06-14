@@ -41,7 +41,7 @@ package br.edu.ucb.webdatamodeling.controller
 			if ( Validator.validateAll([_view.valEmail,_view.valSenha]).length == 0 )
 				login();
 			else
-				Alert.show(_resourceManager.getString('messages', 'usuarioConrtoler.msg_1'));
+				Alert.show(_resourceManager.getString('messages', 'loginControler.preenchimentoIncorreto'));
 		}
 		
 		public function login():void
@@ -60,7 +60,7 @@ package br.edu.ucb.webdatamodeling.controller
 		{
 			if (event.data == null)
 			{
-				var str:String = _resourceManager.getString('messages', 'usuarioConrtoler.msg_2');
+				var str:String = _resourceManager.getString('messages', 'loginControler.usuarioNaoCadastrado');
 				Alert.show(str);
 				_view.btnLogin.enabled = true;
 				_view.btnLogin.label = 'Login';

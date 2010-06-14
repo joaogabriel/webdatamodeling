@@ -38,20 +38,20 @@
 		</mx:VBox>
 	</mx:Form>
 	<mx:EmailValidator id="valEmail" source="{txtEmail}" property="text" required="true" 
-						missingAtSignError="O e-mail deve conter apenas: - _ . +" 
-						missingPeriodInDomainError="O e-mail deve conter apenas: - _ . +" 
-						missingUsernameError="O e-mail deve conter apenas: - _ . +"
-						invalidCharError="O e-mail deve conter apenas: - _ . +"
-						invalidDomainError="O e-mail deve conter apenas: - _ . +" 
-						invalidIPDomainError="O e-mail deve conter apenas: - _ . +"
-						invalidPeriodsInDomainError="O e-mail deve conter apenas: - _ . +"
-						tooManyAtSignsError="O e-mail deve conter apenas: - _ . +"
-						requiredFieldError="Campo obrigatório."  />
+						missingAtSignError="{resourceManager.getString('messages', 'usuario.formatoEmail')}" 
+						missingPeriodInDomainError="{resourceManager.getString('messages', 'usuario.formatoEmail')}" 
+						missingUsernameError="{resourceManager.getString('messages', 'usuario.formatoEmail')}+"
+						invalidCharError="{resourceManager.getString('messages', 'usuario.formatoEmail')}"
+						invalidDomainError="{resourceManager.getString('messages', 'usuario.formatoEmail')}" 
+						invalidIPDomainError="{resourceManager.getString('messages', 'usuario.formatoEmail')}"
+						invalidPeriodsInDomainError="{resourceManager.getString('messages', 'usuario.formatoEmail')}"
+						tooManyAtSignsError="{resourceManager.getString('messages', 'usuario.formatoEmail')}"
+						requiredFieldError="{resourceManager.getString('messages', 'usuario.campoObrigatorio')}"  />
 						
 	<mx:StringValidator id="valSenha" source="{txtSenha}" property="text" required="true" 
-				  requiredFieldError="Campo obrigatório."
-				  tooLongError="Limite máximo de 20 caracteres."
-				  tooShortError="Limite mínimo de 6 caracteres."
+				  requiredFieldError="{resourceManager.getString('messages', 'usuario.campoObrigatorio')}"
+				  tooLongError="{resourceManager.getString('messages', 'usuario.limiteMaxSenha')}."
+				  tooShortError="{resourceManager.getString('messages', 'usuario.limiteMinSenha')}"
 				  maxLength="20"
 				  minLength="6" />
 
