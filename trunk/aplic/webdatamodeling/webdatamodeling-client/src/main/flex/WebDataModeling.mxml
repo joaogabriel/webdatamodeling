@@ -38,13 +38,21 @@
 			private var _controller:WebDataModelingController;
 			private var _controllerTreeView:TreeViewController;
 			
+			private var _pastaService:PastaService = PastaService.getInstance();
+			private var _usuarioService:UsuarioService = UsuarioService.getInstance();
+
+			[Bindable]
+			private var files:ArrayCollection;
+						
 			public function init():void
 			{
 				_controller = new WebDataModelingController(this);
 				_controller.init();
 				
-				
-				 init2();
+				// iniciando árvore
+				_usuarioService.addEventListener("login", initHandler);
+				_controller.addEventListener(NovoArquivoController.UPDATE_TREE, initHandler);
+				treeView.addEventListener(NovoArquivoController.UPDATE_TREE, initHandler);
 			}
 
 			private function initTreeView():void
@@ -62,117 +70,64 @@
 				novoArquivo.tree = treeView;
 			}
 			
-			
-			
-			
-			
-			
-			// aqui
-			[Bindable]
-		private var files:ArrayCollection;
-	
-		private var _pastaService:PastaService = PastaService.getInstance();
-		
-		private var _usuarioService:UsuarioService = UsuarioService.getInstance();
-		
-		public function init2():void
-		{
-			/* var node1:FileNode = new FileNode();
-			node1.size = 5;
-			node1.Name = "nó 1";
-			node1.fullName = "";
-			node1.createdOn = new Date();
-			node1.lastAccessedOn = new Date();
-			node1.lastWrittenOn = new Date();
-
-			var folder2:FolderNode = new FolderNode();
-			folder2.Name = "Pasta 2";
-			
-			var folder1:FolderNode = new FolderNode();
-			folder1.Name = "Pasta 1";
-			folder1.items.addItem(node1);
-			folder1.items.addItem(folder2);
-			
-			files = new ArrayCollection();
-			files.addItem(folder1); */
-			_usuarioService.addEventListener("login", initHandler);
-			_controller.addEventListener(NovoArquivoController.UPDATE_TREE, initHandler);
-			treeView.addEventListener(NovoArquivoController.UPDATE_TREE, initHandler);
-		}
-		
-		public function initHandler(event:Event):void
-		{
-			_pastaService.addEventListener("getPastas", processRootStructure);
-			_pastaService.getPastasByUsuarioAutenticado();
-		}
-		
-		private function processRootStructure(result:CustomEvent):void
-		{
-			var pastas:ArrayCollection = result.data;
-			
-			if (pastas == null || pastas.length == 0) {
-				msgEstruturaVazia.visible = true;
-			} else {
-				msgEstruturaVazia.visible = false;
-				files = result.data;
-			}
-		}
-		
-		private function gotError(fault:FaultEvent):void
-		{
-			Alert.show("Server reported an error - " + fault.fault.faultString);
-		}
-		
-		public function handleTreeChange(event:Event):void
-		{
-			var selectedItem:Object = Tree(event.target).selectedItem;
-			
-			if (selectedItem is PastaDTO)
+			public function initHandler(event:Event):void
 			{
-				fetchFolderInfo(PastaDTO(selectedItem));
+				_pastaService.addEventListener("getPastas", processRootStructure);
+				_pastaService.getPastasByUsuarioAutenticado();
 			}
-			else if (selectedItem is ArquivoDTO)
+			
+			private function processRootStructure(result:CustomEvent):void
 			{
-				fetchFileInfo(ArquivoDTO(selectedItem));
+				var pastas:ArrayCollection = result.data;
+				
+				if (pastas == null || pastas.length == 0) {
+					msgEstruturaVazia.visible = true;
+				} else {
+					msgEstruturaVazia.visible = false;
+					files = result.data;
+				}
 			}
-		}
-		
-		public function handleRetrieve(event:TreeEvent):void
-		{
-			if (event.item is FolderNode && event.opening) {
-				fetchFolderInfo(PastaDTO(event.item));
-			}
-		}
-		
-		private function fetchFolderInfo(folder:PastaDTO):void
-		{
-			if (folder.arquivos.length != 0) {
-				return;
-			}
-			// escrever service	
-			/* var asyncToken:AsyncToken = null;//fileSystemService.getDirectory( folder.fullName );
 			
-			asyncToken.addResponder( new mx.rpc.Responder(
-                function( event:ResultEvent ):void
-                {
-                	folder.arquivos = new ArrayCollection(event.result as Array);
-                	treeView.validateNow();
-                	treeView.expandItem( folder, true );	                	
-                },
-                function( fault:FaultEvent):void
-                {
-                	gotError( fault );
-                }
-            ));*/
-		}
-		
-		private function fetchFileInfo(file:ArquivoDTO):void
-		{
-			var manterArquivoView:ManterArquivo = new ManterArquivo();
-			manterArquivoView.arquivo = file;
+			private function gotError(fault:FaultEvent):void
+			{
+				Alert.show("Server reported an error - " + fault.fault.faultString);
+			}
 			
-			fileView.addChild(manterArquivoView);
-		}
+			public function handleTreeChange(event:Event):void
+			{
+				var selectedItem:Object = Tree(event.target).selectedItem;
+				
+				if (selectedItem is PastaDTO)
+				{
+					fetchFolderInfo(PastaDTO(selectedItem));
+				}
+				else if (selectedItem is ArquivoDTO)
+				{
+					fetchFileInfo(ArquivoDTO(selectedItem));
+				}
+			}
+			
+			public function handleRetrieve(event:TreeEvent):void
+			{
+				if (event.item is FolderNode && event.opening) {
+					fetchFolderInfo(PastaDTO(event.item));
+				}
+			}
+			
+			private function fetchFolderInfo(folder:PastaDTO):void
+			{
+				if (folder.arquivos.length != 0) {
+					return;
+				}
+			}
+			
+			private function fetchFileInfo(file:ArquivoDTO):void
+			{
+				var manterArquivoView:ManterArquivo = new ManterArquivo();
+				manterArquivoView.arquivo = file;
+				
+				fileView.addChild(manterArquivoView);
+			}
 		]]>
 	</mx:Script>
 	<mx:VBox width="100%" height="100%">

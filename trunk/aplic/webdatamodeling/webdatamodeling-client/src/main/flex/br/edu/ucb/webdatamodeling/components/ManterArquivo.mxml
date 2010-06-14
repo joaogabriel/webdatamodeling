@@ -6,7 +6,6 @@
 			import mx.controls.Alert;
 			import br.edu.ucb.webdatamodeling.controller.ManterArquivoController;
 			import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
-			import br.edu.ucb.webdatamodeling.controller.DadosArquivoController;
 		
 			private var _controller:ManterArquivoController;
 			

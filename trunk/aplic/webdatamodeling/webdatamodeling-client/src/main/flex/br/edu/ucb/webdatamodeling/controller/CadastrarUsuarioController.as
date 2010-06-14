@@ -81,7 +81,6 @@ package br.edu.ucb.webdatamodeling.controller
 			
 			_usuarioService.insert(_usuarioDTO);
 			
-			//_usuarioService.addEventListener("progressBar", posInsert);
 			posInsert();
 		}
 		
@@ -89,10 +88,10 @@ package br.edu.ucb.webdatamodeling.controller
 		{
 			addMensagemSucesso();
 			desabiblitarBotoes();
-			startProgressBar();
+			autenticar();
 		}
 		
-		private function autenticar(event:Event):void
+		private function autenticar():void
 		{
 			_usuarioService.efetuarLogin(_usuarioDTO);
 		}
@@ -104,29 +103,10 @@ package br.edu.ucb.webdatamodeling.controller
 			_view.btnCancelar.enabled = false;
 		}
 		
-		private function startProgressBar():void
-		{
-			_view.bar.visible = true;
-			
-			timer = new Timer(1, 91);
-			timer.addEventListener("timer", incrementarProgressBar);
-			timer.addEventListener(TimerEvent.TIMER_COMPLETE, autenticar);
-			timer.start();
-		}
-		
 		private function addMensagemSucesso():void
 		{
 			_view.msgCadastro.visible = true;
 		}
 		
-		private function incrementarProgressBar(event:TimerEvent):void
-		{
-			var label:String = _resourceManager.getString('messages', 'usuario.msgAutenticando');
-			 
-			_view.bar.setProgress(j, 100);
-			_view.bar.label = label + " " + j + "%";
-			j++;
-		}
-
 	}
 }

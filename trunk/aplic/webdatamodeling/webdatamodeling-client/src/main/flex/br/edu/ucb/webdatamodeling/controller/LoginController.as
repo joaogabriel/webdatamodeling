@@ -6,7 +6,6 @@ package br.edu.ucb.webdatamodeling.controller
 	import br.edu.ucb.webdatamodeling.service.UsuarioService;
 	
 	import mx.controls.Alert;
-	import mx.managers.PopUpManager;
 	import mx.resources.IResourceManager;
 	import mx.resources.ResourceManager;
 	import mx.validators.Validator;
@@ -61,7 +60,8 @@ package br.edu.ucb.webdatamodeling.controller
 		{
 			if (event.data == null)
 			{
-				Alert.show(_resourceManager.getString('messages', 'usuarioConrtoler.msg_2'));
+				var str:String = _resourceManager.getString('messages', 'usuarioConrtoler.msg_2');
+				Alert.show(str);
 				_view.btnLogin.enabled = true;
 				_view.btnLogin.label = 'Login';
 			}

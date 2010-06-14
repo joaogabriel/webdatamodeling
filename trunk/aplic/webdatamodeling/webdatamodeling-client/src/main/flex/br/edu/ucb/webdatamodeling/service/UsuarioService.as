@@ -28,24 +28,28 @@ package br.edu.ucb.webdatamodeling.service
 
         public function insert(usuario:UsuarioDTO):void
         {
+        	_remoteObject.showBusyCursor = true;
         	_remoteObject.addEventListener("result", insertHandler);
         	_remoteObject.insert(usuario);
         }
         
         private function insertHandler(event:ResultEvent):void
         {
+            _remoteObject.showBusyCursor = false;
             dispatchEvent(new CustomEvent("insert", event.result));
             _remoteObject.removeEventListener(ResultEvent.RESULT, insertHandler);
         }
         
         public function efetuarLogin(usuario:UsuarioDTO):void
         {
+        	_remoteObject.showBusyCursor = true;
         	_remoteObject.addEventListener("result", efetuarLoginHandler);
         	_remoteObject.efetuarLogin(usuario);
         }
         
         private function efetuarLoginHandler(event:ResultEvent):void
         {                   
+            _remoteObject.showBusyCursor = false;
             var usuarioDTO:UsuarioDTO = event.result as UsuarioDTO;
             dispatchEvent(new CustomEvent("login", usuarioDTO));
             _remoteObject.removeEventListener(ResultEvent.RESULT, efetuarLoginHandler);
@@ -53,6 +57,7 @@ package br.edu.ucb.webdatamodeling.service
         
         public function recuperarSenha(usuario:UsuarioDTO):void
         {
+        	_remoteObject.showBusyCursor = true;
         	_remoteObject.addEventListener(ResultEvent.RESULT, recuperarSenhaHandler);
         	_remoteObject.recuperarSenha(usuario);
         }
@@ -61,10 +66,12 @@ package br.edu.ucb.webdatamodeling.service
         {
             dispatchEvent(new CustomEvent("recuperarSenha", event.result));
             _remoteObject.removeEventListener(ResultEvent.RESULT, recuperarSenhaHandler);
+            _remoteObject.showBusyCursor = false;
         } 
 
         public function efetuarLogout():void
         {
+        	_remoteObject.showBusyCursor = true;
         	_remoteObject.addEventListener("result", efetuarLogoutHandler);
         	_remoteObject.efetuarLogout();
         	_remoteObject.removeEventListener(ResultEvent.RESULT, efetuarLoginHandler);
@@ -74,6 +81,7 @@ package br.edu.ucb.webdatamodeling.service
         {
             dispatchEvent(new CustomEvent("logout", event.result));
             _remoteObject.removeEventListener(ResultEvent.RESULT, efetuarLoginHandler);
+            _remoteObject.showBusyCursor = false;
         }
         
 		public function verificarUsuarioAutenticado():void
