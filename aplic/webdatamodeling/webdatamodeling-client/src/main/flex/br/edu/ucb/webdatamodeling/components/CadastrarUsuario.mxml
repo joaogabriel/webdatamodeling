@@ -46,10 +46,6 @@
 	</mx:HBox>
 	<mx:VBox horizontalAlign="center" width="100%">
 		<mx:Text id="msgCadastro" styleName="msgSucesso" text="{resourceManager.getString('messages', 'cadastro.msgCadastro')}" visible="false" selectable="false"/>
-		<!--<mx:Text styleName="msgSucesso" id="msgCadastroCont" visible="false" selectable="false"/>-->
-		<mx:ProgressBar id="bar" minimum="0" visible="false" maximum="100"
-			color="0x323232" labelPlacement="center" direction="right" mode="manual" />
-
 	</mx:VBox>
 
 	<mx:EmailValidator id="valEmail" source="{txtEmail}" property="text" 
@@ -78,6 +74,4 @@
 				  tooShortError="Limite mínimo de 6 caracteres."
 				  maxLength="20"
 				  minLength="6" />
-							
-	<!--<mx:Binding source="{_controller.cont}" destination="msgCadastroCont.text"/>-->
 </mx:Panel>

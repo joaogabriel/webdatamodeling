@@ -13,6 +13,7 @@ package br.edu.ucb.webdatamodeling.dto
 		private var _arquivo:ArquivoDTO;
 		private var _tabelas:ArrayCollection;
 		private var _usuarios:ArrayCollection;
+		private var _notas:ArrayCollection;
 		
 		public function MerDTO()
 		{
@@ -76,6 +77,16 @@ package br.edu.ucb.webdatamodeling.dto
 		public function set usuarios(value:ArrayCollection):void 
 		{
 			_usuarios = value;
+		}
+		
+		public function get notas():ArrayCollection
+		{
+			return _notas;
+		}
+		
+		public function set notas(notas:ArrayCollection):void
+		{
+			_notas = notas;
 		}
 
 	}

@@ -7,6 +7,7 @@ package br.edu.ucb.webdatamodeling.controller
 	import br.edu.ucb.webdatamodeling.dto.MerDTO;
 	import br.edu.ucb.webdatamodeling.events.CustomEvent;
 	import br.edu.ucb.webdatamodeling.events.ModelingEvent;
+	import br.edu.ucb.webdatamodeling.service.ArquivoService;
 	import br.edu.ucb.webdatamodeling.service.MERService;
 	import br.edu.ucb.webdatamodeling.service.TipoCampoService;
 	import br.edu.ucb.webdatamodeling.service.UsuarioService;
@@ -26,6 +27,10 @@ package br.edu.ucb.webdatamodeling.controller
 		private var _model:MainModel = MainModel.GetInstance();
 		
 		private var _usuarioService:UsuarioService = UsuarioService.getInstance();
+		
+		private var _merService:MERService = MERService.getInstance();
+		
+		private var _arquivoService:ArquivoService = ArquivoService.getInstance();
 		
 		private var _tipoCampoService:TipoCampoService = TipoCampoService.getInstance();
 		
@@ -57,17 +62,17 @@ package br.edu.ucb.webdatamodeling.controller
 			_usuarioService.addEventListener("usuarioLogado", usuarioLogadoHandler);
 			_usuarioService.verificarUsuarioAutenticado();
 			
-			_view.content.addEventListener(DadosArquivoController.SHOW_MODELING, showModeling);
+			_view.content.addEventListener(ManterArquivoController.SHOW_MODELING, showModeling);
 		}
 		
 		private function showModeling(event:CustomEvent):void
 		{
 			_view.subContent.visible = false;
 			
-			var s:MERService = new MERService();
-			s.addEventListener("getByArquivo", modelingHandler);
 			_arquivo = event.data;
-			s.getMerByArquivo(_arquivo);
+			
+			_merService.addEventListener("getByArquivo", modelingHandler);
+			_merService.getMerByArquivo(_arquivo);
 		}
 		
 		private function modelingHandler(event:CustomEvent):void
@@ -81,6 +86,7 @@ package br.edu.ucb.webdatamodeling.controller
 			_modeling.mask = DisplayUtils.drawRect(_view.content.width, _view.content.height, 0);
 			ui.addChild(_modeling.mask);
 			_view.content.addChild(ui);
+			
             _modeling.addEventListener(Event.COMPLETE, modelingCreatedHandler);
             _modeling.addEventListener(ModelingEvent.SAVE, modelingSaveHandler);
             _modeling.addEventListener(ModelingEvent.CLOSE, modelingCloseHandler);
@@ -130,19 +136,22 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		private function modelingSaveHandler(event:ModelingEvent):void
 		{
-			var service:MERService = new MERService();
-			var mer:MerDTO = new MerDTO();
-			var a:ArrayCollection = new ArrayCollection(event.tables);
-			mer.tabelas = a;
-			mer.arquivo = _arquivo;
-			service.insert(mer)
+			var tabelas:ArrayCollection = new ArrayCollection(event.tables);
+			
+			if (_arquivo.mer == null)
+			{
+				_arquivo.mer = new MerDTO;
+				_arquivo.mer.arquivo = _arquivo;
+			}
+			
+			_arquivo.mer.tabelas = tabelas;
+			_arquivoService.update(_arquivo);
 		}
 		
 		private function modelingCreatedHandler(event:Event):void
 		{
 			_tipoCampoService.addEventListener("findAll", tipoCampoHandler);
 			_tipoCampoService.findAll();
-			
 		}
 		
 		private function tipoCampoHandler(event:CustomEvent):void
@@ -162,7 +171,8 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		public function loginHandler(event:CustomEvent):void
 		{
-			if (event.data != null) {
+			if (event.data != null)
+			{
 				PopUpManager.removePopUp(_popup);
 			}
 		}
@@ -175,8 +185,6 @@ package br.edu.ucb.webdatamodeling.controller
 		public function logout():void
 		{
 			_usuarioService.efetuarLogout();
-			//var v:URLRequest = new URLRequest("C:\\java\\workspaces\\workspaceWDM\\webdatamodeling-client\\bin-debug\\WebDataModeling.swf");
-			//navigateToURL(v, "_self"); 
 		}
 		
 	}

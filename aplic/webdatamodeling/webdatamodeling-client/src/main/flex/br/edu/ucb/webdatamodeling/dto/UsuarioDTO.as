@@ -1,5 +1,7 @@
 package br.edu.ucb.webdatamodeling.dto
 {
+	import mx.collections.ArrayCollection;
+	
 	[RemoteClass(alias="br.edu.ucb.webdatamodeling.dto.UsuarioDTO")]
 	public class UsuarioDTO extends AbstractDTO
 	{
@@ -10,6 +12,8 @@ package br.edu.ucb.webdatamodeling.dto
 		private var _senha:String;
 		private var _dataCadastro:Date;
 		private var _dataNascimento:Date;
+		private var _pastas:ArrayCollection;
+		private var _mers:ArrayCollection;
 		
 		public function UsuarioDTO() 
 		{
@@ -83,6 +87,26 @@ package br.edu.ucb.webdatamodeling.dto
 		public function set dataNascimento(value:Date):void 
 		{
 			_dataNascimento = value;
+		}
+		
+		public function get pastas():ArrayCollection
+		{
+			return _pastas;
+		}
+		
+		public function set pastas(pastas:ArrayCollection):void
+		{
+			_pastas = pastas;
+		}
+		
+		public function get mers():ArrayCollection
+		{
+			return _mers;
+		}
+		
+		public function set mers(mers:ArrayCollection):void
+		{
+			_mers = mers;
 		}
 
 	}
