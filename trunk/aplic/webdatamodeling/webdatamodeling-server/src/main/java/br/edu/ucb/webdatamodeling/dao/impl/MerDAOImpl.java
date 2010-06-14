@@ -36,22 +36,42 @@ public class MerDAOImpl extends AbstractObjectDAO<Mer> implements MerDAO {
 	}
 
 	@Override
-	public Mer getMerByArquivo(Long idArquivo) {
+	public Mer getMerByArquivo(Long idArquivo) throws ObjectDAOException {
+		Mer mer = null;
+		List<Mer> resultList = null;
 		StringBuilder query = new StringBuilder();
-		query.append("from ").append(getEntityClass().getName()).append(" mer");
-		query.append(" where mer.arquivo.id = ").append(idArquivo);
 		
 		try {
-			List<Mer> resultList = getPersistence().findByHQL(query.toString());
+			query.append("from ").append(getEntityClass().getName()).append(" mer");
+			query.append(" where mer.arquivo.id = ").append(idArquivo);
+			
+			resultList = getPersistence().findByHQL(query.toString());
+			
 			if (resultList != null && resultList.size() == 1) {
-				return resultList.get(0);
+				mer = resultList.get(0);
 			}
 		} catch (PersistenceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ObjectDAOException("Não foi possível recuperar o MER a partir do arquivo com identificador " + idArquivo, e);
 		}
 		
-		return null;
+		return mer;
+	}
+
+	@Override
+	public List<Mer> findMersByUsuarioCompartilhado(Long idUsuario) throws ObjectDAOException {
+		List<Mer> resultList = null;
+		StringBuilder query = new StringBuilder();
+		
+		try {
+			query.append("from ").append(getEntityClass().getName()).append(" mer, IN(mer.usuarios) AS u");
+			query.append(" where u.id = ").append(idUsuario);
+			
+			resultList = getPersistence().findByHQL(query.toString());
+		} catch (PersistenceException e) {
+			throw new ObjectDAOException("Não foi possível recuperar MERs compartilhados com o usuário com identificador " + idUsuario, e);
+		}
+		
+		return resultList;
 	}
 	
 }

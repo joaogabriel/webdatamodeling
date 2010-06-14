@@ -33,6 +33,7 @@ public class Mer extends AbstractEntity<Long> {
 	private Arquivo arquivo;
 	private List<Tabela> tabelas;
 	private List<Usuario> usuarios;
+	private List<Nota> notas;
 
 	@Id
 	@Column(name="id_mer")
@@ -96,4 +97,13 @@ public class Mer extends AbstractEntity<Long> {
 		this.usuarios = usuarios;
 	}
 
+	@OneToMany(mappedBy="mer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	public List<Nota> getNotas() {
+		return notas;
+	}
+
+	public void setNotas(List<Nota> notas) {
+		this.notas = notas;
+	}
+	
 }

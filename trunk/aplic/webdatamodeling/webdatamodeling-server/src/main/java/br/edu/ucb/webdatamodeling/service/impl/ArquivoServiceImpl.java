@@ -16,6 +16,9 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ucb.webdatamodeling.dao.ArquivoDAO;
 import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
+import br.edu.ucb.webdatamodeling.dto.CampoDTO;
+import br.edu.ucb.webdatamodeling.dto.MerDTO;
+import br.edu.ucb.webdatamodeling.dto.TabelaDTO;
 import br.edu.ucb.webdatamodeling.entity.Arquivo;
 import br.edu.ucb.webdatamodeling.framework.service.AbstractObjectService;
 import br.edu.ucb.webdatamodeling.framework.service.ServiceException;
@@ -34,7 +37,19 @@ public class ArquivoServiceImpl extends AbstractObjectService<Arquivo, ArquivoDT
 	@Override
 	public ArquivoDTO update(ArquivoDTO dto) throws ServiceException {
 		dto.setDataUltimaAlteracao(new Date());
+		setTabelaNosCampos(dto.getMer());
 		return super.update(dto);
+	}
+	
+	private void setTabelaNosCampos(MerDTO dto) {
+		if (dto != null) {
+			for (TabelaDTO tabelaDTO : dto.getTabelas()) {
+				tabelaDTO.setMer(dto);
+				for (CampoDTO campoDTO : tabelaDTO.getCampos()) {
+					campoDTO.setTabela(tabelaDTO);
+				}
+			}
+		}
 	}
 	
 	@Override

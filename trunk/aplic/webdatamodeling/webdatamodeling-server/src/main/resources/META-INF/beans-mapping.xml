@@ -5,7 +5,7 @@
 <mappings>
 
 	<configuration>
-		<stop-on-errors>true</stop-on-errors>
+		<stop-on-errors>false</stop-on-errors>
 		<date-format>dd/MM/yyyy</date-format>
 		<wildcard>true</wildcard>
 	</configuration>
@@ -47,6 +47,12 @@
 			<b>usuarios</b>
 			<a-hint>br.edu.ucb.webdatamodeling.entity.Usuario</a-hint>
 			<b-hint>br.edu.ucb.webdatamodeling.dto.UsuarioDTO</b-hint>
+		</field>
+		<field relationship-type="cumulative">
+			<a>notas</a>
+			<b>notas</b>
+			<a-hint>br.edu.ucb.webdatamodeling.entity.Nota</a-hint>
+			<b-hint>br.edu.ucb.webdatamodeling.dto.NotaDTO</b-hint>
 		</field>
 	</mapping>
 
@@ -98,6 +104,17 @@
 			<b>tipo</b>
 			<a-hint>br.edu.ucb.webdatamodeling.entity.TipoCampo</a-hint>
 			<b-hint>br.edu.ucb.webdatamodeling.dto.TipoCampoDTO</b-hint>
+		</field>
+	</mapping>
+	
+	<mapping map-null="true">
+		<class-a>br.edu.ucb.webdatamodeling.entity.Nota</class-a>
+		<class-b>br.edu.ucb.webdatamodeling.dto.NotaDTO</class-b>
+		<field relationship-type="cumulative">
+			<a>mer</a>
+			<b>mer</b>
+			<a-hint>br.edu.ucb.webdatamodeling.entity.Mer</a-hint>
+			<b-hint>br.edu.ucb.webdatamodeling.dto.MerDTO</b-hint>
 		</field>
 	</mapping>
 

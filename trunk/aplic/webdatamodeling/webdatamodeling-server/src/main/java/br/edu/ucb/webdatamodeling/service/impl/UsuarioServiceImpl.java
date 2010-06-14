@@ -2,7 +2,9 @@ package br.edu.ucb.webdatamodeling.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -11,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ucb.webdatamodeling.criptografia.service.CriptografiaService;
 import br.edu.ucb.webdatamodeling.dao.UsuarioDAO;
+import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
+import br.edu.ucb.webdatamodeling.dto.MerDTO;
+import br.edu.ucb.webdatamodeling.dto.PastaDTO;
 import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
 import br.edu.ucb.webdatamodeling.entity.Usuario;
 import br.edu.ucb.webdatamodeling.framework.dao.ObjectDAOException;
@@ -18,6 +23,7 @@ import br.edu.ucb.webdatamodeling.framework.service.AbstractObjectService;
 import br.edu.ucb.webdatamodeling.framework.service.ServiceException;
 import br.edu.ucb.webdatamodeling.mail.MailException;
 import br.edu.ucb.webdatamodeling.mail.service.impl.MailServiceImpl;
+import br.edu.ucb.webdatamodeling.service.MerService;
 import br.edu.ucb.webdatamodeling.service.UsuarioService;
 import flex.messaging.FlexContext;
 import flex.messaging.FlexSession;
@@ -30,6 +36,8 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 	
 	private MailServiceImpl mailService;
 	private CriptografiaService criptografiaService;
+	private MerService merService;
+	
 	private FlexSession flexSession;
 	
 	@Override
@@ -81,6 +89,7 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 	public UsuarioDTO efetuarLogin(UsuarioDTO usuarioDTO) throws ServiceException {
 		Usuario usuario = null;
 		String senhaCriptografada = null;
+		List<PastaDTO> pastasCompartilhadas = null;
 		
 		try {
 			usuario = parseEntity(usuarioDTO);
@@ -90,6 +99,15 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 			
 			if (usuario != null) {
 				usuarioDTO = parseDTO(usuario);
+				
+				pastasCompartilhadas = verificarCompartilhamento(usuarioDTO);
+				
+				if (usuarioDTO.getPastas() == null) {
+					usuarioDTO.setPastas(new ArrayList<PastaDTO>());
+				}
+				
+				usuarioDTO.getPastas().addAll(pastasCompartilhadas);
+				
 				getFlexSession().setAttribute(USUARIO_SESSAO, usuarioDTO);
 			} else {
 				usuarioDTO = null;
@@ -111,18 +129,22 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 	public UsuarioDTO recuperarSenha(UsuarioDTO usuarioDTO) throws ServiceException {
 		Usuario usuario = null;
 		String novaSenha = criptografiaService.gerarNovaSenha();
+		String novaSenhaCriptografada = criptografiaService.criptografarSenha(novaSenha); 
 		
 		try {
 			usuario = parseEntity(usuarioDTO);
 			usuario = getObjectDAO().findByEmail(usuario);
-			usuario.setSenha(novaSenha);
-			
-			update(parseDTO(usuario));
 			
 			if (usuario != null) {
+				usuario.setSenha(novaSenha);
+				
 				// envia e-mail com a nova senha
 				mailService.send(usuario);
 				usuarioDTO = parseDTO(usuario);
+				
+				usuario.setSenha(novaSenhaCriptografada);
+				usuarioDTO = parseDTO(usuario);
+				update(usuarioDTO);
 			} else {
 				usuarioDTO = null;
 			}
@@ -153,6 +175,47 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 		return true;
 	}
 
+	@Override
+	public List<PastaDTO> verificarCompartilhamento(UsuarioDTO usuarioDTO) throws ServiceException {
+		PastaDTO pastaDTO = null;
+		Long idUsuario = null;
+		String nomeUsuario = null;
+		List<PastaDTO> pastas = null;
+		List<MerDTO> mersCompartilhados = null;
+		Map<Long, PastaDTO> mapCompartilhamento = null;
+		
+		try {
+			mersCompartilhados = merService.findMersByUsuarioCompartilhado(usuarioDTO);
+			
+			if (mersCompartilhados != null && !mersCompartilhados.isEmpty()) {
+				mapCompartilhamento = new HashMap<Long, PastaDTO>();
+				pastas = new ArrayList<PastaDTO>();
+				
+				for (MerDTO mer : mersCompartilhados) {
+					idUsuario = mer.getArquivo().getPasta().getUsuario().getId();
+					nomeUsuario = mer.getArquivo().getPasta().getUsuario().getNome();
+					
+					if (mapCompartilhamento.containsKey(nomeUsuario)) {
+						mapCompartilhamento.get(nomeUsuario).getArquivos().add(mer.getArquivo());
+					} else {
+						pastaDTO = new PastaDTO();
+						pastaDTO.setNome("MERs compartilhados por " + nomeUsuario);
+						pastaDTO.setArquivos(new ArrayList<ArquivoDTO>());
+						pastaDTO.getArquivos().add(mer.getArquivo());
+						
+						mapCompartilhamento.put(idUsuario, pastaDTO);
+					}
+				}
+				
+				pastas = (List<PastaDTO>) mapCompartilhamento.values();
+			}
+		} catch (ServiceException e) {
+			throw new ServiceException("Erro ao verificar compartilhamentos.", e);
+		}
+		
+		return pastas;
+	}
+	
 	@Override
 	public UsuarioDTO verificarUsuarioAutenticado() throws ServiceException {
 		if (getFlexSession().getAttribute(USUARIO_SESSAO) != null) {
@@ -217,6 +280,11 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 	@Resource(name = "UsuarioDAO")
 	public void setDao(UsuarioDAO dao) {
 		super.setDao(dao);
+	}
+	
+	@Resource(name = "MerService")
+	public void setMerService(MerService merService) {
+		this.merService = merService;
 	}
 
 	@Override

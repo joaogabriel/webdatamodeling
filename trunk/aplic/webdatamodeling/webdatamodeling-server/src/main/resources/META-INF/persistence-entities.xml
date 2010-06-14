@@ -10,6 +10,7 @@
 		<class>br.edu.ucb.webdatamodeling.entity.Arquivo</class>
 		<class>br.edu.ucb.webdatamodeling.entity.Campo</class>
 		<class>br.edu.ucb.webdatamodeling.entity.Mer</class>
+		<class>br.edu.ucb.webdatamodeling.entity.Nota</class>
 		<class>br.edu.ucb.webdatamodeling.entity.Pasta</class>
 		<class>br.edu.ucb.webdatamodeling.entity.Tabela</class>
 		<class>br.edu.ucb.webdatamodeling.entity.TipoArquivo</class>

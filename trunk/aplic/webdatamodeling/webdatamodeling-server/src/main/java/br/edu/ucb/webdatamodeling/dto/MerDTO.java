@@ -14,7 +14,8 @@ public class MerDTO extends AbstractDTO<Mer, Long> {
 	private ArquivoDTO arquivo;
 	private List<TabelaDTO> tabelas;
 	private List<UsuarioDTO> usuarios;
-
+	private List<NotaDTO> notas;
+	
 	public Long getId() {
 		return id;
 	}
@@ -63,4 +64,12 @@ public class MerDTO extends AbstractDTO<Mer, Long> {
 		this.usuarios = usuarios;
 	}
 
+	public List<NotaDTO> getNotas() {
+		return notas;
+	}
+
+	public void setNotas(List<NotaDTO> notas) {
+		this.notas = notas;
+	}
+	
 }
