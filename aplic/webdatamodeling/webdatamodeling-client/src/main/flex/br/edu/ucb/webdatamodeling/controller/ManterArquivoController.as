@@ -84,7 +84,7 @@ package br.edu.ucb.webdatamodeling.controller
 		{
 			if (_arquivo == null || _arquivo.mer == null || _arquivo.mer.tabelas == null)
 			{
-				_script = _resourceManager.getString('messages', 'manterArquivoConrtoler.msg_1');
+				_script = _resourceManager.getString('messages', 'manterArquivoControler.merNaoDesenhado');
 			}
 			
 			else
@@ -114,7 +114,7 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		private function updateHandler(event:CustomEvent):void
 		{
-			_view.msgStatus.text = _resourceManager.getString('messages', 'manterArquivoConrtoler.msg_2');
+			_view.msgStatus.text = _resourceManager.getString('messages', 'manterArquivoControler.operacaoComSucesso');
 			_view.msgStatus.visible = true;
 		}
 		
@@ -139,7 +139,7 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		public function excluir():void
 		{
-			Alert.show(_resourceManager.getString('messages', 'manterArquivoConrtoler.msg_3'), "Aviso", Alert.NO | Alert.YES, null, alertListener);
+			Alert.show(_resourceManager.getString('messages', 'manterArquivoControler.confirmaExcluirArquivo'), "Aviso", Alert.NO | Alert.YES, null, alertListener);
 		}
 		
 		private function alertListener(event:CloseEvent):void

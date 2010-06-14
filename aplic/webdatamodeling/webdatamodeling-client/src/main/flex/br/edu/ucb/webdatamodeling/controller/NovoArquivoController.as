@@ -49,7 +49,7 @@ package br.edu.ucb.webdatamodeling.controller
 			
 			if (nomeArquivo == null) {
 				// vir do arquivo de mensagens
-				Alert.show(_resourceManager.getString('messages', 'novoArquivoConrtoler.msg_1'));
+				Alert.show(_resourceManager.getString('messages', 'novoArquivoControler.nomeVazio'));
 				return;
 			}
 			
@@ -63,7 +63,7 @@ package br.edu.ucb.webdatamodeling.controller
 					_arquivoService.insert(arquivo);
 				} else {
 					// vir do arquivo de mensagens
-					Alert.show(_resourceManager.getString('messages', 'novoArquivoConrtoler.msg_2'));
+					Alert.show(_resourceManager.getString('messages', 'novoArquivoControler.pastaNaoSelecionada'));
 				}
 			} else if (_view.btnTipoArquivo.aux.toString() == INDEX_PASTA) {
 				pasta = new PastaDTO();

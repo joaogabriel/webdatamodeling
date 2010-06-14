@@ -49,29 +49,29 @@
 	</mx:VBox>
 
 	<mx:EmailValidator id="valEmail" source="{txtEmail}" property="text" 
-							missingAtSignError="O e-mail deve conter apenas: - _ . +" 
-							missingPeriodInDomainError="O e-mail deve conter apenas: - _ . +" 
-							missingUsernameError="O e-mail deve conter apenas: - _ . +"
-							invalidCharError="O e-mail deve conter apenas: - _ . +"
-							invalidDomainError="O e-mail deve conter apenas: - _ . +" 
-							invalidIPDomainError="O e-mail deve conter apenas: - _ . +"
-							invalidPeriodsInDomainError="O e-mail deve conter apenas: - _ . +"
-							tooManyAtSignsError="O e-mail deve conter apenas: - _ . +"
-							requiredFieldError="Campo obrigatório."/>
+							missingAtSignError="{resourceManager.getString('messages', 'cadastro.formatoEmail')}" 
+							missingPeriodInDomainError="{resourceManager.getString('messages', 'cadastro.formatoEmail')}" 
+							missingUsernameError="{resourceManager.getString('messages', 'cadastro.formatoEmail')}"
+							invalidCharError="{resourceManager.getString('messages', 'cadastro.formatoEmail')}"
+							invalidDomainError="{resourceManager.getString('messages', 'cadastro.formatoEmail')}" 
+							invalidIPDomainError="{resourceManager.getString('messages', 'cadastro.formatoEmail')}"
+							invalidPeriodsInDomainError="{resourceManager.getString('messages', 'cadastro.formatoEmail')}"
+							tooManyAtSignsError="{resourceManager.getString('messages', 'cadastro.formatoEmail')}"
+							requiredFieldError="{resourceManager.getString('messages', 'cadastro.formatoEmail')}" />
 							
 	<mx:StringValidator id="valNome" source="{txtNome}" property="text" required="true"
-				  requiredFieldError="Campo obrigatório."
-				  tooLongError="Limite máximo de 30 caracteres."
+				  requiredFieldError="{resourceManager.getString('messages', 'cadastro.campoObrigatorio')}"
+				  tooLongError="{resourceManager.getString('messages', 'cadastro.limiteMaxNome')}"
 				  maxLength="30" />
 				  
 	<mx:StringValidator id="valSobrenome" source="{txtSobrenome}" property="text" required="false"
-				  tooLongError="Limite máximo de 30 caracteres."
+				  tooLongError="{resourceManager.getString('messages', 'cadastro.limiteMaxSobrenome')}"
 				  maxLength="30" />
 				  
 	<mx:StringValidator id="valSenha" source="{txtSenha}" property="text" required="true" 
-				  requiredFieldError="Campo obrigatório."
-				  tooLongError="Limite máximo de 20 caracteres."
-				  tooShortError="Limite mínimo de 6 caracteres."
+				  requiredFieldError="{resourceManager.getString('messages', 'cadastro.campoObrigatorio')}"
+				  tooLongError="{resourceManager.getString('messages', 'cadastro.limiteMaxSenha')}"
+				  tooShortError="{resourceManager.getString('messages', 'cadastro.limiteMinSenha')}"
 				  maxLength="20"
 				  minLength="6" />
 </mx:Panel>

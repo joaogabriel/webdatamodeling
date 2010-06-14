@@ -41,7 +41,7 @@ package br.edu.ucb.webdatamodeling.controller
 			if ( Validator.validateAll([_view.valEmail]).length == 0 )
 				recuperarSenha();
 			else
-				Alert.show(_resourceManager.getString('messages', 'recuperarSenhaConrtoler.msg_1'));
+				Alert.show(_resourceManager.getString('messages', 'recuperarSenhaControler.preenchimentoIncorreto'));
 		}
 		
 		public function recuperarSenha():void
@@ -62,11 +62,11 @@ package br.edu.ucb.webdatamodeling.controller
 				
 				if (usuarioDTORetorno.erro == false) 
 				{
-					Alert.show( _resourceManager.getString('messages', 'recuperar.msgEnvio_1'), _resourceManager.getString('messages', 'recuperar.msgEnvio_2') );
+					Alert.show( _resourceManager.getString('messages', 'recuperar.campoObrigatorio'), _resourceManager.getString('messages', 'recuperar.campoObrigatorioComFormato') );
 				} 
 				else 
 				{
-					Alert.show(usuarioDTORetorno.mensagemErro, _resourceManager.getString('messages', 'recuperar.msgErro_4') );
+					Alert.show(usuarioDTORetorno.mensagemErro, _resourceManager.getString('messages', 'recuperar.erroEnvio') );
 				}
 			}
 		}
