@@ -171,5 +171,5 @@ public class CriptografiaServiceImpl implements CriptografiaService {
 		}
 		return encoder;
 	}
-	
+
 }

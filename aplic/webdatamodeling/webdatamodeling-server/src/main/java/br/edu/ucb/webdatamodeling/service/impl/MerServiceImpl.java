@@ -15,6 +15,7 @@ import br.edu.ucb.webdatamodeling.dto.TabelaDTO;
 import br.edu.ucb.webdatamodeling.dto.TipoCampoDTO;
 import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
 import br.edu.ucb.webdatamodeling.entity.Mer;
+import br.edu.ucb.webdatamodeling.framework.dao.ObjectDAOException;
 import br.edu.ucb.webdatamodeling.framework.service.AbstractObjectService;
 import br.edu.ucb.webdatamodeling.framework.service.ServiceException;
 import br.edu.ucb.webdatamodeling.service.MerService;
@@ -28,7 +29,7 @@ public class MerServiceImpl extends AbstractObjectService<Mer, MerDTO, MerDAO> i
 		setTabelaNosCampos(dto);
 		return super.insert(dto);
 	}
-
+	
 	private void setTabelaNosCampos(MerDTO dto) {
 		if (dto != null) {
 			for (TabelaDTO tabelaDTO : dto.getTabelas()) {
@@ -41,7 +42,7 @@ public class MerServiceImpl extends AbstractObjectService<Mer, MerDTO, MerDAO> i
 	}
 	
 	@Override
-	public MerDTO getMerByArquivo(ArquivoDTO arquivoDTO) {
+	public MerDTO getMerByArquivo(ArquivoDTO arquivoDTO) throws ServiceException {
 		Mer mer = null;
 		MerDTO merDTO = null;
 		
@@ -63,13 +64,16 @@ public class MerServiceImpl extends AbstractObjectService<Mer, MerDTO, MerDAO> i
 			}
 		} catch (ServiceException e) {
 			e.printStackTrace();
+		} catch (ObjectDAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		return merDTO;
 	}
 	
 	@Override
-	public Boolean compartilhar(MerDTO mer, List<UsuarioDTO> usuarios) {
+	public Boolean compartilhar(MerDTO mer, List<UsuarioDTO> usuarios)  throws ServiceException {
 		final String PREFIXO_NOME_PASTA = "Arquivos compartilhados com ";
 		// criar a pasta do usuário
 		// setar o boolean do usuário
@@ -86,6 +90,16 @@ public class MerServiceImpl extends AbstractObjectService<Mer, MerDTO, MerDAO> i
 	@Resource(name = "MerDAO")
 	public void setDao(MerDAO dao) {
 		super.setDao(dao);
+	}
+
+	@Override
+	public List<MerDTO> findMersByUsuarioCompartilhado(UsuarioDTO usuarioDTO) throws ServiceException {
+		try {
+			List<Mer> mers = getObjectDAO().findMersByUsuarioCompartilhado(usuarioDTO.getId());
+			return parseDTOs(mers);
+		} catch (ObjectDAOException e) {
+			throw new ServiceException("Erro durante a pesquisa de MERs.", e);
+		}
 	}
 	
 }
