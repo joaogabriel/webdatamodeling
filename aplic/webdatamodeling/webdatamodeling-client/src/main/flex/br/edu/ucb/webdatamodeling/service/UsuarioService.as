@@ -1,11 +1,11 @@
 package br.edu.ucb.webdatamodeling.service
 {
+	import br.edu.ucb.webdatamodeling.dto.MerDTO;
 	import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
 	import br.edu.ucb.webdatamodeling.events.CustomEvent;
 	
 	import flash.events.EventDispatcher;
 	
-	import mx.controls.Alert;
 	import mx.messaging.ChannelSet;
 	import mx.rpc.events.ResultEvent;
 	import mx.rpc.remoting.mxml.RemoteObject;
@@ -133,10 +133,10 @@ package br.edu.ucb.webdatamodeling.service
         }
         
         
-        public function getUsuariosPossivelCompartilhamento():void
+        public function getUsuariosPossivelCompartilhamento(mer:MerDTO):void
         {
         	_remoteObject.addEventListener("result", getUsuariosPossivelCompartilhamentoHandler);
-        	_remoteObject.getUsuariosPossivelCompartilhamento();
+        	_remoteObject.getUsuariosPossivelCompartilhamento(mer);
         }
         
         private function getUsuariosPossivelCompartilhamentoHandler(event:ResultEvent):void
