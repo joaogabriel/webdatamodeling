@@ -3,7 +3,7 @@ package br.edu.ucb.webdatamodeling.service;
 import java.util.List;
 
 import br.edu.ucb.webdatamodeling.dao.UsuarioDAO;
-import br.edu.ucb.webdatamodeling.dto.PastaDTO;
+import br.edu.ucb.webdatamodeling.dto.MerDTO;
 import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
 import br.edu.ucb.webdatamodeling.entity.Usuario;
 import br.edu.ucb.webdatamodeling.framework.service.ObjectService;
@@ -23,8 +23,6 @@ public interface UsuarioService extends ObjectService<Usuario, UsuarioDTO, Usuar
 	
 	UsuarioDTO getUsuarioAutenticado() throws ServiceException;
 	
-	List<UsuarioDTO> getUsuariosPossivelCompartilhamento() throws ServiceException;
-	
-	List<PastaDTO> verificarCompartilhamento(UsuarioDTO usuarioDTO) throws ServiceException;
+	List<UsuarioDTO> getUsuariosPossivelCompartilhamento(MerDTO mer) throws ServiceException;
 	
 }

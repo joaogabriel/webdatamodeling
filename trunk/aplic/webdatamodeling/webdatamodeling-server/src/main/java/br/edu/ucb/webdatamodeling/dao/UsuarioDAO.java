@@ -14,4 +14,6 @@ public interface UsuarioDAO extends ObjectDAO<Usuario> {
 	
 	List<Usuario> findByNomeOuEmail(Usuario usuario) throws ObjectDAOException;
 	
+	List<Usuario> findWithNotIn(Long[] ids) throws ObjectDAOException;
+	
 }

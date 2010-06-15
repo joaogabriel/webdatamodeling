@@ -63,27 +63,29 @@ public class MerServiceImpl extends AbstractObjectService<Mer, MerDTO, MerDAO> i
 				}
 			}
 		} catch (ServiceException e) {
-			e.printStackTrace();
+			throw new ServiceException("Erro durante a pesquisa de MER a partir do Arquivo com identificador " + arquivoDTO.getId(), e);
 		} catch (ObjectDAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ServiceException("Erro durante a pesquisa de MER a partir do Arquivo com identificador " + arquivoDTO.getId(), e);
 		}
 		
 		return merDTO;
 	}
 	
 	@Override
-	public Boolean compartilhar(MerDTO mer, List<UsuarioDTO> usuarios)  throws ServiceException {
-		final String PREFIXO_NOME_PASTA = "Arquivos compartilhados com ";
-		// criar a pasta do usuário
-		// setar o boolean do usuário
+	public Boolean compartilhar(MerDTO mer, List<UsuarioDTO> usuarios) throws ServiceException {
+		Boolean success = true;
 		
-		for (UsuarioDTO usuario : usuarios) {
-			if (!mer.getUsuarios().contains(usuario)) {
-				// criar compartilhamento
+		if (mer != null && usuarios != null && !usuarios.isEmpty()) {
+			for (UsuarioDTO usuario : usuarios) {
+				usuario.setNovoCompartilhamento(Boolean.TRUE);
 			}
+			
+			mer.setUsuarios(usuarios);
+			
+			update(mer);
 		}
-		return null;
+		
+		return success;
 	}
 	
 	@Override

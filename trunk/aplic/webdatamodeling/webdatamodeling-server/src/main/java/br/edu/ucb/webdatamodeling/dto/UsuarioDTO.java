@@ -15,6 +15,7 @@ public class UsuarioDTO extends AbstractDTO<Usuario, Long> {
 	private String senha;
 	private Date dataCadastro;
 	private Date dataNascimento;
+	private Boolean novoCompartilhamento;
 	private List<PastaDTO> pastas;
 	private List<MerDTO> mers;
 
@@ -72,6 +73,14 @@ public class UsuarioDTO extends AbstractDTO<Usuario, Long> {
 
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
+	}
+	
+	public Boolean getNovoCompartilhamento() {
+		return novoCompartilhamento;
+	}
+
+	public void setNovoCompartilhamento(Boolean novoCompartilhamento) {
+		this.novoCompartilhamento = novoCompartilhamento;
 	}
 
 	public List<PastaDTO> getPastas() {
