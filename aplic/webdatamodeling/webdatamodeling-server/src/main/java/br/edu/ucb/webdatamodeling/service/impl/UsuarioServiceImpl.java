@@ -1,10 +1,7 @@
 package br.edu.ucb.webdatamodeling.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -13,9 +10,7 @@ import org.springframework.stereotype.Service;
 
 import br.edu.ucb.webdatamodeling.criptografia.service.CriptografiaService;
 import br.edu.ucb.webdatamodeling.dao.UsuarioDAO;
-import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
 import br.edu.ucb.webdatamodeling.dto.MerDTO;
-import br.edu.ucb.webdatamodeling.dto.PastaDTO;
 import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
 import br.edu.ucb.webdatamodeling.entity.Usuario;
 import br.edu.ucb.webdatamodeling.framework.dao.ObjectDAOException;
@@ -23,7 +18,6 @@ import br.edu.ucb.webdatamodeling.framework.service.AbstractObjectService;
 import br.edu.ucb.webdatamodeling.framework.service.ServiceException;
 import br.edu.ucb.webdatamodeling.mail.MailException;
 import br.edu.ucb.webdatamodeling.mail.service.impl.MailServiceImpl;
-import br.edu.ucb.webdatamodeling.service.MerService;
 import br.edu.ucb.webdatamodeling.service.UsuarioService;
 import flex.messaging.FlexContext;
 import flex.messaging.FlexSession;
@@ -36,7 +30,6 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 	
 	private MailServiceImpl mailService;
 	private CriptografiaService criptografiaService;
-	private MerService merService;
 	
 	private FlexSession flexSession;
 	
@@ -89,7 +82,6 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 	public UsuarioDTO efetuarLogin(UsuarioDTO usuarioDTO) throws ServiceException {
 		Usuario usuario = null;
 		String senhaCriptografada = null;
-		List<PastaDTO> pastasCompartilhadas = null;
 		
 		try {
 			usuario = parseEntity(usuarioDTO);
@@ -99,14 +91,6 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 			
 			if (usuario != null) {
 				usuarioDTO = parseDTO(usuario);
-				
-				pastasCompartilhadas = verificarCompartilhamento(usuarioDTO);
-				
-				if (usuarioDTO.getPastas() == null) {
-					usuarioDTO.setPastas(new ArrayList<PastaDTO>());
-				}
-				
-				usuarioDTO.getPastas().addAll(pastasCompartilhadas);
 				
 				getFlexSession().setAttribute(USUARIO_SESSAO, usuarioDTO);
 			} else {
@@ -176,47 +160,6 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 	}
 
 	@Override
-	public List<PastaDTO> verificarCompartilhamento(UsuarioDTO usuarioDTO) throws ServiceException {
-		PastaDTO pastaDTO = null;
-		Long idUsuario = null;
-		String nomeUsuario = null;
-		List<PastaDTO> pastas = null;
-		List<MerDTO> mersCompartilhados = null;
-		Map<Long, PastaDTO> mapCompartilhamento = null;
-		
-		try {
-			mersCompartilhados = merService.findMersByUsuarioCompartilhado(usuarioDTO);
-			
-			if (mersCompartilhados != null && !mersCompartilhados.isEmpty()) {
-				mapCompartilhamento = new HashMap<Long, PastaDTO>();
-				pastas = new ArrayList<PastaDTO>();
-				
-				for (MerDTO mer : mersCompartilhados) {
-					idUsuario = mer.getArquivo().getPasta().getUsuario().getId();
-					nomeUsuario = mer.getArquivo().getPasta().getUsuario().getNome();
-					
-					if (mapCompartilhamento.containsKey(nomeUsuario)) {
-						mapCompartilhamento.get(nomeUsuario).getArquivos().add(mer.getArquivo());
-					} else {
-						pastaDTO = new PastaDTO();
-						pastaDTO.setNome("MERs compartilhados por " + nomeUsuario);
-						pastaDTO.setArquivos(new ArrayList<ArquivoDTO>());
-						pastaDTO.getArquivos().add(mer.getArquivo());
-						
-						mapCompartilhamento.put(idUsuario, pastaDTO);
-					}
-				}
-				
-				pastas = (List<PastaDTO>) mapCompartilhamento.values();
-			}
-		} catch (ServiceException e) {
-			throw new ServiceException("Erro ao verificar compartilhamentos.", e);
-		}
-		
-		return pastas;
-	}
-	
-	@Override
 	public UsuarioDTO verificarUsuarioAutenticado() throws ServiceException {
 		if (getFlexSession().getAttribute(USUARIO_SESSAO) != null) {
 			return (UsuarioDTO) getFlexSession().getAttribute(USUARIO_SESSAO);
@@ -260,45 +203,49 @@ public class UsuarioServiceImpl extends AbstractObjectService<Usuario, UsuarioDT
 		this.criptografiaService = criptografiaService;
 	}
 	
-	public FlexSession getFlexSession() throws ServiceException {
-		if (flexSession == null) {
+	private FlexSession getFlexSession() {
+		if (flexSession != null && flexSession.isValid()) {
+			return flexSession;
+		} else {
 			flexSession = FlexContext.getFlexSession();
 			flexSession.setTimeoutPeriod(300000L); // 5 minutos
 			return flexSession;
-		} else if (flexSession.isValid()) {
-			return flexSession;
-		} else {
-			throw new ServiceException("Sessão inválida.");
 		}
 	}
 
-	public void setFlexSession(FlexSession flexSession) {
-		this.flexSession = flexSession;
+	@Override
+	public List<UsuarioDTO> getUsuariosPossivelCompartilhamento(MerDTO mer) throws ServiceException {
+		Long[] ids = null;
+		List<UsuarioDTO> resultList = findAll();
+		UsuarioDTO usuarioAutenticado = getUsuarioAutenticado();
+		
+		try {
+			if (mer != null) {
+				ids = new Long[mer.getUsuarios().size() + 1];
+				ids[0] = usuarioAutenticado.getId();
+				
+				int i = 1;
+				for (UsuarioDTO usuario : mer.getUsuarios()) {
+					ids[i] = usuario.getId();
+					i++;
+				}
+			} else {
+				ids = new Long[1];
+				ids[0] = usuarioAutenticado.getId();
+			}
+			
+			resultList = parseDTOs(getObjectDAO().findWithNotIn(ids));
+		} catch (ObjectDAOException e) {
+			throw new ServiceException("Erro durante a execução da pesquisa.", e);
+		}
+		
+		return resultList;
 	}
-
+	
 	@Override
 	@Resource(name = "UsuarioDAO")
 	public void setDao(UsuarioDAO dao) {
 		super.setDao(dao);
-	}
-	
-	@Resource(name = "MerService")
-	public void setMerService(MerService merService) {
-		this.merService = merService;
-	}
-
-	@Override
-	public List<UsuarioDTO> getUsuariosPossivelCompartilhamento() throws ServiceException {
-		List<UsuarioDTO> resultList = findAll();
-		UsuarioDTO usuarioAutenticado = getUsuarioAutenticado();
-		
-		for (UsuarioDTO usuario : new ArrayList<UsuarioDTO>(resultList)) {
-			if (usuario.getId().equals(usuarioAutenticado.getId())) {
-				resultList.remove(usuario);
-			}
-		}
-
-		return resultList;
 	}
 
 }

@@ -63,8 +63,10 @@ public class MerDAOImpl extends AbstractObjectDAO<Mer> implements MerDAO {
 		StringBuilder query = new StringBuilder();
 		
 		try {
-			query.append("from ").append(getEntityClass().getName()).append(" mer, IN(mer.usuarios) AS u");
-			query.append(" where u.id = ").append(idUsuario);
+			query.append("select new Mer(mer)");
+			query.append("from ").append(getEntityClass().getName()).append(" mer");
+			query.append(" left outer join mer.usuarios usuario");//left outer join usuarios.usuario usuario
+			query.append(" where usuario.id = ").append(idUsuario);
 			
 			resultList = getPersistence().findByHQL(query.toString());
 		} catch (PersistenceException e) {

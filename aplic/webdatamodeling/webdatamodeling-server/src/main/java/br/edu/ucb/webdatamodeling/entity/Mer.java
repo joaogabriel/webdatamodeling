@@ -35,6 +35,20 @@ public class Mer extends AbstractEntity<Long> {
 	private List<Usuario> usuarios;
 	private List<Nota> notas;
 
+	public Mer() {
+		
+	}
+	
+	public Mer(Mer mer) {
+		this.id = mer.getId();
+		this.exportado = mer.getExportado();
+		this.dataUltimaExportacao = mer.getDataUltimaExportacao();
+		this.arquivo = mer.getArquivo();
+		this.tabelas = mer.getTabelas();
+		this.notas = mer.getNotas();
+		this.usuarios = mer.getUsuarios();
+	}
+	
 	@Id
 	@Column(name="id_mer")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "sequence")

@@ -31,6 +31,7 @@ public class Usuario extends AbstractEntity<Long> {
 	private String senha;
 	private Date dataCadastro;
 	private Date dataNascimento;
+	private Boolean novoCompartilhamento;
 	private List<Pasta> pastas;
 	private List<Mer> mers;
 
@@ -100,6 +101,15 @@ public class Usuario extends AbstractEntity<Long> {
 
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
+	}
+	
+	@Column(name="novo_compartilhamento")
+	public Boolean getNovoCompartilhamento() {
+		return novoCompartilhamento;
+	}
+
+	public void setNovoCompartilhamento(Boolean novoCompartilhamento) {
+		this.novoCompartilhamento = novoCompartilhamento;
 	}
 
 	@OneToMany(mappedBy="usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

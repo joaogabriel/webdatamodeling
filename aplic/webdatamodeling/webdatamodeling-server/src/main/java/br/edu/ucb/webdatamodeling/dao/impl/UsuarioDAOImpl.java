@@ -85,5 +85,36 @@ public class UsuarioDAOImpl extends AbstractObjectDAO<Usuario> implements Usuari
 		
 		return usuarios;
 	}
+
+	@Override
+	public List<Usuario> findWithNotIn(Long[] ids) throws ObjectDAOException {
+		List<Usuario> usuarios  = null;
+		
+		try {
+			StringBuilder query = new StringBuilder();
+			query.append("from ").append(getEntityClass().getName()).append(" usuario");
+			query.append(" where usuario.id not in (").append(prepareIds(ids)).append(")");
+			
+			usuarios = getPersistence().findByHQL(query.toString());
+		} catch (PersistenceException e) {
+			throw new ObjectDAOException("Não foi possível pesquisar os usuários.", e);
+		}
+		
+		return usuarios;
+	}
+	
+	private String prepareIds(Long[] ids) {
+		StringBuilder strIds = new StringBuilder();
+		
+		for (Long id : ids) {
+			strIds.append(id).append(",");
+		}
+		
+		if (strIds.length() > 0) {
+			strIds.deleteCharAt(strIds.length() - 1);
+		}
+		
+		return strIds.toString();
+	}
 	
 }
