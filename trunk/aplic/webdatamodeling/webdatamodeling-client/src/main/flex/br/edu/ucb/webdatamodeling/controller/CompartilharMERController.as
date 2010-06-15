@@ -35,7 +35,7 @@ package br.edu.ucb.webdatamodeling.controller
 			_mer = mer;
 			
 			_usuarioService.addEventListener("usuarioPossivelCompartilhamento", getUsuariosHandler);
-			_usuarioService.getUsuariosPossivelCompartilhamento();
+			_usuarioService.getUsuariosPossivelCompartilhamento(_mer);
 			
 			if (_mer != null && _mer.usuarios != null && _mer.usuarios.length > 0)
 			{

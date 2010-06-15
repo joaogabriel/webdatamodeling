@@ -12,6 +12,7 @@ package br.edu.ucb.webdatamodeling.dto
 		private var _senha:String;
 		private var _dataCadastro:Date;
 		private var _dataNascimento:Date;
+		private var _novoCompartilhamento:Boolean;
 		private var _pastas:ArrayCollection;
 		private var _mers:ArrayCollection;
 		
@@ -87,6 +88,16 @@ package br.edu.ucb.webdatamodeling.dto
 		public function set dataNascimento(value:Date):void 
 		{
 			_dataNascimento = value;
+		}
+		
+		public function get novoCompartilhamento():Boolean
+		{
+			return _novoCompartilhamento;
+		}
+		
+		public function set novoCompartilhamento(novoCompartilhamento:Boolean):void
+		{
+			_novoCompartilhamento = novoCompartilhamento;
 		}
 		
 		public function get pastas():ArrayCollection
