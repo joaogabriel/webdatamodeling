@@ -1,4 +1,5 @@
 package br.edu.ucb.webdatamodeling.display.modeling {
+	import br.com.thalespessoa.utils.Library;
 	import br.edu.ucb.webdatamodeling.display.modeling.events.TableEvent;
 	import gs.TweenMax;
 	import flash.events.MouseEvent;
@@ -18,8 +19,11 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		
 		private var _point1:TableView;
 		private var _point2:TableView;
+		private var _card1:Sprite;
+		private var _card2:Sprite;
 		private var _type:String;
 		private var _attributes:Array;
+		private var _isAutoRelationship:Boolean;
 		
 		public function get point1() : TableView {return _point1;}
 		public function set point1(point1 : TableView) : void {_point1 = point1;}
@@ -29,7 +33,6 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		
 		public function get type() : String {return _type;}
 		
-		
 		public function RelationshipView( point1:TableView, type:String, point2:TableView = null ) 
 		{
 			_type = type;
@@ -38,13 +41,41 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 
 			TweenMax.from(this, .3, {alpha:0});
 			
+			switch(type)
+			{
+				case TYPE_1_1: 
+					_card1 = Library.get("icon_card1");
+					_card2 = Library.get("icon_card1");
+				break;
+				case TYPE_1_N: 
+					_card1 = Library.get("icon_card1");
+					_card2 = Library.get("icon_cardN");
+				break;
+				case TYPE_N_1: 
+					_card1 = Library.get("icon_cardN");
+					_card2 = Library.get("icon_card1");
+				break;
+			}
+			
 			if(point2)
 				completeRelationship(point2);
 			else
 			{
 				addEventListener(Event.ENTER_FRAME, drawingHandler);
 				point1.stage.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
+				point1.addEventListener(MouseEvent.ROLL_OVER, rollOverHandler);
+				point1.addEventListener(MouseEvent.ROLL_OUT, rollOutHandler);
 			}
+		}
+
+		private function rollOutHandler(event : MouseEvent) : void 
+		{
+			_isAutoRelationship = false;
+		}
+
+		private function rollOverHandler(event : MouseEvent) : void 
+		{
+			_isAutoRelationship = true;
 		}
 
 		public function kill():void
@@ -95,6 +126,8 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 					for(i=0; i < _point2.pk.length; i++) _point2.pk[i].addEventListener(TableAttribute.CHANGE_PK, changePKHandler);
 				break;
 			}
+			//addChild(_card1);
+			//addChild(_card2);
 		}
 
 		private function addPKHandler(event : TableEvent) : void 
@@ -129,13 +162,36 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 
 		private function draw( point1:Point, point2:Point ):void
 		{
+			if(type != RelationshipView.TYPE_N_N)
+			{
+				_card1.x = 200;
+				_card2.y = 300;
+			}
 			graphics.clear();
 			graphics.lineStyle(2, 0x666666);
 			x = point1.x;
 			y = point1.y;
+			/*
+			var a:Number;
+			//trace(a = Math.atan2(y, x) * 180 / Math.PI, Math.cos(a), Math.sin(a) );
+			_card1.x = Math.cos(a) * 100; 
+			_card1.y = Math.sin(a) * 100; 
+			
+			a = Math.atan2(y - point2.y, x - point2.x) * 180 / Math.PI, Math.cos(a), Math.sin(a);
+			_card2.x = point2.x - x + Math.cos(a) * 100; 
+			_card2.y = point2.y - y + Math.sin(a) * 100; 
 
 			//graphics.lineTo(point2.x - x, 0);
-			graphics.lineTo(point2.x - x, point2.y - y);
+*/
+			if(_isAutoRelationship)
+			{
+				graphics.lineTo( 100, 0);
+				graphics.lineTo( 100, -100);
+				graphics.lineTo( 0, -100);
+				graphics.lineTo( 0, 0);
+			}
+			else
+				graphics.lineTo(point2.x - x, point2.y - y);
 		}
 
 		private function drawingHandler(event : Event) : void 
@@ -152,8 +208,11 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		{
 			//event.stopImmediatePropagation();
 			point1.stage.removeEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
+			point1.removeEventListener(MouseEvent.ROLL_OVER, rollOverHandler);
+			point1.removeEventListener(MouseEvent.ROLL_OUT, rollOutHandler);
 			removeEventListener(Event.ENTER_FRAME, drawingHandler);
-			if((event.target.parent is TableView) && (event.target.parent != point1) && (type != TYPE_N_N))
+			//if((event.target.parent is TableView) && (event.target.parent != point1) && (type != TYPE_N_N))
+			if((event.target.parent is TableView) && (type != TYPE_N_N))
 				completeRelationship(event.target.parent);
 			else if((event.target.parent is TableView) && (event.target.parent != point1) && (type == TYPE_N_N))
 			{

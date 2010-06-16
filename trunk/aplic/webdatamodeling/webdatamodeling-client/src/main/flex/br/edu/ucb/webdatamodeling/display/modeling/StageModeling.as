@@ -1,21 +1,25 @@
 package br.edu.ucb.webdatamodeling.display.modeling {
-	import br.com.stimuli.loading.BulkLoader;
-	import br.edu.ucb.webdatamodeling.display.modeling.events.MenuEvent;
-	import br.edu.ucb.webdatamodeling.display.modeling.menu.StageMenu;
+	import flash.utils.setTimeout;
 	import br.edu.ucb.webdatamodeling.dto.CampoDTO;
 	import br.edu.ucb.webdatamodeling.dto.TabelaDTO;
 	import br.edu.ucb.webdatamodeling.events.ModelingEvent;
-	
-	import flash.display.Shape;
-	import flash.display.Sprite;
-	import flash.events.Event;
-	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
+
+	import ru.etcs.utils.FontLoader;
+
+	import br.edu.ucb.webdatamodeling.display.modeling.events.MenuEvent;
+	import br.edu.ucb.webdatamodeling.display.modeling.menu.StageMenu;
+
+	import flash.system.SecurityDomain;
 	import flash.system.ApplicationDomain;
 	import flash.system.LoaderContext;
-	import flash.utils.setTimeout;
-	
-	import ru.etcs.utils.FontLoader;
+
+	import br.com.stimuli.loading.BulkLoader;
+
+	import flash.display.Shape;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.display.Sprite;
 
 	/**
 	 * @author usuario
@@ -49,8 +53,6 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			_relationships = [];
 			_bg = new Shape();
 			_bg.graphics.lineStyle(1, 0xCCCCCC);
-			_bg.graphics.beginFill(0xFFFFFF);
-			_bg.graphics.drawRect(0,0,2000,1000);
 			for(var i:uint = 0; i < 300; i++)
 			{
 				_bg.graphics.moveTo(i * 10, 0);
@@ -65,14 +67,10 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			load();
 			addEventListener(MenuEvent.SELECT_CREATE_TABLE, createTableHandler);
 			addEventListener(MenuEvent.SELECT_SAVE, selectSaveHandler);
-			addEventListener(MenuEvent.SELECT_GENERETE_CODE, selectGenerateHandler);
+			addEventListener(MenuEvent.SELECT_GENERETE_NOTE, selectNoteHandler);
+			addEventListener(MenuEvent.SELECT_CLEAR, selectClearHandler);
 		}
-		
-		public function loadFieldTypes(array:Array):void
-		{
-			
-		}
-		
+
 		public function openMer( tables:Array ):void
 		{
 			var len:uint = tables.length;
@@ -81,6 +79,30 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 				setTimeout(createTable, i*70, TabelaDTO(tables[i]));
 				
 			setTimeout(createRelationShips, i*70);
+		}
+		
+		public function loadFieldTypes( types:Array ):void
+		{
+			TableAttribute.types = types;
+		}
+		
+		public function loadTableTypes( types:Array ):void
+		{
+			TableView.tableTypes = types;
+		}
+		
+		public function kill():void
+		{
+			clear();
+			removeEventListener(MenuEvent.SELECT_CREATE_TABLE, createTableHandler);
+			removeEventListener(MenuEvent.SELECT_SAVE, selectSaveHandler);
+			removeEventListener(MenuEvent.SELECT_GENERETE_NOTE, selectNoteHandler);
+			removeEventListener(MenuEvent.SELECT_CLEAR, selectClearHandler);
+			
+			stage.removeEventListener(MouseEvent.CLICK, clickStageHandler);
+			stage.removeEventListener(MouseEvent.MOUSE_UP, clickToStopDrawingHandler);
+			
+			parent.removeChild(this);
 		}
 
 		private function createTable( tableDTO:TabelaDTO ):void
@@ -104,13 +126,14 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 					continue;
 				}
 				attribute = new TableAttribute(CampoDTO(tableDTO.campos[j]).descricao, 
-				CampoDTO(tableDTO.campos[j]).tipo.descricao,
+				CampoDTO(tableDTO.campos[j]).tipo.id,
 				false, 
 				CampoDTO(tableDTO.campos[j]).chavePrimaria) ;
 				
 				table.addAttribute(attribute);
 				addChild(table);
 			}
+			table.addEventListener(TableView.KILL, killTableHandler);
 		}
 
 		private function createRelationShips() : void 
@@ -151,15 +174,34 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			_menu.show();
 		}
 		
+		private function clear():void
+		{
+			var len:uint = _tables.length;
+			
+			for(var i:uint=0; i<len; i++)
+			{
+				_tables[0].addEventListener(TableView.START_RELATIONSHIP, startRelationshipHandler);
+				_tables[0].kill();
+			}
+		}
+		
+
+		private function selectClearHandler(event : MenuEvent) : void 
+		{
+			clear();
+		}
 
 		private function selectSaveHandler(event : MenuEvent) : void 
 		{
 			dispatchEvent(new ModelingEvent(ModelingEvent.SAVE, data));
 		}
 		
-		private function selectGenerateHandler(event : MenuEvent) : void 
+		private function selectNoteHandler(event : MenuEvent) : void 
 		{
-			dispatchEvent(new ModelingEvent(ModelingEvent.GENERATE_SQL, data));
+			var note:NoteView = new NoteView();
+			note.x = event.target.parent.x;
+			note.y = event.target.parent.y;
+			addChild(note);
 		}
 
 		private function createTableHandler(event : MenuEvent) : void 
@@ -171,8 +213,15 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			table.addEventListener(TableView.START_RELATIONSHIP, startRelationshipHandler);
 			addChild(table);
 			event.stopPropagation();
+			table.addEventListener(TableView.KILL, killTableHandler);
 		}
-		
+
+		private function killTableHandler(event : Event) : void 
+		{
+			event.target.removeEventListener(TableView.KILL, killTableHandler);
+			_tables.splice(_tables.indexOf(event.target), 1);
+		}
+
 		private function loadHandler(event : Event) : void 
 		{
 			_fontLoader = new FontLoader();
@@ -200,7 +249,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		private function relationNNHandler(event : Event) : void 
 		{
 			var table:TableView = new TableView(event.target.point1.title+"_"+event.target.point2.title);
-			table.addAttribute(new TableAttribute("id", null, false, true, false, null,false,true));
+			//table.addAttribute(new TableAttribute("id", undefined, false, true, false, null,false,true));
 			table.x = event.target.point1.x + (event.target.point2.x - event.target.point1.x)/2;
 			table.y = event.target.point1.y + (event.target.point2.y - event.target.point1.y)/2;
 			_tables.push(table);
@@ -209,6 +258,9 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			addChild(table);
 			addChildAt(new RelationshipView(table, RelationshipView.TYPE_N_1, event.target.point1), 1);
 			addChildAt(new RelationshipView(table, RelationshipView.TYPE_N_1, event.target.point2), 1);
+			
+			for(var i:uint = 0; i<table.attributes.length; i++)
+				table.attributes[i].isPK = true;
 		}
 
 		private function clickToStopDrawingHandler(event : MouseEvent) : void 

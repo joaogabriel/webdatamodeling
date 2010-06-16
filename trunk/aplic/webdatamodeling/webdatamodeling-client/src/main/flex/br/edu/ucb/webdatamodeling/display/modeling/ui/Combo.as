@@ -1,4 +1,5 @@
 package br.edu.ucb.webdatamodeling.display.modeling.ui {
+	import br.edu.ucb.webdatamodeling.dto.TipoCampoDTO;
 	import flash.events.Event;
 
 	import gs.easing.Cubic;
@@ -23,25 +24,40 @@ package br.edu.ucb.webdatamodeling.display.modeling.ui {
 		private var _trackPosition:Number;
 		private var _trackHeight:Number;
 		private var _selected:TableText;
+		private var _selectedDTO:*;
 		private var _items:Array;
 		private var _index : uint;
 		private var _len : TableText;
+		private var _useLen:Boolean;
 
-		public function get value():String{ return _selected.text; }
+		public function get value():Number{ return _selectedDTO.id; }
+		public function get length():Number{ return Number(_len.text); }
+		
+		public function set value(value:Number):void
+		{ 
+			for(var i:uint=0; i<_nameItems.length; i++)
+				if(_nameItems[i].id == value)
+					selectByIndex(i);
+		}
+		public function set length(value:Number):void{ _len.text = String(value); }
 		
 		
-		public function Combo( items:Array, initName:String = null ) 
+		public function Combo( items:Array, initName:Number = undefined, useLen:Boolean = true ) 
 		{
+			_useLen = useLen;
 			_nameItems = items;
 			create();
 			_index = 0;
 			
 			if(initName)
-				selectByIndex(items.indexOf(initName));
+				for(var i:uint=0; i<items.length; i++)
+					if(items[i].id == initName)
+						selectByIndex(i);
 		}
 
 		public function show() : void 
 		{
+			parent.addChild(this);
 			parent.parent.addChild(parent);
 			parent.parent.parent.addChild(parent.parent);
 			//Sprite(parent).buttonMode = false;
@@ -49,8 +65,11 @@ package br.edu.ucb.webdatamodeling.display.modeling.ui {
 			TweenMax.to(_track, .3, { scaleY:1, y:_trackPosition, ease:Expo.easeOut  });
 			TweenMax.to(_containerItems.mask, .3, { height:_trackHeight, y:_trackPosition, delay:.1, ease:Cubic.easeInOut});
 			TweenMax.to(_selected, .3, {tint:null});
+			TweenMax.to(_containerItems.getChildAt(0), .3, {alpha:1});
 			addEventListener(MouseEvent.MOUSE_WHEEL, mouseWheelHandler);
-			TweenMax.to(_len, .3, { alpha:0 });
+			
+			if(_useLen)
+				TweenMax.to(_len, .3, { alpha:0 });
 		}
 
 		private function hide():void
@@ -59,9 +78,16 @@ package br.edu.ucb.webdatamodeling.display.modeling.ui {
 			TweenMax.to(_track, .3, { scaleY:0, y:7, ease:Expo.easeOut, delay:.1  });
 			TweenMax.to(_containerItems.mask, .4, { height:15, y:2, ease:Expo.easeOut});
 			TweenMax.to(_selected, .3, {tint:0xCCCCCC});
+			TweenMax.to(_containerItems.getChildAt(0), .3, {alpha:0});
 			removeEventListener(MouseEvent.MOUSE_WHEEL, mouseWheelHandler);
-			TweenMax.to(_len, .3, { alpha:.2 });
-			alignLen();
+			
+			if(_useLen)
+			{
+				TweenMax.to(_len, .3, { alpha:.2 });
+				alignLen();
+			}
+			
+			dispatchEvent(new Event(Event.CHANGE));
 		}
 
 		private function create() : void 
@@ -73,7 +99,7 @@ package br.edu.ucb.webdatamodeling.display.modeling.ui {
 			
 			for(var i:uint=0; i<len; i++)
 			{
-				item = new TableText(TableText.TYPE_OTHER, _nameItems[i], false);
+				item = new TableText(TableText.TYPE_OTHER, _nameItems[i].descricao, false);
 				item.y = i*15;
 				_items[i] = item;
 				_containerItems.addChild(item);			
@@ -82,10 +108,13 @@ package br.edu.ucb.webdatamodeling.display.modeling.ui {
 				item.addEventListener(MouseEvent.CLICK, itemClickHandler);
 				
 				if(!_selected)
+				{
+					_selectedDTO = _nameItems[i];
 					_selected = item;
+				}
 			}
 			
-			_containerItems.addChildAt(DisplayUtils.drawRect(_containerItems.width + 2, _containerItems.height+2, 0xFFFFFF, {x:1, y:-1 }),0);
+			_containerItems.addChildAt(DisplayUtils.drawRect(_containerItems.width + 2, _containerItems.height+2, 0xFFFFFF, {x:1, y:-1, alpha:0 }),0);
 			addChild(_track = DisplayUtils.drawRect(_containerItems.width + 1, _containerItems.height*2-15, 0x999999, { alpha:.4, x:0 } ));
 			addChild(_containerItems);
 			
@@ -95,13 +124,16 @@ package br.edu.ucb.webdatamodeling.display.modeling.ui {
 			addChild(_containerItems.mask);
 			_track.scaleY = 0;
 			
-			_len = new TableText(TableText.TYPE_OTHER, "100", false);
+			_containerItems.addEventListener( MouseEvent.CLICK, clickConteinerHandler );
+			
+			if(!_useLen) return;
+			
+			_len = new TableText(TableText.TYPE_OTHER, "0", false, "0-9");
 			_len.alpha = .2;
 			_len.mouseEnabled = true;
 			addChild(_len);
 			alignLen();
 			
-			_containerItems.addEventListener( MouseEvent.CLICK, clickConteinerHandler );
 			_len.addEventListener( MouseEvent.CLICK, clickLenHandler);
 			_len.addEventListener( TableText.EDIT_FINISHED, editLenFinishedHandler);
 		}
@@ -115,9 +147,14 @@ package br.edu.ucb.webdatamodeling.display.modeling.ui {
 		{
 			_index = index;
 			TweenMax.to(_selected, 0, {tint:0xCCCCCC});
-			_selected = _items[-1];
+			_selected = _items[index];
+			_selectedDTO = _nameItems[index];
+			
+			checkLen();
+				
+			alignLen();
 			//TweenMax.to(_selected, 0, {tint:null});
-			//_containerItems.y = -_selected.y;
+			_containerItems.y = -_selected.y;
 		}
 
 		private function clickLenHandler(event : MouseEvent) : void 
@@ -128,6 +165,7 @@ package br.edu.ucb.webdatamodeling.display.modeling.ui {
 		private function editLenFinishedHandler(event : Event) : void 
 		{
 			_len.mouseEnabled = true;
+			checkLen();
 		}
 
 		private function clickConteinerHandler(event : MouseEvent) : void 
@@ -149,9 +187,26 @@ package br.edu.ucb.webdatamodeling.display.modeling.ui {
 		{
 			TweenMax.to(_selected, .3, {tint:0xCCCCCC});
 			_selected = TableText(event.target);
+			_selectedDTO = _nameItems[_items.indexOf(TableText(event.target))];
+
+			checkLen();
+			
 			TweenMax.to(_selected, .3, {tint:null});
 			TweenMax.to(_containerItems, .4, { y:-_selected.y, ease:Expo.easeOut});
 			_index = _items.indexOf(_selected);
+		}
+
+		private function checkLen() : void 
+		{
+			if(!_useLen) return;
+			
+			if(Number(_len.text)<_selectedDTO.valorMinimo)
+				_len.text = String(_selectedDTO.valorMinimo);
+			else if(Number(_len.text)>_selectedDTO.valorMaximo)
+				_len.text = String(_selectedDTO.valorMaximo);
+				
+			
+			dispatchEvent(new Event(Event.CHANGE));
 		}
 
 		private function rollOutHandler(event : MouseEvent) : void 

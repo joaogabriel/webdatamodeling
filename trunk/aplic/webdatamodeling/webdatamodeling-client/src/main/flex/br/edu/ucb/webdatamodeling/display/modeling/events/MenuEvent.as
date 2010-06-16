@@ -8,12 +8,13 @@ package br.edu.ucb.webdatamodeling.display.modeling.events
 	public class MenuEvent extends Event 
 	{
 		static public const SELECT_CREATE_TABLE:String = "selectCreateTable";
-		static public const SELECT_GENERETE_CODE:String = "selectGenerateCode";
+		static public const SELECT_GENERETE_NOTE:String = "selectGenerateNote";
 		static public const SELECT_CREATE_RELATIONSHIP:String = "selectCreateRelationship";
 		static public const SELECT_SAVE : String = "selectSave";
 		static public const SELECT_DELETE : String = "selectDelete";
 		public static const SELECT_EDIT_TITLE : String = "editTitle";
 		public static const SELECT_PLUS : String = "selectPlus";
+		public static const SELECT_CLEAR : String = "selectClear";
 
 		private var _data:*;
 		
