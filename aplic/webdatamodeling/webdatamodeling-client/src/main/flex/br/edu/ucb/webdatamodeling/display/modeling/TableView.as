@@ -1,19 +1,21 @@
 package br.edu.ucb.webdatamodeling.display.modeling {
-	import br.com.thalespessoa.utils.Library;
-	import br.edu.ucb.webdatamodeling.display.modeling.events.MenuEvent;
+	import br.edu.ucb.webdatamodeling.display.modeling.ui.Combo;
 	import br.edu.ucb.webdatamodeling.display.modeling.events.TableEvent;
-	import br.edu.ucb.webdatamodeling.display.modeling.menu.TableMenu;
 	import br.edu.ucb.webdatamodeling.dto.TabelaDTO;
-	
 	import flash.display.DisplayObject;
-	import flash.display.Sprite;
+
+	import br.com.thalespessoa.utils.Library;
+	import gs.easing.Expo;
+	import gs.easing.Back;
+	import gs.easing.Bounce;
+	import gs.easing.Cubic;
+	import gs.TweenMax;
+
+	import br.edu.ucb.webdatamodeling.display.modeling.events.MenuEvent;
+	import br.edu.ucb.webdatamodeling.display.modeling.menu.TableMenu;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	
-	import gs.TweenMax;
-	import gs.easing.Expo;
-	
-	import mx.collections.ArrayCollection;
+	import flash.display.Sprite;
 
 	/**
 	 * @author usuario
@@ -22,7 +24,9 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 	{
 		static public const DRAGGING:String = "dragging";
 		static public const START_RELATIONSHIP:String = "startRelationship";
+		static public const KILL:String = "kill";
 		
+		static public var tableTypes:Array;
 		static private var _i:uint = 0;
 
 		private var _menu:TableMenu;
@@ -30,11 +34,11 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		private var _title:TableText;
 		private var _id:uint;
 		private var _attributes:Array;
-		private var _maxField:DisplayObject;
 		private var _oldMaxField:DisplayObject;
 		
 		private var _titleBase : Sprite;
 		private var _base : Sprite;
+		private var _typeCombo:Combo;
 		
 		private var _plusMenu:Sprite;
 		
@@ -42,6 +46,8 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		private var _centerY:Number;
 		private var _dto:TabelaDTO;
 
+		
+		public function get attributes() : Array {return _attributes;}
 		public function get centerX() : Number {return x + _centerX;}
 		public function get centerY() : Number {return y + _centerY;}
 		public function get tableName() : String {return _title.text;}
@@ -78,6 +84,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			_menu.addEventListener(MenuEvent.SELECT_DELETE, selectDeleteHandler);
 			_menu.addEventListener(MenuEvent.SELECT_EDIT_TITLE, selectEditTitleHandler);
 			_menu.addEventListener(MenuEvent.SELECT_PLUS, selectPlusHandler);
+			_menu.addEventListener(MenuEvent.SELECT_CLEAR, selectClearHandler);
 			addEventListener(MouseEvent.CLICK, clickHandler);
 			//addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
 			create( name );
@@ -86,7 +93,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			
 			resize(_title);
 		}
-		
+
 		public function generateData():TabelaDTO
 		{
 			var attributes:Array = [];
@@ -98,9 +105,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			_dto.coordenadaX = x;
 			_dto.coordenadaY = y;
 			_dto.descricao = _title.text;
-			
-			var a:ArrayCollection = new ArrayCollection(attributes);
-			_dto.campos = a;
+			_dto.campos = attributes;
 			
 			return _dto;
 		}
@@ -126,6 +131,8 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			TweenMax.to(_title, .3, { scaleY:0, ease:Expo.easeOut, delay:.5 });
 			TweenMax.to(_base, .3, { scaleY:0, ease:Expo.easeOut, delay:.5 });
 			TweenMax.to(_titleBase, .3, { scaleY:0, ease:Expo.easeOut, delay:.7, onComplete:onKill });
+			
+			dispatchEvent(new Event("kill"));
 		}
 		
 
@@ -204,22 +211,20 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		
 		private function resize( field:DisplayObject ):void
 		{
-			if(!_maxField)
-				_maxField = DisplayObject( field );
-			else if( _maxField.width < DisplayObject( field ).width )
-			{
-				_oldMaxField = _maxField;
-				_maxField = DisplayObject( field );
-			}
-			else if(_oldMaxField && _oldMaxField.width > _maxField.width)
-				_maxField = _oldMaxField;
+			var w: uint = _title.width + _typeCombo.width + 7;
+			var len: uint = _attributes.length;
+			
+			_typeCombo.x = _title.x + _title.width + 7;
+			
+			for(var i:uint=0; i<len; i++)
+				w = Math.max(w, _attributes[i].width);
 				
-			_titleBase.width = Math.max(_maxField.width + 5, 100);
-			_base.width = Math.max(_maxField.width + 5, 100);
+			_titleBase.width = Math.max(w + 5, 100);
+			_base.width = Math.max(w + 5, 100);
 			_centerX = _menu.x = _plusMenu.x = _base.width / 2;
 			
-			var len: uint = _relationships.length;
-			for(var i:uint=0; i<len; i++)
+			len = _relationships.length;
+			for(i=0; i<len; i++)
 				_relationships[i].update();
 		}
 
@@ -248,6 +253,11 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			_title.addEventListener(Event.RESIZE, resizeHandler);
 			addChild( _title);
 			
+			_typeCombo = new Combo(tableTypes, undefined, false);
+			_typeCombo.x = _title.x + _title.width + 7;
+			_typeCombo.y = 3;
+			addChild(_typeCombo);
+			
 			_plusMenu = Library.get("plus_menu", {alpha:0});
 			_menu.x = _plusMenu.x = _base.width / 2;
 			_menu.y = _plusMenu.y = 30;
@@ -262,6 +272,15 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			 _attributes = [];
 			 
 			TweenMax.to(this, .3, { glowFilter:{color:0x999999, alpha:.8, blurX:6, blurY:6, strength:2 }});
+		}
+
+		private function selectClearHandler(event : MenuEvent) : void 
+		{
+			var len: int = _attributes.length;
+			event.stopImmediatePropagation();
+			for(var i:int=len-1; i>=0; i--)
+				if(!_attributes[i].isPK && !_attributes[i].isFK)
+					_attributes[i].kill();
 		}
 
 		private function changePkHandler(event : Event) : void 
@@ -361,7 +380,6 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 				TweenMax.to(_attributes[i], .4, {y:yPosition, ease:Expo.easeOut});
 			}
 			
-			trace("killAttributeHandlerkillAttributeHandler",_attributes.length)
 			var h:Number = _titleBase.height + _attributes.length * 18 + 10;
 			TweenMax.to(_base, .5, {height:h, ease:Expo.easeOut});
 			TweenMax.to(_plusMenu, .5, {y:h, ease:Expo.easeOut});

@@ -29,8 +29,15 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		private var _field:TextField;
 		
 		public function get text():String { return _field.text; };
+		public function set text( value:String ):void { _field.text = value; };
+		override public function set width( value:Number ):void 
+		{ 
+			_field.width = value; 
+			_field.multiline = true;
+			_field.wordWrap = true;
+		}
 		
-		public function TableText( type:String, name:String, editNow:Boolean = true ) 
+		public function TableText( type:String, name:String, editNow:Boolean = true, restrict:String=null ) 
 		{
 			mouseEnabled = false;
 			mouseChildren = false;
@@ -41,6 +48,8 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			else if(type == TYPE_OTHER)
 				createOther(name);
 			
+			if(restrict)
+				_field.restrict = restrict;
 			if(editNow)
 				addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}

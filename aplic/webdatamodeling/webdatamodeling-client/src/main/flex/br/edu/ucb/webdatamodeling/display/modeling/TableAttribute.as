@@ -16,11 +16,13 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 	{
 		static public const KILL : String = "kill";
 		static public const CHANGE_PK : String = "changePK";
+		static public const CHANGE_TYPE : String = "changeType";
+		
+		static public var types:Array;
 		
 		static private var _i:uint = 0;
 
 		private var _text:TableText;
-		private var _len:TableText;
 		private var _isPK:Boolean;
 		private var _isFK:Boolean;
 		private var _isNN:Boolean;
@@ -37,6 +39,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 
 		override public function get width():Number{return super.width - 20;}
 		
+		public function get comboType() : Combo {return _comboType;}
 		public function get isPK() : Boolean {return _isPK;}
 		public function get isFK() : Boolean {return _isFK;}
 		public function get fkTable() : TableView {return _fkTable;}
@@ -55,7 +58,6 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			_isNN = value;
 		}
 		
-		
 		public function set isINC(value : Boolean) : void 
 		{
 			if(!_isINC && value)
@@ -68,10 +70,19 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		
 		public function set isPK(value : Boolean) : void 
 		{
-			if(!_isPK && value)
-				TweenMax.to(_text, .3, { tint:0xCC0000 });
-			else if(_isPK && !value)
-				TweenMax.to(_text, .3, { tint:null });
+			if(!isFK)
+			{
+				if(!_isPK && value)
+					TweenMax.to(_text, .3, { tint:0xCC0000 });
+				else if(_isPK && !value)
+					TweenMax.to(_text, .3, { tint:null });
+			}
+				
+			TweenMax.killTweensOf(_pkIcon);
+			if(value)
+				TweenMax.to(_pkIcon, .1, { tint:null, alpha:1 });
+			else
+				TweenMax.to(_pkIcon, .1, { tint:0xCCCCCC, alpha:.2 });
 				
 			_isPK = value;
 			
@@ -105,7 +116,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			return _dto;
 		}
 		
-		public function TableAttribute( name:String = null, type:String = null, editNow:Boolean = true, isPK:Boolean = false, isFK:Boolean = false, fkTable:TableView = null, isNN:Boolean = false, isINC:Boolean = false ) 
+		public function TableAttribute( name:String = null, type:Number = undefined, editNow:Boolean = true, isPK:Boolean = false, isFK:Boolean = false, fkTable:TableView = null, isNN:Boolean = false, isINC:Boolean = false ) 
 		{
 			_dto = new CampoDTO();
 			buttonMode = true;
@@ -123,8 +134,9 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			
 			TweenMax.from(this, .3, {alpha:0});
 			
-			_comboType = new Combo(["Boolean", "Double", "Decimal", "Integer", "Numeric", "Date", "Timestamp", "Time", "Char", "Varchar", "Bit", "Blob"], type);
+			_comboType = new Combo(types, type);
 			_comboType.mouseChildren = false;
+			_comboType.addEventListener(Event.CHANGE, changeComboTypes);
 			addChild(_comboType);
 			
 			_pkIcon = Library.getAndAdd("icon_PK", this, { y:1, mouseEnabled:false } );
@@ -145,6 +157,9 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			_text.mouseEnabled = true;
 			_pkIcon.addEventListener(MouseEvent.CLICK, pkClickHandler);
 			_text.addEventListener(MouseEvent.CLICK, textClickHandler);
+			addEventListener(MouseEvent.CLICK, clickHandler);
+			addEventListener(MouseEvent.ROLL_OVER, rollOverHandler);
+			addEventListener(MouseEvent.ROLL_OUT, rollOutHandler);
 			
 			if(isFK) return;
 
@@ -153,9 +168,6 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			//_comboType.addEventListener(MouseEvent.CLICK, typeClickHandler);
 			_nnIcon.addEventListener(MouseEvent.CLICK, nnClickHandler);
 			_incIcon.addEventListener(MouseEvent.CLICK, incClickHandler);
-			addEventListener(MouseEvent.CLICK, clickHandler);
-			addEventListener(MouseEvent.ROLL_OVER, rollOverHandler);
-			addEventListener(MouseEvent.ROLL_OUT, rollOutHandler);
 		}
 
 		public function createFK(tableView : TableView) : TableAttribute 
@@ -163,8 +175,22 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			//var fk:TableAttribute = 
 			//addEventListener(CHANGE_PK, fk.disableFKHandler);
 
-			return _fk = new TableAttribute(tableView.tableName+"_"+_text.text, _comboType.value, false, false, true, tableView, isNN, isINC);;
+			_fk = new TableAttribute(tableView.tableName+"_"+_text.text, _comboType.value, false, false, true, tableView, true, false);
+			addEventListener(CHANGE_TYPE, changeType);
+			return _fk;
 		}
+
+		private function changeType(event : String) : void 
+		{
+			if(_fk)
+			{
+				_fk.comboType.value = comboType.value;
+				_fk.comboType.length = comboType.length;
+			}
+			else
+				removeEventListener(CHANGE_TYPE, changeType);
+		}
+
 		/*
 		public function disableFKHandler(event:Event):void
 		{
@@ -189,6 +215,12 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			parent.removeChild(this);
 			//setTimeout(parent.removeChild, 400, this);
 			dispatchEvent(new Event(KILL));
+		}
+
+		private function changeComboTypes(event : Event) : void 
+		{
+			dispatchEvent(new Event(CHANGE_TYPE));
+			dispatchEvent(new Event(Event.RESIZE));
 		}
 
 		private function textEditFinishedHandler(event : Event) : void 
@@ -232,11 +264,6 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 
 		private function pkClickHandler(event : MouseEvent) : void 
 		{
-			if(_isPK)
-				TweenMax.to(_pkIcon, .1, { tint:0xCCCCCC, alpha:.2 });
-			else
-				TweenMax.to(_pkIcon, .1, { tint:null, alpha:1 });
-				
 			isPK = !_isPK;
 		}
 
