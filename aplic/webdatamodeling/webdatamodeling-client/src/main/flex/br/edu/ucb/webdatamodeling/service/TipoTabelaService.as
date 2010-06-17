@@ -1,5 +1,13 @@
 package br.edu.ucb.webdatamodeling.service
 {
+	import br.edu.ucb.webdatamodeling.events.CustomEvent;
+	
+	import flash.events.EventDispatcher;
+	
+	import mx.messaging.ChannelSet;
+	import mx.rpc.events.ResultEvent;
+	import mx.rpc.remoting.mxml.RemoteObject;
+	
 	public class TipoTabelaService extends EventDispatcher
 	{
 		private var _remoteObject:RemoteObject;

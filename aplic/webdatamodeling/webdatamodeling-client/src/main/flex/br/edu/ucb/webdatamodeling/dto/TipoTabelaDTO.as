@@ -1,12 +1,14 @@
 package br.edu.ucb.webdatamodeling.dto
 {
+	import mx.collections.ArrayCollection;
+	
 	[RemoteClass(alias="br.edu.ucb.webdatamodeling.dto.TipoTabelaDTO")]
 	public class TipoTabelaDTO extends AbstractDTO
 	{
 		
 		private var _id:Number;
 		private var _descricao:String;
-		private var _tabelas:Array;
+		private var _tabelas:ArrayCollection;
 		
 		public function TipoTabelaDTO()
 		{
@@ -32,12 +34,12 @@ package br.edu.ucb.webdatamodeling.dto
 			_descricao = value;
 		}
 
-		public function get tabelas():Array
+		public function get tabelas():ArrayCollection
 		{
 			return _tabelas;
 		}
 		
-		public function set tabelas(value:Array):void 
+		public function set tabelas(value:ArrayCollection):void 
 		{
 			_tabelas = value;
 		}

@@ -44,16 +44,16 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			switch(type)
 			{
 				case TYPE_1_1: 
-					_card1 = Library.get("icon_card1");
-					_card2 = Library.get("icon_card1");
+					//_card1 = Library.get("icon_card1");
+					//_card2 = Library.get("icon_card1");
 				break;
 				case TYPE_1_N: 
-					_card1 = Library.get("icon_card1");
-					_card2 = Library.get("icon_cardN");
+					//_card1 = Library.get("icon_card1");
+					//_card2 = Library.get("icon_cardN");
 				break;
 				case TYPE_N_1: 
-					_card1 = Library.get("icon_cardN");
-					_card2 = Library.get("icon_card1");
+					//_card1 = Library.get("icon_cardN");
+					//_card2 = Library.get("icon_card1");
 				break;
 			}
 			
@@ -164,8 +164,8 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		{
 			if(type != RelationshipView.TYPE_N_N)
 			{
-				_card1.x = 200;
-				_card2.y = 300;
+				//_card1.x = 200;
+				//_card2.y = 300;
 			}
 			graphics.clear();
 			graphics.lineStyle(2, 0x666666);
