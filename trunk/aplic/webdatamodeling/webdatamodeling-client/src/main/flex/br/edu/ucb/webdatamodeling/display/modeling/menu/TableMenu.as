@@ -18,7 +18,7 @@ package br.edu.ucb.webdatamodeling.display.modeling.menu {
 			_items[4] = new MenuItem("icon_close", MenuEvent.SELECT_DELETE);
 			_items[5] = new MenuItem("icon_plus", MenuEvent.SELECT_PLUS);
 			_items[6] = new MenuItem("icon_title", MenuEvent.SELECT_EDIT_TITLE);
-			_items[7] = new MenuItem("icon_clear", MenuEvent.SELECT_CLEAR);
+			//_items[7] = new MenuItem("icon_clear", MenuEvent.SELECT_CLEAR);
 			super();
 		}
 	}

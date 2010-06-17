@@ -107,11 +107,9 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			
 			_dto.tabelaEstrangeira = isFK ? _fkTable.data : null;
 			
-			_dto.comentario = "sem comentário";
 			_dto.naoNulo = _isNN;
 			_dto.autoIncremento = _isINC;
-			_dto.tipo = null;
-			_dto.valorPadrao = "default";
+			_dto.tipo = _comboType.value;
 			
 			return _dto;
 		}

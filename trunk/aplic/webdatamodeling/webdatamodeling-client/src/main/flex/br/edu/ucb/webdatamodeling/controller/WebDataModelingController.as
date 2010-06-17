@@ -10,6 +10,7 @@ package br.edu.ucb.webdatamodeling.controller
 	import br.edu.ucb.webdatamodeling.service.ArquivoService;
 	import br.edu.ucb.webdatamodeling.service.MERService;
 	import br.edu.ucb.webdatamodeling.service.TipoCampoService;
+	import br.edu.ucb.webdatamodeling.service.TipoTabelaService;
 	import br.edu.ucb.webdatamodeling.service.UsuarioService;
 	
 	import flash.events.Event;
@@ -33,6 +34,8 @@ package br.edu.ucb.webdatamodeling.controller
 		private var _arquivoService:ArquivoService = ArquivoService.getInstance();
 		
 		private var _tipoCampoService:TipoCampoService = TipoCampoService.getInstance();
+		
+		private var _tipoTabelaService:TipoTabelaService = TipoTabelaService.getInstance();
 		
 		private var _popup:IFlexDisplayObject;
 		
@@ -156,7 +159,17 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		private function tipoCampoHandler(event:CustomEvent):void
 		{
-			_modeling.loadFieldTypes(event.data);
+			var a:ArrayCollection = event.data;
+			var b:Array = a.toArray();
+			_modeling.loadFieldTypes(b);
+			
+			_tipoTabelaService.addEventListener("findAll", popularTipoTabela);
+			_tipoTabelaService.findAll();
+		}
+		
+		private function popularTipoTabela(event:CustomEvent):void
+		{
+			_modeling.loadTableTypes(event.data.toArray());
 			
 			if (_mer != null)
 			{

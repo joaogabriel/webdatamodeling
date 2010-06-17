@@ -30,7 +30,7 @@ package br.edu.ucb.webdatamodeling.display.modeling.ui {
 		private var _len : TableText;
 		private var _useLen:Boolean;
 
-		public function get value():Number{ return _selectedDTO.id; }
+		public function get value():*{ return _selectedDTO; }
 		public function get length():Number{ return Number(_len.text); }
 		
 		public function set value(value:Number):void
