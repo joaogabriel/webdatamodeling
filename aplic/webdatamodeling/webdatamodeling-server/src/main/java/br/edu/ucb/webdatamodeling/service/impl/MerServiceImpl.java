@@ -12,7 +12,6 @@ import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
 import br.edu.ucb.webdatamodeling.dto.CampoDTO;
 import br.edu.ucb.webdatamodeling.dto.MerDTO;
 import br.edu.ucb.webdatamodeling.dto.TabelaDTO;
-import br.edu.ucb.webdatamodeling.dto.TipoCampoDTO;
 import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
 import br.edu.ucb.webdatamodeling.entity.Mer;
 import br.edu.ucb.webdatamodeling.framework.dao.ObjectDAOException;
@@ -51,16 +50,6 @@ public class MerServiceImpl extends AbstractObjectService<Mer, MerDTO, MerDAO> i
 			
 			if (mer != null) {
 				merDTO = parseDTO(mer);
-				
-				// XXX thundercat
-				// TODO remover!!!
-				for (TabelaDTO tabela : merDTO.getTabelas()) {
-					for (CampoDTO campo : tabela.getCampos()) {
-						TipoCampoDTO tipoCampoDTO = new TipoCampoDTO();
-						tipoCampoDTO.setDescricao("INTEGER");
-						campo.setTipo(tipoCampoDTO);
-					}
-				}
 			}
 		} catch (ServiceException e) {
 			throw new ServiceException("Erro durante a pesquisa de MER a partir do Arquivo com identificador " + arquivoDTO.getId(), e);
