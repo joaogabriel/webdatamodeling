@@ -12,12 +12,14 @@ package br.edu.ucb.webdatamodeling.events
 		static public const GENERATE_SQL:String = "genereteSQL";
 		
 		private var _tables:Array;
+		private var _notes:Array;
 		
 		public function get tables() : Array {return _tables;}
 		
-		public function ModelingEvent(type : String, tables:Array) 
+		public function ModelingEvent(type : String, tables:Array, notes:Array) 
 		{
 			_tables = tables;
+			_notes = notes;
 			super(type);
 		}
 	}
