@@ -39,13 +39,17 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		private var _notes:Array;
 		private var _relationships:Array;
 		
-		public function get data():Array
+		public function get data():Object
 		{
 			var r:Array = [];
 			for(var i:uint = 0; i<_tables.length; i++)
 				r[i] = TableView(_tables[i]).generateData();
 			
-			return r;
+			var n:Array = [];
+			for(var i:uint = 0; i<_notes.length; i++)
+				n[i] = NoteView(_notes[i]).generateData();
+				
+			return {tables:r, notes:n};
 		}
 
 		public function StageModeling()
@@ -162,8 +166,8 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		private function load() : void 
 		{
 			_bulk = new BulkLoader("main");
-			_bulk.add("assets/swf/library.swf", { id:"library", context:new LoaderContext( false, ApplicationDomain.currentDomain ) } );
-			_bulk.add("assets/swf/fonts.swf", { id:"fonts", context:new LoaderContext( false, ApplicationDomain.currentDomain ) } );
+			_bulk.add("swf/library.swf", { id:"library", context:new LoaderContext( false, ApplicationDomain.currentDomain ) } );
+			_bulk.add("swf/fonts.swf", { id:"fonts", context:new LoaderContext( false, ApplicationDomain.currentDomain ) } );
 			_bulk.addEventListener(Event.COMPLETE, loadHandler);
 			_bulk.start();
 		}
@@ -236,7 +240,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		{
 			_fontLoader = new FontLoader();
 			_fontLoader.addEventListener( Event.COMPLETE, loadFontHandler );
-			_fontLoader.load( new URLRequest("assets/swf/fonts.swf") );
+			_fontLoader.load( new URLRequest("swf/fonts.swf") );
 		}
 
 		private function loadFontHandler(event : Event) : void 
