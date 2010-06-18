@@ -110,6 +110,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			_dto.naoNulo = _isNN;
 			_dto.autoIncremento = _isINC;
 			_dto.tipo = _comboType.value;
+			_dto.tamanho = _comboType.length;
 			
 			return _dto;
 		}
