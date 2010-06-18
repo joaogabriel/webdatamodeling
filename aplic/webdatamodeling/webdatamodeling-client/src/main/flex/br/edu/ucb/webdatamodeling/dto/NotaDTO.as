@@ -2,7 +2,7 @@ package br.edu.ucb.webdatamodeling.dto
 {
 	import mx.collections.ArrayCollection;
 	
-	[RemoteClass(alias="br.edu.ucb.webdatamodeling.dto.UsuarioDTO")]
+	[RemoteClass(alias="br.edu.ucb.webdatamodeling.dto.NotaDTO")]
 	public class NotaDTO extends AbstractDTO
 	{
 		private var _id:Number;

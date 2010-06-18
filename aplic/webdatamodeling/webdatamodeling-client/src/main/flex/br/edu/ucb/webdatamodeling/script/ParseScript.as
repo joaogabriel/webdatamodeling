@@ -47,11 +47,19 @@ package br.edu.ucb.webdatamodeling.script
 		private function createComentarioInicial(mer:MerDTO):void
 		{
 			_query = "/*==============================================================*/";
+			_query += CARRIAGE_RETURN;
+			_query += "/* MER: " + mer.arquivo.descricao + "                          */";
+			_query += CARRIAGE_RETURN;
+			_query += "/*==============================================================*/";
+			_query += CARRIAGE_RETURN;
+			_query += CARRIAGE_RETURN;
+			_query += CARRIAGE_RETURN;
 		}
 		
 		private function createComentarioTabela(tabela:TabelaDTO):void
 		{
-			
+			_query += "-- Tabela: " + tabela.descricao;
+			_query += CARRIAGE_RETURN;
 		}
 		
 		private function createTabela(tabela:TabelaDTO):void
@@ -71,8 +79,7 @@ package br.edu.ucb.webdatamodeling.script
 				_query += TAB_SPACE;
 				_query += campo.descricao;
 				_query += BLANK_SPACE;
-				//_query += campo.tipo.descricao;
-				_query += "INTEGER";
+				_query += campo.tipo.descricao;
 				_query += BLANK_SPACE;
 				_query += ABRE_PARENTESE;
 				_query += campo.tamanho;
@@ -84,7 +91,20 @@ package br.edu.ucb.webdatamodeling.script
 		
 		private function createConstraints(tabela:TabelaDTO):void
 		{
+			_query += TAB_SPACE;
+			_query += "CONSTRAINT PK_" + tabela.descricao.toUpperCase();
+			_query += " PRIMARY KEY (";
 			
+			for each (var campo:CampoDTO in tabela.campos)
+			{
+				if (campo.chavePrimaria)
+				{
+					_query += campo.descricao;
+				}
+			}
+			
+			_query += ")";
+			_query += CARRIAGE_RETURN;
 		}
 	
 		private function createEndTable():void
