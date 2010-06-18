@@ -13,7 +13,6 @@ public class CampoDTO extends AbstractDTO<Campo, Long> {
 	private Boolean naoNulo;
 	private Boolean autoIncremento;
 	private Boolean chavePrimaria;
-	private Boolean chaveEstrangeira;
 	private TabelaDTO tabela;
 	private TabelaDTO tabelaEstrangeira;
 	private TipoCampoDTO tipo;
@@ -66,7 +65,7 @@ public class CampoDTO extends AbstractDTO<Campo, Long> {
 		this.naoNulo = naoNulo;
 	}
 
-	public Boolean isAutoIncremento() {
+	public Boolean getAutoIncremento() {
 		return autoIncremento;
 	}
 
@@ -74,20 +73,12 @@ public class CampoDTO extends AbstractDTO<Campo, Long> {
 		this.autoIncremento = autoIncremento;
 	}
 
-	public Boolean isChavePrimaria() {
+	public Boolean getChavePrimaria() {
 		return chavePrimaria;
 	}
 
 	public void setChavePrimaria(Boolean chavePrimaria) {
 		this.chavePrimaria = chavePrimaria;
-	}
-
-	public Boolean isChaveEstrangeira() {
-		return chaveEstrangeira;
-	}
-
-	public void setChaveEstrangeira(Boolean chaveEstrangeira) {
-		this.chaveEstrangeira = chaveEstrangeira;
 	}
 
 	public TabelaDTO getTabela() {
