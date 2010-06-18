@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     11/06/2010 09:14:16                          */
+/* Created on:     18/6/2010 09:37:52                           */
 /*==============================================================*/
 
 
@@ -12,7 +12,7 @@ drop table COMPARTILHAMENTO;
 
 drop table MER;
 
-drop table NOTAS;
+drop table NOTA;
 
 drop table PASTA;
 
@@ -96,15 +96,20 @@ create table MER (
 alter table MER owner to WDM_USER
 ;
 /*==============================================================*/
-/* Table: NOTAS                                                 */
+/* Table: NOTA                                                  */
 /*==============================================================*/
-create table NOTAS (
+create table NOTA (
    ID_MER               INT4                 null,
    ID_NOTA              SERIAL               not null,
    DS_NOTA              VARCHAR(200)         null,
-   constraint PK_NOTAS primary key (ID_NOTA)
+   COORDENADA_X         NUMERIC(5)           null,
+   COORDENADA_Y         NUMERIC(5)           null,
+   constraint PK_NOTA primary key (ID_NOTA)
 );
 
+-- set table ownership
+alter table NOTA owner to WDM_USER
+;
 /*==============================================================*/
 /* Table: PASTA                                                 */
 /*==============================================================*/
@@ -229,8 +234,8 @@ alter table MER
       references ARQUIVO (ID_ARQUIVO)
       on delete restrict on update restrict;
 
-alter table NOTAS
-   add constraint FK_NOTAS_PK_NOTA_M_MER foreign key (ID_MER)
+alter table NOTA
+   add constraint FK_NOTA_PK_NOTA_M_MER foreign key (ID_MER)
       references MER (ID_MER)
       on delete restrict on update restrict;
 
