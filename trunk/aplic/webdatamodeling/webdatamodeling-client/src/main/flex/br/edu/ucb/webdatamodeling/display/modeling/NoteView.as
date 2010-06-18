@@ -1,4 +1,5 @@
 package br.edu.ucb.webdatamodeling.display.modeling {
+	import br.edu.ucb.webdatamodeling.dto.NotaDTO;
 	import br.com.thalespessoa.utils.Library;
 
 	import gs.TweenMax;
@@ -19,10 +20,21 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		private var _close:DisplayObject;
 		private var _title:TableText;
 		private var _closeButton:Sprite;
+		private var _dto:NotaDTO;
 		
 		public function NoteView( text:String = null ) 
 		{
+			_dto = new NotaDTO();
 			create();
+		}
+
+		public function generateData():NotaDTO
+		{
+			//_dto.coordenadaX = x;
+			//_dto.coordenadaY = y;
+			_dto.descricao = _text.text;
+			
+			return _dto;
 		}
 
 		private function create() : void 
