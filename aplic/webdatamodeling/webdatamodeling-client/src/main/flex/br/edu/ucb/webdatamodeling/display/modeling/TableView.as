@@ -105,6 +105,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			_dto.coordenadaX = x;
 			_dto.coordenadaY = y;
 			_dto.descricao = _title.text;
+			_dto.tipo = _typeCombo.value;
 			_dto.campos = new ArrayCollection(attributes);
 			
 			return _dto;
