@@ -126,6 +126,8 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			table = new TableView(tableDTO.descricao);
 			table.x = tableDTO.coordenadaX;
 			table.y = tableDTO.coordenadaY;
+			table.id = tableDTO.id;
+			table.type = tableDTO.tipo;
 			_tables.push(table);
 			table.addEventListener(TableView.START_RELATIONSHIP, startRelationshipHandler);
 			lenCampos = tableDTO.campos.length;
@@ -140,7 +142,11 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 				attribute = new TableAttribute(CampoDTO(tableDTO.campos[j]).descricao, 
 				CampoDTO(tableDTO.campos[j]).tipo.id,
 				false, 
-				CampoDTO(tableDTO.campos[j]).chavePrimaria) ;
+				CampoDTO(tableDTO.campos[j]).chavePrimaria,
+				Boolean(CampoDTO(tableDTO.campos[j]).tabelaEstrangeira),
+				null,
+				CampoDTO(tableDTO.campos[j]).naoNulo,
+				CampoDTO(tableDTO.campos[j]).autoIncremento) ;
 				
 				table.addAttribute(attribute);
 				addChild(table);
@@ -172,8 +178,8 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		private function load() : void 
 		{
 			_bulk = new BulkLoader("main");
-			_bulk.add("assets/swf/library.swf", { id:"library", context:new LoaderContext( false, ApplicationDomain.currentDomain ) } );
-			_bulk.add("assets/swf/fonts.swf", { id:"fonts", context:new LoaderContext( false, ApplicationDomain.currentDomain ) } );
+			_bulk.add("swf/library.swf", { id:"library", context:new LoaderContext( false, ApplicationDomain.currentDomain ) } );
+			_bulk.add("swf/fonts.swf", { id:"fonts", context:new LoaderContext( false, ApplicationDomain.currentDomain ) } );
 			_bulk.addEventListener(Event.COMPLETE, loadHandler);
 			_bulk.start();
 		}
@@ -246,7 +252,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		{
 			_fontLoader = new FontLoader();
 			_fontLoader.addEventListener( Event.COMPLETE, loadFontHandler );
-			_fontLoader.load( new URLRequest("assets/swf/fonts.swf") );
+			_fontLoader.load( new URLRequest("swf/fonts.swf") );
 		}
 
 		private function loadFontHandler(event : Event) : void 
