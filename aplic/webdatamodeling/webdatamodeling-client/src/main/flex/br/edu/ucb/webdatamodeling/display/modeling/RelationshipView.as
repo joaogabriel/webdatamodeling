@@ -44,16 +44,16 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			switch(type)
 			{
 				case TYPE_1_1: 
-					//_card1 = Library.get("icon_card1");
-					//_card2 = Library.get("icon_card1");
+					_card1 = Library.get("icon_card1");
+					_card2 = Library.get("icon_card1");
 				break;
 				case TYPE_1_N: 
-					//_card1 = Library.get("icon_card1");
-					//_card2 = Library.get("icon_cardN");
+					_card1 = Library.get("icon_card1");
+					_card2 = Library.get("icon_cardN");
 				break;
 				case TYPE_N_1: 
-					//_card1 = Library.get("icon_cardN");
-					//_card2 = Library.get("icon_card1");
+					_card1 = Library.get("icon_cardN");
+					_card2 = Library.get("icon_card1");
 				break;
 			}
 			
@@ -80,12 +80,27 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 
 		public function kill():void
 		{
+			var len:uint;
 			TweenMax.to(this, .1, {alpha:0, onComplete:onKill});
 			point1.removeRelationship(this);
 			point2.removeRelationship(this);
 			
-			for(var i:uint = 0; i<_attributes.length; i++)
-				TableAttribute(_attributes[i]).kill();
+			point1.removeEventListener(TableEvent.ADD_PK, addPKHandler);
+			point2.removeEventListener(TableEvent.ADD_PK, addPKHandler);
+			
+			len = _point2.pk.length;
+			for(i=0; i < len; i++) _point2.pk[i].removeEventListener(TableAttribute.CHANGE_PK, changePKHandler);
+			
+			len = _point1.pk.length;
+			for(i=0; i < len; i++) _point1.pk[i].removeEventListener(TableAttribute.CHANGE_PK, changePKHandler);
+			
+			len = _attributes.length;
+			for(var i:uint = 0; i<len; i++)
+			{
+				TableAttribute(_attributes[i]).removeEventListener(Event.CLOSE, killAttributeHandler );
+				if(TableAttribute(_attributes[i]).parent)
+					TableAttribute(_attributes[i]).kill();
+			}
 		}
 
 		public function completeRelationship(point:TableView):void
@@ -126,8 +141,18 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 					for(i=0; i < _point2.pk.length; i++) _point2.pk[i].addEventListener(TableAttribute.CHANGE_PK, changePKHandler);
 				break;
 			}
-			//addChild(_card1);
-			//addChild(_card2);
+			addChild(_card1);
+			addChild(_card2);
+			
+			var len:uint = _attributes.length;
+			
+			for( var i:uint = 0; i < len; i++ ) 
+				_attributes[i].addEventListener(Event.CLOSE, killAttributeHandler );
+		}
+
+		private function killAttributeHandler(event : Event) : void 
+		{
+			kill();
 		}
 
 		private function addPKHandler(event : TableEvent) : void 
@@ -138,6 +163,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			point.addAttribute(fk);
 			
 			_attributes.push( fk );
+			fk.addEventListener(Event.CLOSE, killAttributeHandler );
 			
 			event.attribute.addEventListener(TableAttribute.CHANGE_PK, changePKHandler);
 		}
@@ -148,6 +174,8 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 
 			TableAttribute(event.target).fk.kill();
 			_attributes.splice(_attributes.indexOf(TableAttribute(event.target).fk), 1);
+			
+			TableAttribute(event.target).fk.addEventListener(Event.CLOSE, killAttributeHandler );
 		}
 
 		public function update():void
@@ -157,16 +185,12 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		
 		private function onKill():void
 		{
-			parent.removeChild(this);
+			if(parent)
+				parent.removeChild(this);
 		}
 
 		private function draw( point1:Point, point2:Point ):void
 		{
-			if(type != RelationshipView.TYPE_N_N)
-			{
-				//_card1.x = 200;
-				//_card2.y = 300;
-			}
 			graphics.clear();
 			graphics.lineStyle(2, 0x666666);
 			x = point1.x;
@@ -183,6 +207,9 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 
 			//graphics.lineTo(point2.x - x, 0);
 */
+			var difX:Number;
+			var difY:Number;
+			
 			if(_isAutoRelationship)
 			{
 				graphics.lineTo( 100, 0);
@@ -191,7 +218,20 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 				graphics.lineTo( 0, 0);
 			}
 			else
+			{
+				difX = (point2.x - x)/2;
+				difY = (point2.y - y)/2;
 				graphics.lineTo(point2.x - x, point2.y - y);
+				graphics.drawCircle(difX, difY, 2);
+				
+				if(type != RelationshipView.TYPE_N_N)
+				{
+					_card2.x = difX * 1.1;
+					_card2.y = difY * 1.1;
+					_card1.x = difX * .9;
+					_card1.y = difY * .9;
+				}
+			}
 		}
 
 		private function drawingHandler(event : Event) : void 

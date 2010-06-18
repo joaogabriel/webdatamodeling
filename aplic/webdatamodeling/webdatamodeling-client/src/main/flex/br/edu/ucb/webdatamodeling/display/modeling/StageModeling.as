@@ -36,6 +36,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		private var _bulk:BulkLoader;
 		private var _menu:StageMenu;
 		private var _tables:Array;
+		private var _notes:Array;
 		private var _relationships:Array;
 		
 		public function get data():Array
@@ -50,6 +51,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		public function StageModeling()
 		{
 			_tables = [];
+			_notes = [];
 			_relationships = [];
 			_bg = new Shape();
 			_bg.graphics.lineStyle(1, 0xCCCCCC);
@@ -202,6 +204,14 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			note.x = event.target.parent.x;
 			note.y = event.target.parent.y;
 			addChild(note);
+			_notes.push( note );
+			note.addEventListener(Event.REMOVED_FROM_STAGE, removeNoteFromStage);
+		}
+
+		private function removeNoteFromStage(event : Event) : void 
+		{
+			event.target.removeEventListener(Event.REMOVED_FROM_STAGE, removeNoteFromStage);
+			_notes.splice(_notes.indexOf(event.target), 1);
 		}
 
 		private function createTableHandler(event : MenuEvent) : void 
