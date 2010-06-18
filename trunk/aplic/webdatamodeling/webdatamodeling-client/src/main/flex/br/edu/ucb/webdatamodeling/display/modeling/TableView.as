@@ -1,5 +1,4 @@
 package br.edu.ucb.webdatamodeling.display.modeling {
-	import __AS3__.vec.Vector;
 	
 	import br.com.thalespessoa.utils.Library;
 	import br.edu.ucb.webdatamodeling.display.modeling.events.MenuEvent;

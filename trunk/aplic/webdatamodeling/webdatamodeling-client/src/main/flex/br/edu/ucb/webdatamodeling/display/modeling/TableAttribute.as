@@ -199,7 +199,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		*/
 		public function kill() : void 
 		{	
-			if(isPK) return;
+			//if(isPK) return;
 			
 			removeEventListener(MouseEvent.CLICK, clickHandler);
 			removeEventListener(MouseEvent.ROLL_OVER, rollOverHandler);
@@ -257,7 +257,10 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		private function clickHandler(event : MouseEvent) : void 
 		{
 			if(event.target == _closeButton)
+			{
 				kill();
+				dispatchEvent(new Event(Event.CLOSE));
+			}
 		}
 
 		private function pkClickHandler(event : MouseEvent) : void 

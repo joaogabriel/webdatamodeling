@@ -1,4 +1,6 @@
 package br.edu.ucb.webdatamodeling.display.modeling {
+	import br.com.thalespessoa.utils.Library;
+
 	import gs.TweenMax;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -16,6 +18,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		private var _text:TableText;
 		private var _close:DisplayObject;
 		private var _title:TableText;
+		private var _closeButton:Sprite;
 		
 		public function NoteView( text:String = null ) 
 		{
@@ -40,7 +43,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			_title.mouseEnabled = true;
 			
 			_text.addEventListener(MouseEvent.CLICK, clickTextHandler);
-			_title.addEventListener(MouseEvent.CLICK, clickTextHandler);
+			//_title.addEventListener(MouseEvent.CLICK, clickTextHandler);
 			_text.addEventListener(TableText.EDIT_FINISHED, textEditFinishedHandler);
 			_title.addEventListener(TableText.EDIT_FINISHED, textEditFinishedHandler);
 			_text.addEventListener(Event.RESIZE, textResizeHandler);
@@ -51,6 +54,24 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			TweenMax.from(_bg, .3, {scaleY:0});
 			TweenMax.from(_title, .3, {alpha:0, delay:.2});
 			TweenMax.from(_text, .3, {alpha:0, delay:.3});
+			
+			
+			_closeButton = Library.get("icon_close_little", { y:10, x:190, buttonMode:true });
+			_closeButton.addEventListener( MouseEvent.CLICK, clickCloseHandler );
+			addChild(_closeButton);
+		}
+
+		private function clickCloseHandler(event : MouseEvent) : void 
+		{
+			TweenMax.to(_bg, .3, {scaleY:0, delay:.4, onComplete:onKill});
+			TweenMax.to(_title, .3, {alpha:0, delay:.2});
+			TweenMax.to(_text, .3, {alpha:0});
+			TweenMax.to(_closeButton, .3, {alpha:0});
+		}
+		
+		private function onKill():void
+		{
+			parent.removeChild(this);
 		}
 
 		private function titleResizeHandler(event : Event) : void 
