@@ -89,7 +89,7 @@ public class Campo extends AbstractEntity<Long> {
 	}
 
 	@Column(name="auto_incremento")
-	public Boolean isAutoIncremento() {
+	public Boolean getAutoIncremento() {
 		return autoIncremento;
 	}
 
@@ -98,7 +98,7 @@ public class Campo extends AbstractEntity<Long> {
 	}
 
 	@Column(name="chave_primaria")
-	public Boolean isChavePrimaria() {
+	public Boolean getChavePrimaria() {
 		return chavePrimaria;
 	}
 
