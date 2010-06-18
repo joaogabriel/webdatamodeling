@@ -1,5 +1,6 @@
 package br.edu.ucb.webdatamodeling.display.modeling {
 	
+	import br.edu.ucb.webdatamodeling.dto.TipoTabelaDTO;
 	import br.com.thalespessoa.utils.Library;
 	import br.edu.ucb.webdatamodeling.display.modeling.events.MenuEvent;
 	import br.edu.ucb.webdatamodeling.display.modeling.events.TableEvent;
@@ -73,6 +74,12 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		
 		public function get data():TabelaDTO{return _dto;}
 		public function get title():String{ return _title.text; }
+		
+		public function set id(value:Number):void{_dto.id = value;}
+		public function set type(value:TipoTabelaDTO):void 
+		{
+			_typeCombo.value = value.id;
+		}
 
 		public function TableView( name:String = null ) 
 		{
@@ -88,7 +95,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			addEventListener(MouseEvent.CLICK, clickHandler);
 			//addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
 			create( name );
-			if(!name) addAttribute(new TableAttribute("id",null,false,true,false,null,false,true));
+			if(!name) addAttribute(new TableAttribute("id",null,false,true,false,null,true,true));
 			show();
 			
 			resize(_title);
