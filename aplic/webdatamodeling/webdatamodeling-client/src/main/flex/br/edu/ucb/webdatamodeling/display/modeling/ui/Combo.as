@@ -140,6 +140,7 @@ package br.edu.ucb.webdatamodeling.display.modeling.ui {
 
 		private function alignLen() : void 
 		{
+			trace(_len)
 			_len.x = _selected.x + _selected.width + 2;
 		}
 
@@ -152,7 +153,8 @@ package br.edu.ucb.webdatamodeling.display.modeling.ui {
 			
 			checkLen();
 				
-			alignLen();
+			if(_useLen)
+				alignLen();
 			//TweenMax.to(_selected, 0, {tint:null});
 			_containerItems.y = -_selected.y;
 		}
