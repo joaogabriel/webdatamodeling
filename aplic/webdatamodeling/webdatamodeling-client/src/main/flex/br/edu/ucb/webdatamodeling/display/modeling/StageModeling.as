@@ -39,17 +39,23 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		private var _notes:Array;
 		private var _relationships:Array;
 		
-		public function get data():Object
+		public function get dataTables():Array
 		{
 			var r:Array = [];
 			for(var i:uint = 0; i<_tables.length; i++)
 				r[i] = TableView(_tables[i]).generateData();
 			
-			var n:Array = [];
-			for(var i:uint = 0; i<_notes.length; i++)
-				n[i] = NoteView(_notes[i]).generateData();
 				
-			return {tables:r, notes:n};
+			return r;
+		}
+		
+		public function get dataNotes():Array
+		{
+			var r:Array = [];
+			for(var i:uint = 0; i<_notes.length; i++)
+				r[i] = NoteView(_notes[i]).generateData();
+				
+			return r;
 		}
 
 		public function StageModeling()
@@ -199,7 +205,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 
 		private function selectSaveHandler(event : MenuEvent) : void 
 		{
-			dispatchEvent(new ModelingEvent(ModelingEvent.SAVE, data));
+			dispatchEvent(new ModelingEvent(ModelingEvent.SAVE, dataTables, dataNotes));
 		}
 		
 		private function selectNoteHandler(event : MenuEvent) : void 
