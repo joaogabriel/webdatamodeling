@@ -162,8 +162,8 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		private function load() : void 
 		{
 			_bulk = new BulkLoader("main");
-			_bulk.add("swf/library.swf", { id:"library", context:new LoaderContext( false, ApplicationDomain.currentDomain ) } );
-			_bulk.add("swf/fonts.swf", { id:"fonts", context:new LoaderContext( false, ApplicationDomain.currentDomain ) } );
+			_bulk.add("assets/swf/library.swf", { id:"library", context:new LoaderContext( false, ApplicationDomain.currentDomain ) } );
+			_bulk.add("assets/swf/fonts.swf", { id:"fonts", context:new LoaderContext( false, ApplicationDomain.currentDomain ) } );
 			_bulk.addEventListener(Event.COMPLETE, loadHandler);
 			_bulk.start();
 		}
@@ -236,7 +236,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		{
 			_fontLoader = new FontLoader();
 			_fontLoader.addEventListener( Event.COMPLETE, loadFontHandler );
-			_fontLoader.load( new URLRequest("swf/fonts.swf") );
+			_fontLoader.load( new URLRequest("assets/swf/fonts.swf") );
 		}
 
 		private function loadFontHandler(event : Event) : void 

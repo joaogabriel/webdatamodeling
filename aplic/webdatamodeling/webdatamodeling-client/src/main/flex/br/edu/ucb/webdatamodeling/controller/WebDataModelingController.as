@@ -159,15 +159,13 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		private function tipoCampoHandler(event:CustomEvent):void
 		{
-			var a:ArrayCollection = event.data;
-			var b:Array = a.toArray();
-			_modeling.loadFieldTypes(b);
+			_modeling.loadFieldTypes(event.data.toArray());
 			
-			_tipoTabelaService.addEventListener("findAll", popularTipoTabela);
+			_tipoTabelaService.addEventListener("findAll", tipoTabelaHandler);
 			_tipoTabelaService.findAll();
 		}
 		
-		private function popularTipoTabela(event:CustomEvent):void
+		private function tipoTabelaHandler(event:CustomEvent):void
 		{
 			_modeling.loadTableTypes(event.data.toArray());
 			
