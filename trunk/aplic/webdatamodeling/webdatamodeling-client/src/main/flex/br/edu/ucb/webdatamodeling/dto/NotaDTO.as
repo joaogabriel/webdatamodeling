@@ -9,7 +9,7 @@ package br.edu.ucb.webdatamodeling.dto
 		private var _descricao:String
 		private var _mer:MerDTO;
 		
-		public function UsuarioDTO() 
+		public function NotaDTO() 
 		{
 		}
 		
