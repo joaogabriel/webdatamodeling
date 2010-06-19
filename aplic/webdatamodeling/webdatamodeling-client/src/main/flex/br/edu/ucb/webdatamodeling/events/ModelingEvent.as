@@ -8,7 +8,7 @@ package br.edu.ucb.webdatamodeling.events
 	public class ModelingEvent extends Event 
 	{
 		static public const SAVE:String = "save";
-		static public const CLOSE:String = "save";
+		static public const CLOSE:String = "close";
 		static public const GENERATE_SQL:String = "genereteSQL";
 		
 		private var _tables:Array;
@@ -16,7 +16,7 @@ package br.edu.ucb.webdatamodeling.events
 		
 		public function get tables() : Array {return _tables;}
 		
-		public function ModelingEvent(type : String, tables:Array, notes:Array) 
+		public function ModelingEvent(type : String, tables:Array = null, notes:Array = null) 
 		{
 			_tables = tables;
 			_notes = notes;
