@@ -1,25 +1,21 @@
 package br.edu.ucb.webdatamodeling.display.modeling {
-	import flash.utils.setTimeout;
+	import br.com.stimuli.loading.BulkLoader;
+	import br.edu.ucb.webdatamodeling.display.modeling.events.MenuEvent;
+	import br.edu.ucb.webdatamodeling.display.modeling.menu.StageMenu;
 	import br.edu.ucb.webdatamodeling.dto.CampoDTO;
 	import br.edu.ucb.webdatamodeling.dto.TabelaDTO;
 	import br.edu.ucb.webdatamodeling.events.ModelingEvent;
-	import flash.net.URLRequest;
-
-	import ru.etcs.utils.FontLoader;
-
-	import br.edu.ucb.webdatamodeling.display.modeling.events.MenuEvent;
-	import br.edu.ucb.webdatamodeling.display.modeling.menu.StageMenu;
-
-	import flash.system.SecurityDomain;
-	import flash.system.ApplicationDomain;
-	import flash.system.LoaderContext;
-
-	import br.com.stimuli.loading.BulkLoader;
-
+	
 	import flash.display.Shape;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.display.Sprite;
+	import flash.net.URLRequest;
+	import flash.system.ApplicationDomain;
+	import flash.system.LoaderContext;
+	import flash.utils.setTimeout;
+	
+	import ru.etcs.utils.FontLoader;
 
 	/**
 	 * @author usuario
@@ -81,6 +77,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			addEventListener(MenuEvent.SELECT_SAVE, selectSaveHandler);
 			addEventListener(MenuEvent.SELECT_GENERETE_NOTE, selectNoteHandler);
 			addEventListener(MenuEvent.SELECT_CLEAR, selectClearHandler);
+			addEventListener(MenuEvent.SELECT_DELETE, selectCloseHandler);
 		}
 
 		public function openMer( tables:Array ):void
@@ -177,9 +174,9 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 
 		private function load() : void 
 		{
-			_bulk = new BulkLoader("main");
-			_bulk.add("swf/library.swf", { id:"library", context:new LoaderContext( false, ApplicationDomain.currentDomain ) } );
-			_bulk.add("swf/fonts.swf", { id:"fonts", context:new LoaderContext( false, ApplicationDomain.currentDomain ) } );
+			_bulk = BulkLoader.getLoader("main") || new BulkLoader("main");
+			_bulk.add("assets/swf/library.swf", { id:"library", context:new LoaderContext( false, ApplicationDomain.currentDomain ) } );
+			_bulk.add("assets/swf/fonts.swf", { id:"fonts", context:new LoaderContext( false, ApplicationDomain.currentDomain ) } );
 			_bulk.addEventListener(Event.COMPLETE, loadHandler);
 			_bulk.start();
 		}
@@ -207,6 +204,11 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		private function selectClearHandler(event : MenuEvent) : void 
 		{
 			clear();
+		}
+		
+		private function selectCloseHandler(event : MenuEvent) : void
+		{
+			dispatchEvent(new ModelingEvent(ModelingEvent.CLOSE));
 		}
 
 		private function selectSaveHandler(event : MenuEvent) : void 
@@ -252,7 +254,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		{
 			_fontLoader = new FontLoader();
 			_fontLoader.addEventListener( Event.COMPLETE, loadFontHandler );
-			_fontLoader.load( new URLRequest("swf/fonts.swf") );
+			_fontLoader.load( new URLRequest("assets/swf/fonts.swf") );
 		}
 
 		private function loadFontHandler(event : Event) : void 

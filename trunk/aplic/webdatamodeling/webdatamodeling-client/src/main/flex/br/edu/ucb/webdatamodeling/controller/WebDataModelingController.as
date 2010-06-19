@@ -93,23 +93,13 @@ package br.edu.ucb.webdatamodeling.controller
             _modeling.addEventListener(Event.COMPLETE, modelingCreatedHandler);
             _modeling.addEventListener(ModelingEvent.SAVE, modelingSaveHandler);
             _modeling.addEventListener(ModelingEvent.CLOSE, modelingCloseHandler);
-            _modeling.addEventListener(ModelingEvent.GENERATE_SQL, modelingGenerateSQLHandler);
 		}
 		
 		private function modelingCloseHandler(event:ModelingEvent):void
 		{
-			/*
+			_modeling.kill();
+			_modeling.mask.parent.removeChild(_modeling.mask);
 			_view.subContent.visible = true;
-			//_modeling.parent.removeChild(_modeling);
-			_modeling.visible = false;
-			// remover o ui
-			//_view.content.removeChild();
-			*/
-		}
-		
-		private function modelingGenerateSQLHandler(event:ModelingEvent):void
-		{
-			
 		}
 		
 		private function contentResizeHandler(event:Event):void
