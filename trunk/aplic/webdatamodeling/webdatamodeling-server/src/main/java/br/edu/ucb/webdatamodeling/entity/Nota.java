@@ -1,5 +1,7 @@
 package br.edu.ucb.webdatamodeling.entity;
 
+import java.math.BigDecimal;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,18 +17,20 @@ import javax.persistence.Table;
 import br.edu.ucb.webdatamodeling.framework.entity.AbstractEntity;
 
 @Entity
-@Table(name="notas")
+@Table(name="nota")
 @SuppressWarnings("serial")
 public class Nota extends AbstractEntity<Long> {
 
 	private Long id;
 	private String descricao;
+	private BigDecimal coordenadaX;
+	private BigDecimal coordenadaY;
 	private Mer mer;
 	
 	@Id
 	@Column(name="id_nota")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "sequence")
-	@SequenceGenerator(name = "sequence", sequenceName = "notas_id_nota_seq", allocationSize = 0)
+	@SequenceGenerator(name = "sequence", sequenceName = "nota_id_nota_seq", allocationSize = 0)
 	public Long getId() {
 		return id;
 	}
@@ -42,6 +46,24 @@ public class Nota extends AbstractEntity<Long> {
 	
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+	
+	@Column(name="coordenada_x")
+	public BigDecimal getCoordenadaX() {
+		return coordenadaX;
+	}
+
+	public void setCoordenadaX(BigDecimal coordenadaX) {
+		this.coordenadaX = coordenadaX;
+	}
+
+	@Column(name="coordenada_y")
+	public BigDecimal getCoordenadaY() {
+		return coordenadaY;
+	}
+
+	public void setCoordenadaY(BigDecimal coordenadaY) {
+		this.coordenadaY = coordenadaY;
 	}
 	
 	@JoinColumn(name="id_mer")

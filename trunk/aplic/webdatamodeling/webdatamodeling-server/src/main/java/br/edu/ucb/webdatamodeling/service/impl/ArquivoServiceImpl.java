@@ -18,6 +18,7 @@ import br.edu.ucb.webdatamodeling.dao.ArquivoDAO;
 import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
 import br.edu.ucb.webdatamodeling.dto.CampoDTO;
 import br.edu.ucb.webdatamodeling.dto.MerDTO;
+import br.edu.ucb.webdatamodeling.dto.NotaDTO;
 import br.edu.ucb.webdatamodeling.dto.TabelaDTO;
 import br.edu.ucb.webdatamodeling.entity.Arquivo;
 import br.edu.ucb.webdatamodeling.framework.service.AbstractObjectService;
@@ -38,6 +39,11 @@ public class ArquivoServiceImpl extends AbstractObjectService<Arquivo, ArquivoDT
 	public ArquivoDTO update(ArquivoDTO dto) throws ServiceException {
 		dto.setDataUltimaAlteracao(new Date());
 		setTabelaNosCampos(dto.getMer());
+		
+		for (NotaDTO notaDTO : dto.getMer().getNotas()) {
+			notaDTO.setMer(dto.getMer());
+		}
+		
 		return super.update(dto);
 	}
 	
