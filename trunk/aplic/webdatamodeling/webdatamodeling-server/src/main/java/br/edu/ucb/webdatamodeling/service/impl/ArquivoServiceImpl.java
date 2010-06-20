@@ -38,17 +38,23 @@ public class ArquivoServiceImpl extends AbstractObjectService<Arquivo, ArquivoDT
 	@Override
 	public ArquivoDTO update(ArquivoDTO dto) throws ServiceException {
 		dto.setDataUltimaAlteracao(new Date());
-		setTabelaNosCampos(dto.getMer());
 		
-		for (NotaDTO notaDTO : dto.getMer().getNotas()) {
-			notaDTO.setMer(dto.getMer());
-		}
+		setTabelaNosCampos(dto.getMer());
+		setMerNasNotas(dto.getMer());
 		
 		return super.update(dto);
 	}
+
+	private void setMerNasNotas(MerDTO dto) {
+		if (dto != null && dto.getNotas() != null && !dto.getNotas().isEmpty()) {
+			for (NotaDTO notaDTO : dto.getNotas()) {
+				notaDTO.setMer(dto);
+			}
+		}
+	}
 	
 	private void setTabelaNosCampos(MerDTO dto) {
-		if (dto != null) {
+		if (dto != null && dto.getTabelas() != null && !dto.getTabelas().isEmpty()) {
 			for (TabelaDTO tabelaDTO : dto.getTabelas()) {
 				tabelaDTO.setMer(dto);
 				for (CampoDTO campoDTO : tabelaDTO.getCampos()) {
