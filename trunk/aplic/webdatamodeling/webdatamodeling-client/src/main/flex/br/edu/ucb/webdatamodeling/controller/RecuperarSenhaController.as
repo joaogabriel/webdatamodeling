@@ -49,10 +49,10 @@ package br.edu.ucb.webdatamodeling.controller
 			_usuarioDTO.email = _view.txtEmail.text;
 			
 			_usuarioService.recuperarSenha(_usuarioDTO);
-			_usuarioService.addEventListener( "recuperarSenha", posRecuperarSenha );
+			_usuarioService.addEventListener("recuperarSenha", recuperarSenhaHandler);
 		}
 		
-		private function posRecuperarSenha(event:CustomEvent):void
+		private function recuperarSenhaHandler(event:CustomEvent):void
 		{
 			var usuarioDTORetorno:UsuarioDTO;
 			

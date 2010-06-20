@@ -100,22 +100,5 @@ package br.edu.ucb.webdatamodeling.controller
 			PopUpManager.removePopUp(_view);
 		}
 		
-		/* public function dragStartHandler(event:DragEvent):void
-		{
-			var dataGrid:DataGrid = event.target as DataGrid;
-			_usuarioSelecionado = dataGrid.selectedItem as UsuarioDTO;
-		}
-		
-		public function teste(event:DragEvent):void
-		{
-			var lista:ArrayCollection = _view.tblCompartilhados.dataProvider as ArrayCollection;
-			
-			if (lista != null && _usuarioSelecionado != null && lista.contains(_usuarioSelecionado)) {
-				event.stopPropagation();
-			} else {
-				//Alert.show("bode");
-			}
-		} */
-		
 	}
 }

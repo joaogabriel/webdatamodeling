@@ -28,8 +28,8 @@
 				public var FlagUSA:Class;
 				
 				[Bindable]
-				private var locales:Array = [{label: _resourceManager.getString('messages', 'comboIdioma.PT'), code:"pt_BR", icon:"FlagBrasil"}, 
-											 {label: _resourceManager.getString('messages', 'comboIdioma.EN'), code:"en_US", icon:"FlagUSA"}];
+				private var locales:Array = [{label: _resourceManager.getString('messages', 'comboIdioma.EN'), code:"en_US", icon:"FlagUSA"},
+											 {label: _resourceManager.getString('messages', 'comboIdioma.PT'), code:"pt_BR", icon:"FlagBrasil"}];
 				
 				private function init():void
 				{

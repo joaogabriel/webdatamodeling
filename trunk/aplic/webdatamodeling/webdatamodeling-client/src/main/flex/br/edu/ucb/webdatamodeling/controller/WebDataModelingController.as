@@ -1,10 +1,12 @@
 package br.edu.ucb.webdatamodeling.controller
 {
 	import br.com.thalespessoa.utils.DisplayUtils;
+	import br.edu.ucb.webdatamodeling.components.CadastrarUsuario;
 	import br.edu.ucb.webdatamodeling.components.Cubo;
 	import br.edu.ucb.webdatamodeling.display.modeling.StageModeling;
 	import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
 	import br.edu.ucb.webdatamodeling.dto.MerDTO;
+	import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
 	import br.edu.ucb.webdatamodeling.events.CustomEvent;
 	import br.edu.ucb.webdatamodeling.events.ModelingEvent;
 	import br.edu.ucb.webdatamodeling.service.ArquivoService;
@@ -19,6 +21,7 @@ package br.edu.ucb.webdatamodeling.controller
 	import mx.collections.ArrayCollection;
 	import mx.core.IFlexDisplayObject;
 	import mx.core.UIComponent;
+	import mx.managers.CursorManager;
 	import mx.managers.PopUpManager;
 	
 	import pfp.rsscube.models.MainModel;
@@ -118,13 +121,33 @@ package br.edu.ucb.webdatamodeling.controller
 	            PopUpManager.centerPopUp(_popup);
 	            _view.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 	  		} else {
-	  			_view.txtNomeUsuario.text = event.data.nome;
+	  			setInformacoesRodape(event.data);
 	  			
 	  			dispatchEvent(new Event(NovoArquivoController.UPDATE_TREE));
 	  			
 	  			if (_popup != null) {
 	  				PopUpManager.removePopUp(_popup);
 	  			}
+	  		}
+	  		
+	  		// thunder cat
+	  		CursorManager.getInstance().removeBusyCursor();
+		}
+		
+		private function setInformacoesRodape(usuario:UsuarioDTO):void
+		{
+			_view.txtNomeUsuario.text = usuario.nome;
+			
+	  		if (usuario.mers) { 
+	  			_view.txtQtdMerCompartilhado.text = usuario.mers.length + "";
+	  		} else {
+	  			_view.txtQtdMerCompartilhado.text = "0";
+	  		}
+	  		
+	  		if (usuario.qtdMersConstruidos != 0) {
+	  			_view.txtQtdMerConstruido.text = usuario.qtdMersConstruidos + "";
+	  		} else {
+	  			_view.txtQtdMerConstruido.text = "0";
 	  		}
 		}
 		
@@ -189,7 +212,32 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		public function logout():void
 		{
+			_usuarioService.addEventListener("logout", logoutHandler);
 			_usuarioService.efetuarLogout();
+		}
+		
+		private function logoutHandler(event:CustomEvent):void
+		{
+			if (_modeling) {
+				_modeling.kill();
+			}
+			
+			_view.subContent.visible = true;
+			_view.txtNomeUsuario.text = "";
+			_view.msgEstruturaVazia.visible = false;
+			_view.fileView.removeAllChildren();
+			_view.treeView.dataProvider = null;
+			
+			_popup = PopUpManager.createPopUp(_view, Cubo, true);
+			PopUpManager.centerPopUp(_popup);
+			_view.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+		}
+		
+		public function editarUsuario():void
+		{
+			_popup = PopUpManager.createPopUp(_view, CadastrarUsuario, true);
+			PopUpManager.centerPopUp(_popup);
+			_view.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}
 		
 	}

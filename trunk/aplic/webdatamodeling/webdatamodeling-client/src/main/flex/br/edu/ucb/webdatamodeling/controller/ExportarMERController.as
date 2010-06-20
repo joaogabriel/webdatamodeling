@@ -11,6 +11,8 @@ package br.edu.ucb.webdatamodeling.controller
 	import flash.net.FileReference;
 	import flash.utils.ByteArray;
 	
+	import mx.controls.Alert;
+	import mx.events.CloseEvent;
 	import mx.managers.PopUpManager;
 	
 	public class ExportarMERController
@@ -18,6 +20,7 @@ package br.edu.ucb.webdatamodeling.controller
 		private var _view:ExportarMER;
 		private var _arquivo:ArquivoDTO;
 		private var _nomeArquivo:String;
+		private var _byteArray:ByteArray; 
 		
 		private var _tipoArquivoService:TipoArquivoService = TipoArquivoService.getInstance();
 		private var _arquivoService:ArquivoService = ArquivoService.getInstance();
@@ -58,19 +61,27 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		private function exportarHandler(event:CustomEvent):void
 		{
-			var byteArray:ByteArray = event.data;
+			_byteArray = event.data;
 			
-			var fileReference:FileReference = new FileReference();
-			fileReference.save(byteArray, _nomeArquivo);
-			
-			_arquivo.mer.exportado = true;
-			_arquivoService.addEventListener("update", updateHandler);
-			_arquivoService.update(_arquivo);
+			Alert.show("Deseja realizar o download do arquivo?", "Aviso de Segurança", Alert.NO | Alert.YES, _view, alertListener);
 		}
 		
 		private function updateHandler(event:CustomEvent):void
 		{
 			fecharPopup();
+		}
+		
+		private function alertListener(event:CloseEvent):void
+		{
+			if (event.detail == Alert.YES)
+			{
+				var fileReference:FileReference = new FileReference();
+				fileReference.save(_byteArray, _nomeArquivo);
+			
+				_arquivo.mer.exportado = true;
+				_arquivoService.addEventListener("update", updateHandler);
+				_arquivoService.update(_arquivo);
+			}
 		}
 	}
 }

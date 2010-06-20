@@ -4,10 +4,6 @@ package br.edu.ucb.webdatamodeling.controller
 	import br.edu.ucb.webdatamodeling.dto.UsuarioDTO;
 	import br.edu.ucb.webdatamodeling.service.UsuarioService;
 	
-	import pfp.rsscube.models.MainModel;
-	
-	import flash.events.Event;
-	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
 	import mx.controls.Alert;
@@ -15,6 +11,8 @@ package br.edu.ucb.webdatamodeling.controller
 	import mx.resources.IResourceManager;
 	import mx.resources.ResourceManager;
 	import mx.validators.Validator;
+	
+	import pfp.rsscube.models.MainModel;
 			
 	public class CadastrarUsuarioController
 	{

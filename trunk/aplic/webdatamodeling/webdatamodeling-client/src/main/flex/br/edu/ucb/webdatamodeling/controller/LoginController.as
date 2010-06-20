@@ -60,8 +60,7 @@ package br.edu.ucb.webdatamodeling.controller
 		{
 			if (event.data == null)
 			{
-				var str:String = _resourceManager.getString('messages', 'loginControler.usuarioNaoCadastrado');
-				Alert.show(str);
+				Alert.show(_resourceManager.getString('messages', 'loginControler.usuarioNaoCadastrado'));
 				_view.btnLogin.enabled = true;
 				_view.btnLogin.label = 'Login';
 			}

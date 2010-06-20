@@ -23,7 +23,7 @@
 		</mx:Form>
 		<mx:HBox horizontalAlign="center" width="100%">
 			<mx:Button label="{resourceManager.getString('messages', 'recuperar.btnRecuperar')}" id="btnRecuperar" click="_controller.validarEsqueceu()" />
-			<mx:Button label="{resourceManager.getString('messages', 'recuperar.btnCancelar')}" click="_controller.model.cubeSide = 'Top'"/>
+			<mx:Button label="{resourceManager.getString('messages', 'recuperar.btnCancelar')}" click="_controller.model.cubeSide = 'Left'"/>
 		</mx:HBox>
 	</mx:VBox>
 	
