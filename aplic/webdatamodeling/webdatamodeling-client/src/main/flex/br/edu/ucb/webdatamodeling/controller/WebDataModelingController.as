@@ -84,15 +84,16 @@ package br.edu.ucb.webdatamodeling.controller
 			
 			var ui:UIComponent = new UIComponent();
 			_modeling = new StageModeling();
+			
+			_modeling.addEventListener(Event.COMPLETE, modelingCreatedHandler);
+            _modeling.addEventListener(ModelingEvent.SAVE, modelingSaveHandler);
+            _modeling.addEventListener(ModelingEvent.CLOSE, modelingCloseHandler);
+            
 			ui.addChild(_modeling);
 			_view.content.addEventListener(Event.RESIZE, contentResizeHandler)
 			_modeling.mask = DisplayUtils.drawRect(_view.content.width, _view.content.height, 0);
 			ui.addChild(_modeling.mask);
 			_view.content.addChild(ui);
-			
-            _modeling.addEventListener(Event.COMPLETE, modelingCreatedHandler);
-            _modeling.addEventListener(ModelingEvent.SAVE, modelingSaveHandler);
-            _modeling.addEventListener(ModelingEvent.CLOSE, modelingCloseHandler);
 		}
 		
 		private function modelingCloseHandler(event:ModelingEvent):void
@@ -130,6 +131,7 @@ package br.edu.ucb.webdatamodeling.controller
 		private function modelingSaveHandler(event:ModelingEvent):void
 		{
 			var tabelas:ArrayCollection = new ArrayCollection(event.tables);
+			var notas:ArrayCollection = new ArrayCollection(event.notes);
 			
 			if (_arquivo.mer == null)
 			{
@@ -138,6 +140,8 @@ package br.edu.ucb.webdatamodeling.controller
 			}
 			
 			_arquivo.mer.tabelas = tabelas;
+			_arquivo.mer.notas = notas;
+			
 			_arquivoService.update(_arquivo);
 		}
 		
@@ -161,7 +165,7 @@ package br.edu.ucb.webdatamodeling.controller
 			
 			if (_mer != null)
 			{
-				_modeling.openMer(_mer.tabelas.toArray());
+				_modeling.openMer(_mer.tabelas.toArray(), _mer.notas.toArray());
 			}
 		}
 		

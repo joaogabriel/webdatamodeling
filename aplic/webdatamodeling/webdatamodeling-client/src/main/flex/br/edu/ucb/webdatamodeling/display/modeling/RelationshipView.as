@@ -33,7 +33,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		
 		public function get type() : String {return _type;}
 		
-		public function RelationshipView( point1:TableView, type:String, point2:TableView = null ) 
+		public function RelationshipView( point1:TableView, type:String, point2:TableView = null) 
 		{
 			_type = type;
 			_point1 = point1;

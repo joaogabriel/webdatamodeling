@@ -16,6 +16,8 @@ package br.edu.ucb.webdatamodeling.events
 		
 		public function get tables() : Array {return _tables;}
 		
+		public function get notes() : Array {return _notes;}
+		
 		public function ModelingEvent(type : String, tables:Array = null, notes:Array = null) 
 		{
 			_tables = tables;
