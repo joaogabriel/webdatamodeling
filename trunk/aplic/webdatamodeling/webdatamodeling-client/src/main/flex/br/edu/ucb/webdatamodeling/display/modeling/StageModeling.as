@@ -1,8 +1,10 @@
 package br.edu.ucb.webdatamodeling.display.modeling {
 	import br.com.stimuli.loading.BulkLoader;
+	import br.com.thalespessoa.utils.DisplayUtils;
 	import br.edu.ucb.webdatamodeling.display.modeling.events.MenuEvent;
 	import br.edu.ucb.webdatamodeling.display.modeling.menu.StageMenu;
 	import br.edu.ucb.webdatamodeling.dto.CampoDTO;
+	import br.edu.ucb.webdatamodeling.dto.NotaDTO;
 	import br.edu.ucb.webdatamodeling.dto.TabelaDTO;
 	import br.edu.ucb.webdatamodeling.events.ModelingEvent;
 	
@@ -72,15 +74,16 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 				_bg.graphics.lineTo(2000, i * 10);
 			}
 			addChild( _bg );
+			addChildAt( DisplayUtils.drawRect(2000, 1000, 0xFFFFFF), 0 );
 			load();
 			addEventListener(MenuEvent.SELECT_CREATE_TABLE, createTableHandler);
 			addEventListener(MenuEvent.SELECT_SAVE, selectSaveHandler);
 			addEventListener(MenuEvent.SELECT_GENERETE_NOTE, selectNoteHandler);
 			addEventListener(MenuEvent.SELECT_CLEAR, selectClearHandler);
-			addEventListener(MenuEvent.SELECT_DELETE, selectCloseHandler);
+			addEventListener(MenuEvent.SELECT_CLOSE, selectCloseHandler);
 		}
 
-		public function openMer( tables:Array ):void
+		public function openMer( tables:Array, notes:Array ):void
 		{
 			var len:uint = tables.length;
 			
@@ -88,6 +91,12 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 				setTimeout(createTable, i*70, TabelaDTO(tables[i]));
 				
 			setTimeout(createRelationShips, i*70);
+			
+			len = notes.length;
+			var ini:uint = i;
+			
+			for(var i:uint=0; i<len; i++)
+				setTimeout(createNote, ini + i*70, NotaDTO(notes[i]));
 		}
 		
 		public function loadFieldTypes( types:Array ):void
@@ -113,9 +122,18 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			
 			parent.removeChild(this);
 		}
+		
+		private function createNote( notaDTO:NotaDTO ):void
+		{
+			var note = new NoteView( notaDTO.descricao );
+			note.x = notaDTO.coordenadaX;
+			note.y = notaDTO.coordenadaY;
+			addChild(note);	
+		}
 
 		private function createTable( tableDTO:TabelaDTO ):void
 		{
+			trace(" criando tabela ")
 			var lenCampos:uint;
 			var table:TableView;
 			var attribute:TableAttribute;
@@ -143,11 +161,14 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 				Boolean(CampoDTO(tableDTO.campos[j]).tabelaEstrangeira),
 				null,
 				CampoDTO(tableDTO.campos[j]).naoNulo,
-				CampoDTO(tableDTO.campos[j]).autoIncremento) ;
+				CampoDTO(tableDTO.campos[j]).autoIncremento,
+				CampoDTO(tableDTO.campos[j]).tamanho,
+				CampoDTO(tableDTO.campos[j]).id
+				) ;
 				
 				table.addAttribute(attribute);
-				addChild(table);
 			}
+			addChild(table);
 			table.addEventListener(TableView.KILL, killTableHandler);
 		}
 
@@ -158,7 +179,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			var att:TableAttribute;
 			
 			for(var i:uint=0; i<len; i++)
-				addChildAt(new RelationshipView(TableView( _relationships[i].table ), RelationshipView.TYPE_N_1, getTableByName(_relationships[i].dto.descricao)), 1);
+				addChildAt(new RelationshipView(TableView( _relationships[i].table ), RelationshipView.TYPE_N_1, getTableByName(_relationships[i].dto.descricao)), 2);
 		}
 		
 		private function getTableByName(name:String):TableView
@@ -174,11 +195,26 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 
 		private function load() : void 
 		{
-			_bulk = BulkLoader.getLoader("main") || new BulkLoader("main");
-			_bulk.add("assets/swf/library.swf", { id:"library", context:new LoaderContext( false, ApplicationDomain.currentDomain ) } );
-			_bulk.add("assets/swf/fonts.swf", { id:"fonts", context:new LoaderContext( false, ApplicationDomain.currentDomain ) } );
-			_bulk.addEventListener(Event.COMPLETE, loadHandler);
-			_bulk.start();
+			if(!BulkLoader.getLoader("main"))
+			{
+				_bulk = new BulkLoader("main");
+				_bulk.add("assets/swf/library.swf", { id:"library", context:new LoaderContext( false, ApplicationDomain.currentDomain ) } );
+				_bulk.add("assets/swf/fonts.swf", { id:"fonts", context:new LoaderContext( false, ApplicationDomain.currentDomain ) } );
+				_bulk.addEventListener(Event.COMPLETE, loadHandler);
+				_bulk.start();
+			}
+			else
+			{
+				_menu = new StageMenu();
+				addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			}
+		}
+		
+		private function addedToStageHandler(e:Event):void
+		{
+			removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			stage.addEventListener(MouseEvent.CLICK, clickStageHandler);
+			dispatchEvent( new Event(Event.COMPLETE) );
 		}
 
 		private function showMenu() : void 
@@ -270,7 +306,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			var relationship:RelationshipView = new RelationshipView(TableView( event.target ), event.data);
 			relationship.addEventListener(RelationshipView.TYPE_N_N, relationNNHandler);
 			stage.addEventListener(MouseEvent.MOUSE_UP, clickToStopDrawingHandler);
-			addChildAt(relationship, 1);
+			addChildAt(relationship, 2);
 			_isDrawingRelationship = true;
 		}
 

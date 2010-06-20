@@ -15,7 +15,8 @@ package br.edu.ucb.webdatamodeling.display.modeling.events
 		public static const SELECT_EDIT_TITLE : String = "editTitle";
 		public static const SELECT_PLUS : String = "selectPlus";
 		public static const SELECT_CLEAR : String = "selectClear";
-
+		public static const SELECT_CLOSE: String = "selectClose";
+		
 		private var _data:*;
 		
 		public function get data() : * {return _data;}

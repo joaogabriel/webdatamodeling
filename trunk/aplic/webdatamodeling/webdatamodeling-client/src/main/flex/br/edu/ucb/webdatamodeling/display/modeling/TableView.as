@@ -129,8 +129,9 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			var relationships:Array = _relationships;
 			_relationships = null;
 			
-			for(var i:uint = 0; i<relationships.length; i++)
-				RelationshipView(relationships[i]).kill();
+			if(relationships)
+				for(var i:uint = 0; i<relationships.length; i++)
+					RelationshipView(relationships[i]).kill();
 				
 			for(i=0; i<_attributes.length; i++)
 				TweenMax.to(_attributes[i], .3, { alpha:0, delay: _attributes.length*.05 - i*.05 });
@@ -214,7 +215,8 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		
 		private function onKill():void
 		{
-			parent.removeChild(this);
+			if(parent)
+				parent.removeChild(this);
 		}
 		
 		private function resize( field:DisplayObject ):void

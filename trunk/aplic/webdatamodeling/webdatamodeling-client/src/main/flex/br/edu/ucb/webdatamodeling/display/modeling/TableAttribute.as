@@ -1,13 +1,13 @@
 package br.edu.ucb.webdatamodeling.display.modeling {
+	import br.com.thalespessoa.utils.Library;
 	import br.edu.ucb.webdatamodeling.display.modeling.ui.Combo;
 	import br.edu.ucb.webdatamodeling.dto.CampoDTO;
-	import flash.utils.setTimeout;
-	import gs.TweenMax;
-	import br.com.thalespessoa.utils.Library;
-
-	import flash.events.MouseEvent;
-	import flash.events.Event;
+	
 	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	
+	import gs.TweenMax;
 
 	/**
 	 * @author usuario
@@ -115,9 +115,10 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			return _dto;
 		}
 		
-		public function TableAttribute( name:String = null, type:Number = undefined, editNow:Boolean = true, isPK:Boolean = false, isFK:Boolean = false, fkTable:TableView = null, isNN:Boolean = false, isINC:Boolean = false ) 
+		public function TableAttribute( name:String = null, type:Number = undefined, editNow:Boolean = true, isPK:Boolean = false, isFK:Boolean = false, fkTable:TableView = null, isNN:Boolean = false, isINC:Boolean = false, len:Number = 0, id:Number = undefined ) 
 		{
 			_dto = new CampoDTO();
+			_dto.id = id;
 			buttonMode = true;
 			_text = new TableText(TableText.TYPE_ATTRIBUTE, name || "attribute_"+_i++, editNow);
 			//_text.mouseEnabled = false;
@@ -136,6 +137,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			_comboType = new Combo(types, type);
 			_comboType.mouseChildren = false;
 			_comboType.addEventListener(Event.CHANGE, changeComboTypes);
+			_comboType.length = len;
 			addChild(_comboType);
 			
 			_pkIcon = Library.getAndAdd("icon_PK", this, { y:1, mouseEnabled:false } );
