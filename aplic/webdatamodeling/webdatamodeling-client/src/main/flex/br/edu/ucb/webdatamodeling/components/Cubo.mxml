@@ -26,6 +26,6 @@
 	<components:CubeStack id="cube" selectedSide="{model.cubeSide}">
 	  	<display:Login name="Front"/>
 	  	<display:CadastrarUsuario name="Left"/>
-	  	<display:RecuperarSenha name="Back"/>
+	  	<display:RecuperarSenha name="Right"/>
 	</components:CubeStack>
 </mx:Canvas>

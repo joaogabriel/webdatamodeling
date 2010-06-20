@@ -64,7 +64,9 @@ package br.edu.ucb.webdatamodeling.script
 		
 		private function createTabela(tabela:TabelaDTO):void
 		{
-			_query += CREATE_TABLE;
+			if (_highlight) {
+				_query += "<b>" + CREATE_TABLE + "</b>";
+			}
 			_query += BLANK_SPACE;
 			_query += tabela.descricao;
 			_query += BLANK_SPACE;

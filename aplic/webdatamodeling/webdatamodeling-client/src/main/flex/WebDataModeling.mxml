@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
 	xmlns:display="flash.display.*"
 	xmlns:components="com.pfp.components.*"
-	creationComplete="init()" applicationComplete="verificarUsuarioAutenticado()" xmlns:components1="br.edu.ucb.webdatamodeling.components.*">
+	xmlns:components1="br.edu.ucb.webdatamodeling.components.*"
+	creationComplete="init()"
+	applicationComplete="verificarUsuarioAutenticado()"
+	initialize="setDefaultLocale()">
 	
 	<mx:Style source="../resources/assets/style/style.css"/>
 	
@@ -43,7 +46,7 @@
 
 			[Bindable]
 			private var files:ArrayCollection;
-						
+			
 			public function init():void
 			{
 				_controller = new WebDataModelingController(this);
@@ -60,6 +63,11 @@
                 _controllerTreeView = new TreeViewController(this.treeView);
 				_controllerTreeView.init();
            	}
+           	
+           	private function setDefaultLocale():void
+			{
+				resourceManager.localeChain = ["en_US"];
+			}
 			
 			public function verificarUsuarioAutenticado():void
 			{
@@ -131,7 +139,7 @@
 		]]>
 	</mx:Script>
 	<mx:VBox width="100%" height="100%">
-		<mx:ApplicationControlBar width="100%" height="40">
+		<mx:ApplicationControlBar width="100%" height="50">
 			<mx:HBox horizontalAlign="center" verticalAlign="middle" width="100%">
 				<mx:VBox>
 					<mx:Text text="WEB DATA MODELING" fontFamily="Verdana" fontSize="15" fontWeight="bold"/>
@@ -158,23 +166,30 @@
 				<mx:Canvas id="fileView" width="75%" height="100%" backgroundColor="white" backgroundAlpha="0.49" cornerRadius="20"/>
 			</mx:HDividedBox>
 		</mx:Canvas>
-		<mx:ApplicationControlBar width="100%" height="40">
+		<mx:ApplicationControlBar width="100%" height="50">
 			<mx:HBox horizontalAlign="left" width="100%">
 				<mx:Label text="{resourceManager.getString('messages', 'principal.usuario')}" />
 				<mx:Text id="txtNomeUsuario" selectable="false" />
 			</mx:HBox>
 			<mx:VBox horizontalAlign="center" width="100%">
-				<mx:HBox>
+				<mx:HBox verticalAlign="middle">
 					<mx:Label text="MERs"/>
 					<mx:VBox>
-						<mx:Label text="{resourceManager.getString('messages', 'principal.compartilhado')}"/>
-					<mx:Label text="{resourceManager.getString('messages', 'principal.construidos')}"/>
-				</mx:VBox>
+						<mx:HBox width="100%">
+							<mx:Label text="{resourceManager.getString('messages', 'principal.compartilhado')}"/>
+							<mx:Text id="txtQtdMerCompartilhado" selectable="false" />
+						</mx:HBox>
+						<mx:HBox width="100%">
+							<mx:Label text="{resourceManager.getString('messages', 'principal.construidos')}"/>
+							<mx:Text id="txtQtdMerConstruido" selectable="false" />
+						</mx:HBox>
+					</mx:VBox>
 				</mx:HBox>
 			</mx:VBox>
-			<mx:VBox horizontalAlign="right" width="100%">
+			<mx:HBox horizontalAlign="right" width="100%">
+				<mx:Image click="_controller.editarUsuario()" buttonMode="true" useHandCursor="true" source="@Embed(source='../resources/assets/images/update.png')" autoLoad="true" scaleContent="true" width="25" height="25"/>
 				<mx:Image click="_controller.logout()" buttonMode="true" useHandCursor="true" source="@Embed(source='../resources/assets/images/exit.png')" autoLoad="true" scaleContent="true" width="30" height="30"/>
-			</mx:VBox>	
+			</mx:HBox>
 		</mx:ApplicationControlBar>
 	</mx:VBox>
 </mx:Application>

@@ -119,6 +119,18 @@ package br.edu.ucb.webdatamodeling.dto
 		{
 			_mers = mers;
 		}
+		
+		public function get qtdMersConstruidos():Number
+		{
+			var count:Number = new Number();
+			
+			for each (var pasta:PastaDTO in _pastas)
+			{
+				count += pasta.arquivos.length;
+			}
+			
+			return count;
+		}
 
 	}
 }

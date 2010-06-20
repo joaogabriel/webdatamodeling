@@ -80,18 +80,20 @@ package br.edu.ucb.webdatamodeling.service
         private function efetuarLogoutHandler(event:ResultEvent):void
         {
             dispatchEvent(new CustomEvent("logout", event.result));
-            _remoteObject.removeEventListener(ResultEvent.RESULT, efetuarLoginHandler);
+            _remoteObject.removeEventListener(ResultEvent.RESULT, efetuarLogoutHandler);
             _remoteObject.showBusyCursor = false;
         }
         
 		public function verificarUsuarioAutenticado():void
         {
+        	_remoteObject.showBusyCursor = true;
         	_remoteObject.addEventListener("result", verificarUsuarioAutenticadoHandler);
         	_remoteObject.verificarUsuarioAutenticado();
         }
         
         private function verificarUsuarioAutenticadoHandler(event:ResultEvent):void
         {
+        	_remoteObject.showBusyCursor = false;
             dispatchEvent(new CustomEvent("usuarioLogado", event.result));
             _remoteObject.removeEventListener(ResultEvent.RESULT, verificarUsuarioAutenticadoHandler);
         }

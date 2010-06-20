@@ -89,10 +89,10 @@ package br.edu.ucb.webdatamodeling.controller
 			
 			else
 			{
-				_script = _parser.parserScript(_arquivo.mer);
+				_script = _parser.parserScript(_arquivo.mer, true);
 			}
 			
-			_view.txtScript.text = _script;
+			_view.txtScript.htmlText = _script;
 		}
 		
 		private function formatarData(data:Date):String
