@@ -156,11 +156,11 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 					_relationships.push({table:table, dto:CampoDTO(tableDTO.campos[j]).tabelaEstrangeira});
 					_fks.push({table:CampoDTO(tableDTO.campos[j]).tabelaEstrangeira, dto:CampoDTO(tableDTO.campos[j]) });
 					aux = CampoDTO(tableDTO.campos[j]).tabelaEstrangeira.id;
-					continue;
+					//continue;
 				}
 				attribute = new TableAttribute(CampoDTO(tableDTO.campos[j]).descricao, 
 					CampoDTO(tableDTO.campos[j]).tipo.id,
-					false, 
+					false,
 					CampoDTO(tableDTO.campos[j]).chavePrimaria,
 					Boolean(CampoDTO(tableDTO.campos[j]).tabelaEstrangeira),
 					null,
@@ -181,7 +181,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			var len:uint = _relationships.length;
 			
 			for(var i:uint=0; i<len; i++)
-				addChildAt(new RelationshipView(TableView( _relationships[i].table ), RelationshipView.TYPE_N_1, getTableByName(_relationships[i].dto.descricao)), 2);
+				addChildAt(new RelationshipView(TableView( _relationships[i].table ), RelationshipView.TYPE_N_1, getTableByName(_relationships[i].dto.descricao), false), 2);
 			
 			len = _fks.length;
 			
@@ -189,8 +189,10 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			
 			for(i=0; i<len; i++)
 			{
-				attributes = TableView(_fks[i].table).attributes;
+				attributes = getTableByName(_fks[i].table.descricao).attributes;
 				for(var j:uint = 0; j<attributes.length; j++)
+				{
+					trace(TableAttribute(attributes[i]).attributeName," == ",CampoDTO(_fks[i].dto).descricao)
 					if(TableAttribute(attributes[i]).attributeName == CampoDTO(_fks[i].dto).descricao)
 					{
 						TableAttribute(attributes[i]).isINC = CampoDTO(_fks[i].dto).autoIncremento;
@@ -198,6 +200,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 						TableAttribute(attributes[i]).isPK = CampoDTO(_fks[i].dto).chavePrimaria;
 						TableAttribute(attributes[i]).id = CampoDTO(_fks[i].dto).id;
 					}
+				}
 			}
 		}
 		
@@ -346,8 +349,8 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			
 			table.addEventListener(TableView.START_RELATIONSHIP, startRelationshipHandler);
 			addChild(table);
-			addChildAt(new RelationshipView(table, RelationshipView.TYPE_N_1, event.target.point1), 1);
-			addChildAt(new RelationshipView(table, RelationshipView.TYPE_N_1, event.target.point2), 1);
+			addChildAt(new RelationshipView(table, RelationshipView.TYPE_N_1, event.target.point1), 2);
+			addChildAt(new RelationshipView(table, RelationshipView.TYPE_N_1, event.target.point2), 2);
 			
 			for(var i:uint = 0; i<table.attributes.length; i++)
 				table.attributes[i].isPK = true;
