@@ -40,6 +40,20 @@ package br.edu.ucb.webdatamodeling.service
             _remoteObject.removeEventListener(ResultEvent.RESULT, insertHandler);
         }
         
+        public function update(usuario:UsuarioDTO):void
+        {
+        	_remoteObject.showBusyCursor = true;
+        	_remoteObject.addEventListener("result", updateHandler);
+        	_remoteObject.update(usuario);
+        }
+        
+        private function updateHandler(event:ResultEvent):void
+        {
+            _remoteObject.showBusyCursor = false;
+            dispatchEvent(new CustomEvent("insert", event.result));
+            _remoteObject.removeEventListener(ResultEvent.RESULT, updateHandler);
+        }
+        
         public function efetuarLogin(usuario:UsuarioDTO):void
         {
         	_remoteObject.showBusyCursor = true;

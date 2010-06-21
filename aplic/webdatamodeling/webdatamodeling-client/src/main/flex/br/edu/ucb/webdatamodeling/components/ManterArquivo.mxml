@@ -74,8 +74,8 @@
 			<mx:TextArea id="txtScript" width="100%" height="300"/>
 			<mx:HBox horizontalAlign="center" width="100%">
 				<mx:Button label="{resourceManager.getString('messages', 'script.btnCopiarAreaTransf')}" id="btnCopiarAreaTransf" click="_controller.copiarParaAreaDeTransferencia()"/>
-				<mx:Button label="{resourceManager.getString('messages', 'script.btnModelar')}" id="btnModelarScript"/>
-				<mx:Button label="{resourceManager.getString('messages', 'script.btnExportar')}" id="btnExportarScript"/>
+				<mx:Button label="{resourceManager.getString('messages', 'script.btnModelar')}" id="btnModelarScript" click="_controller.showModelagem()"/>
+				<mx:Button label="{resourceManager.getString('messages', 'script.btnExportar')}" id="btnExportarScript" click="_controller.exportar()"/>
 			</mx:HBox>
 		</mx:Form>
 	</mx:VBox>

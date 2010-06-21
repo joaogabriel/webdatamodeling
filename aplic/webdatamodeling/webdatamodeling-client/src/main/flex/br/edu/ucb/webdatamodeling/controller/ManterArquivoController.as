@@ -158,14 +158,10 @@ package br.edu.ucb.webdatamodeling.controller
 			_view.dispatchEvent(new Event(NovoArquivoController.UPDATE_TREE));
 		}
 		
-		public function gerarScript():void
-		{
-			Alert.show("pqp!!!");
-		}
-		
 		public function copiarParaAreaDeTransferencia():void
 		{
-			var scriptFormatted:String = replaceAllString(_script, "\n", "\r\n");
+			var script:String = _parser.parserScript(_arquivo.mer);
+			var scriptFormatted:String = replaceAllString(script, "\n", "\r\n");
 			System.setClipboard(scriptFormatted);
 		}
 		

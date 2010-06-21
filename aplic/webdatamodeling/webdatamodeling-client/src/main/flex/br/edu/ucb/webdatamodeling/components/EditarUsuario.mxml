@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml"
+	title="{resourceManager.getString('messages', 'cadastro.tltCadastro')}"
+	width="400" height="320"
+	creationComplete="init()">
+	
+	<mx:Script>
+		<![CDATA[
+			import br.edu.ucb.webdatamodeling.controller.EditarUsuarioController;
+			
+			private var _controller:EditarUsuarioController;
+			
+			private function init():void
+			{
+				_controller = new EditarUsuarioController(this);
+			}
+		]]>
+	</mx:Script>
+	<mx:Form width="100%">
+		<mx:FormItem label="{resourceManager.getString('messages', 'cadastro.nome')}" width="100%" required="true">
+			<mx:TextInput id="txtNome" width="100%"/>
+		</mx:FormItem>
+		<mx:FormItem label="{resourceManager.getString('messages', 'cadastro.sobrenome')}" width="100%" >
+			<mx:TextInput id="txtSobrenome" width="100%"/>
+		</mx:FormItem>
+		<mx:FormItem label="E-mail" width="100%" required="true">
+			<mx:TextInput id="txtEmail" width="100%"/>
+		</mx:FormItem>
+		<mx:FormItem label="{resourceManager.getString('messages', 'cadastro.senha')}" width="100%" required="true">
+			<mx:TextInput id="txtSenha" displayAsPassword="true" width="100%"/>
+		</mx:FormItem>
+		<mx:FormItem label="{resourceManager.getString('messages', 'cadastro.dataNascimento')}" width="100%">
+			<mx:DateField id="dtfDataNascimento" showToday="true" formatString="DD/MM/YYYY"
+				dayNames="['D','S','T','Q','Q','S','S']" 
+				monthNames="['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+				'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']" width="100%"/>
+		</mx:FormItem>
+		<mx:FormItem label="{resourceManager.getString('messages', 'cadastro.dataCadastro')}" width="100%">
+			<mx:TextInput id="txtDataCadastro" editable="false" width="100%"/>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:HBox horizontalAlign="center" width="100%">
+		<mx:Button id="btnCadastro" label="{resourceManager.getString('messages', 'dadosArquivo.btnSalvar')}" click="_controller.validarCadastro()" />
+		<mx:Button id="btnLimpar" label="{resourceManager.getString('messages', 'cadastro.btnLimpar')}" click="_controller.limparCampos()"/>
+		<mx:Button id="btnCancelar" label="{resourceManager.getString('messages', 'cadastro.btnCancelar')}" click="_controller.fecharPopup()"/>
+	</mx:HBox>
+	<mx:VBox horizontalAlign="center" width="100%">
+		<mx:Text id="msgCadastro" styleName="msgSucesso" text="{resourceManager.getString('messages', 'cadastro.msgCadastro')}" visible="false" selectable="false"/>
+	</mx:VBox>
+
+	<mx:EmailValidator id="valEmail" source="{txtEmail}" property="text" 
+							missingAtSignError="{resourceManager.getString('messages', 'cadastro.formatoEmail')}" 
+							missingPeriodInDomainError="{resourceManager.getString('messages', 'cadastro.formatoEmail')}" 
+							missingUsernameError="{resourceManager.getString('messages', 'cadastro.formatoEmail')}"
+							invalidCharError="{resourceManager.getString('messages', 'cadastro.formatoEmail')}"
+							invalidDomainError="{resourceManager.getString('messages', 'cadastro.formatoEmail')}" 
+							invalidIPDomainError="{resourceManager.getString('messages', 'cadastro.formatoEmail')}"
+							invalidPeriodsInDomainError="{resourceManager.getString('messages', 'cadastro.formatoEmail')}"
+							tooManyAtSignsError="{resourceManager.getString('messages', 'cadastro.formatoEmail')}"
+							requiredFieldError="{resourceManager.getString('messages', 'cadastro.formatoEmail')}" />
+							
+	<mx:StringValidator id="valNome" source="{txtNome}" property="text" required="true"
+				  requiredFieldError="{resourceManager.getString('messages', 'cadastro.campoObrigatorio')}"
+				  tooLongError="{resourceManager.getString('messages', 'cadastro.limiteMaxNome')}"
+				  maxLength="30" />
+				  
+	<mx:StringValidator id="valSobrenome" source="{txtSobrenome}" property="text" required="false"
+				  tooLongError="{resourceManager.getString('messages', 'cadastro.limiteMaxSobrenome')}"
+				  maxLength="30" />
+				  
+	<mx:StringValidator id="valSenha" source="{txtSenha}" property="text" required="true" 
+				  requiredFieldError="{resourceManager.getString('messages', 'cadastro.campoObrigatorio')}"
+				  tooLongError="{resourceManager.getString('messages', 'cadastro.limiteMaxSenha')}"
+				  tooShortError="{resourceManager.getString('messages', 'cadastro.limiteMinSenha')}"
+				  maxLength="20"
+				  minLength="6" />
+</mx:Panel>
