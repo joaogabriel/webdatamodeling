@@ -1,8 +1,8 @@
 package br.edu.ucb.webdatamodeling.controller
 {
 	import br.com.thalespessoa.utils.DisplayUtils;
-	import br.edu.ucb.webdatamodeling.components.CadastrarUsuario;
 	import br.edu.ucb.webdatamodeling.components.Cubo;
+	import br.edu.ucb.webdatamodeling.components.EditarUsuario;
 	import br.edu.ucb.webdatamodeling.display.modeling.StageModeling;
 	import br.edu.ucb.webdatamodeling.dto.ArquivoDTO;
 	import br.edu.ucb.webdatamodeling.dto.MerDTO;
@@ -236,7 +236,7 @@ package br.edu.ucb.webdatamodeling.controller
 		
 		public function editarUsuario():void
 		{
-			_popup = PopUpManager.createPopUp(_view, CadastrarUsuario, true);
+			_popup = PopUpManager.createPopUp(_view, EditarUsuario, true);
 			PopUpManager.centerPopUp(_popup);
 			_view.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 		}

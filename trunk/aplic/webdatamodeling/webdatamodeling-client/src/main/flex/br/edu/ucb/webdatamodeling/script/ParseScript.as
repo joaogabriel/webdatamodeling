@@ -5,6 +5,7 @@ package br.edu.ucb.webdatamodeling.script
 	import br.edu.ucb.webdatamodeling.dto.TabelaDTO;
 	
 	import mx.collections.ArrayCollection;
+	import mx.formatters.DateFormatter;
 	import mx.resources.IResourceManager;
 	import mx.resources.ResourceManager;
 	
@@ -19,6 +20,13 @@ package br.edu.ucb.webdatamodeling.script
 		private static const PONTO_VIRGULA:String = ";";
 		private static const CARRIAGE_RETURN:String = "\n";
 		private static const CREATE_TABLE:String = "CREATE TABLE";
+		private static const ALTER_TABLE:String = "ALTER TABLE";
+		private static const CONSTRAINT:String = "CONSTRAINT";
+		private static const PRIMARY_KEY:String = "PRIMARY KEY";
+		private static const NOT_NULL:String = "NOT NULL";
+		private static const DEFAULT_CONSTRAINT:String = "ON DELETE RESTRICT ON UPDATE RESTRICT";
+		private static const ADD_CONSTRAINT:String = "ADD CONSTRAINT";
+		private static const REFERENCES:String = "REFERENCES";
 		
 		private static var _instance:ParseScript;
 		
@@ -46,11 +54,13 @@ package br.edu.ucb.webdatamodeling.script
 
 		private function createComentarioInicial(mer:MerDTO):void
 		{
-			_query = "/*==============================================================*/";
+			_query = "/*=============================================*/";
 			_query += CARRIAGE_RETURN;
-			_query += "/* MER: " + mer.arquivo.descricao + "                          */";
+			_query += "/* SCRIPT GERADO A PARTIR DO WEB DATA MODELING				*/";
 			_query += CARRIAGE_RETURN;
-			_query += "/*==============================================================*/";
+			_query += "/* DATA: " + novaData() + "													*/";
+			_query += CARRIAGE_RETURN;
+			_query += "/*=============================================*/";
 			_query += CARRIAGE_RETURN;
 			_query += CARRIAGE_RETURN;
 			_query += CARRIAGE_RETURN;
@@ -64,9 +74,7 @@ package br.edu.ucb.webdatamodeling.script
 		
 		private function createTabela(tabela:TabelaDTO):void
 		{
-			if (_highlight) {
-				_query += "<b>" + CREATE_TABLE + "</b>";
-			}
+			_query += createHighlight(CREATE_TABLE, _highlight);
 			_query += BLANK_SPACE;
 			_query += tabela.descricao;
 			_query += BLANK_SPACE;
@@ -83,9 +91,18 @@ package br.edu.ucb.webdatamodeling.script
 				_query += BLANK_SPACE;
 				_query += campo.tipo.descricao;
 				_query += BLANK_SPACE;
-				_query += ABRE_PARENTESE;
-				_query += campo.tamanho;
-				_query += FECHA_PARENTESE;
+				
+				if (campo.tipo.descricao != "BOOLEAN" && campo.tipo.descricao != "DATE" && campo.tipo.descricao != "SERIAL") {
+					_query += ABRE_PARENTESE;
+					_query += campo.tamanho;
+					_query += FECHA_PARENTESE;
+				}
+				
+				if (campo.naoNulo) {
+					_query += BLANK_SPACE;
+					_query += NOT_NULL;
+				}
+				
 				_query += VIRGULA;
 				_query += CARRIAGE_RETURN;
 			}
@@ -94,8 +111,13 @@ package br.edu.ucb.webdatamodeling.script
 		private function createConstraints(tabela:TabelaDTO):void
 		{
 			_query += TAB_SPACE;
-			_query += "CONSTRAINT PK_" + tabela.descricao.toUpperCase();
-			_query += " PRIMARY KEY (";
+			_query += createHighlight(CONSTRAINT, _highlight);
+			_query += BLANK_SPACE;
+			_query += "PK_" + tabela.descricao.toUpperCase();
+			_query += BLANK_SPACE;
+			_query += createHighlight(PRIMARY_KEY, _highlight);
+			_query += BLANK_SPACE;
+			_query += ABRE_PARENTESE;
 			
 			for each (var campo:CampoDTO in tabela.campos)
 			{
@@ -105,7 +127,7 @@ package br.edu.ucb.webdatamodeling.script
 				}
 			}
 			
-			_query += ")";
+			_query += FECHA_PARENTESE;
 			_query += CARRIAGE_RETURN;
 		}
 	
@@ -116,12 +138,84 @@ package br.edu.ucb.webdatamodeling.script
 			_query += CARRIAGE_RETURN + CARRIAGE_RETURN;
 		}
 		
+		private function createForeingKeys(mer:MerDTO):void
+		{
+			for each (var tabela:TabelaDTO in mer.tabelas)
+			{
+				for each (var campo:CampoDTO in tabela.campos)
+				{
+					if (campo.tabelaEstrangeira)
+					{
+						_query += createHighlight(ALTER_TABLE, _highlight);
+						_query += BLANK_SPACE;
+						_query += tabela.descricao;
+						_query += CARRIAGE_RETURN;
+						_query += createHighlight(ADD_CONSTRAINT, _highlight);
+						_query += BLANK_SPACE;
+						_query += "FK_" + tabela.descricao + "_PK_" + campo.tabelaEstrangeira.descricao + " FOREIGN KEY (";
+						
+						for each (var campoEstrangeira:CampoDTO in campo.tabelaEstrangeira.campos)
+						{
+							if (campoEstrangeira.chavePrimaria)
+							{
+								_query += campoEstrangeira.descricao;
+							}
+							_query += FECHA_PARENTESE;
+						}
+						
+						_query += CARRIAGE_RETURN;
+						_query += createHighlight(REFERENCES, _highlight);
+						_query += BLANK_SPACE;
+						_query += campo.tabelaEstrangeira.descricao;
+						_query += BLANK_SPACE;
+						_query += ABRE_PARENTESE;
+						
+						for each (var campoEstrangeira2:CampoDTO in campo.tabelaEstrangeira.campos)
+						{
+							if (campoEstrangeira2.chavePrimaria)
+							{
+								_query += campoEstrangeira2.descricao;
+							}
+							
+							_query += FECHA_PARENTESE;
+						}
+						
+						_query += CARRIAGE_RETURN;
+						_query += createHighlight(DEFAULT_CONSTRAINT, _highlight);
+					}
+				}
+			}
+		}
+		
+		/*  alter table ARQUIVO
+   			add constraint FK_ARQUIVO_PK_PASTA__PASTA foreign key (ID_PASTA)
+      		references PASTA (ID_PASTA)
+      		on delete restrict on update restrict;
+      	*/
+      	
+      	private function novaData():String
+		{
+			var formatDate:DateFormatter = new DateFormatter();
+			formatDate.formatString = "DD/MM/YYYY";
+			return formatDate.format(new Date());
+		}
+		
+		private function createHighlight(str:String, highlight:Boolean):String
+		{
+			if (highlight) {
+				return "<b>" + str + "</b>";
+			} else {
+				return str;
+			}
+		}
+		
 		public function parserScript(mer:MerDTO, highlight:Boolean = false):String
 		{
-			_highlight = highlight;
 			
 			if (mer != null && mer.tabelas != null && mer.tabelas.length > 0)
 			{
+				_highlight = highlight;
+				
 				_query = "";
 				
 				createComentarioInicial(mer);
@@ -135,7 +229,7 @@ package br.edu.ucb.webdatamodeling.script
 					createEndTable();
 				}
 				
-				//createForeingKeys(mer);
+				createForeingKeys(mer);
 			}
 			
 			return _query;
