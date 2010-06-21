@@ -34,7 +34,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		
 		public function get type() : String {return _type;}
 		
-		public function RelationshipView( point1:TableView, type:String, point2:TableView = null) 
+		public function RelationshipView( point1:TableView, type:String, point2:TableView = null, addAttributes:Boolean = true) 
 		{
 			_type = type;
 			_point1 = point1;
@@ -59,7 +59,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			}
 			
 			if(point2)
-				completeRelationship(point2); 
+				completeRelationship(point2, addAttributes); 
 			else
 			{
 				addEventListener(Event.ENTER_FRAME, drawingHandler);
@@ -104,7 +104,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			}
 		}
 
-		public function completeRelationship(point:TableView):void
+		public function completeRelationship(point:TableView, addAttributes:Boolean = true):void
 		{
 			point2 = point;
 			point1.addEventListener(TableView.DRAGGING, updateHandler);
@@ -123,22 +123,22 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 					point1.addEventListener(TableEvent.ADD_PK, addPKHandler);
 					point2.addEventListener(TableEvent.ADD_PK, addPKHandler);
 					_attributes = _attributes.concat(att = point1.fk);
-					point2.addAttributes(att);
+					if(addAttributes)point2.addAttributes(att);
 					_attributes = _attributes.concat(att = point2.fk);
-					point1.addAttributes(att);
+					if(addAttributes)point1.addAttributes(att);
 					for(i=0; i < _point2.pk.length; i++) _point2.pk[i].addEventListener(TableAttribute.CHANGE_PK, changePKHandler);
 					for(i=0; i < _point1.pk.length; i++) _point1.pk[i].addEventListener(TableAttribute.CHANGE_PK, changePKHandler);
 				break;
 				case TYPE_1_N:
 					point1.addEventListener(TableEvent.ADD_PK, addPKHandler);
 					_attributes = _attributes.concat(att = point1.fk);
-					point2.addAttributes(att);
+					if(addAttributes)point2.addAttributes(att);
 					for(i=0; i < _point1.pk.length; i++) _point1.pk[i].addEventListener(TableAttribute.CHANGE_PK, changePKHandler);
 				break;
 				case TYPE_N_1:
 					point2.addEventListener(TableEvent.ADD_PK, addPKHandler);
 					_attributes = _attributes.concat(att = point2.fk);
-					point1.addAttributes(att);
+					if(addAttributes)point1.addAttributes(att);
 					for(i=0; i < _point2.pk.length; i++) _point2.pk[i].addEventListener(TableAttribute.CHANGE_PK, changePKHandler);
 				break;
 			}
@@ -147,7 +147,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			
 			var len:uint = _attributes.length;
 			
-			for( var i:uint = 0; i < len; i++ ) 
+			for( i = 0; i < len; i++ ) 
 				_attributes[i].addEventListener(Event.CLOSE, killAttributeHandler );
 		}
 

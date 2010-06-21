@@ -1,5 +1,6 @@
 package br.edu.ucb.webdatamodeling.display.modeling {
 	
+	import mx.controls.Alert;
 	import br.edu.ucb.webdatamodeling.dto.TipoTabelaDTO;
 	import br.com.thalespessoa.utils.Library;
 	import br.edu.ucb.webdatamodeling.display.modeling.events.MenuEvent;
@@ -128,7 +129,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		{
 			var relationships:Array = _relationships;
 			_relationships = null;
-			
+
 			if(relationships)
 				for(var i:uint = 0; i<relationships.length; i++)
 					RelationshipView(relationships[i]).kill();
