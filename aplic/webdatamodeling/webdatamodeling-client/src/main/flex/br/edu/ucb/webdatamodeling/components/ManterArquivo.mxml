@@ -54,7 +54,7 @@
 			</mx:FormItem>
 			<mx:HBox horizontalAlign="center" width="100%">
 				<mx:Button label="{resourceManager.getString('messages', 'dadosArquivo.btnSalvar')}" icon="@Embed(source='../resources/assets/images/save.png')" id="btnSalvar" click="_controller.salvar()"/>
-				<mx:Button label="{resourceManager.getString('messages', 'dadosArquivo.btnModelar')}" icon="@Embed(source='../resources/assets/images/save.png')" id="btnModelar" click="_controller.showModelagem()"/>
+				<mx:Button label="{resourceManager.getString('messages', 'dadosArquivo.btnModelar')}" icon="@Embed(source='../resources/assets/images/modelar.png')" id="btnModelar" click="_controller.showModelagem()"/>
 				<mx:Button label="{resourceManager.getString('messages', 'dadosArquivo.btnExportar')}" icon="@Embed(source='../resources/assets/images/export.png')" id="btnExportar" click="_controller.exportar()"/>
 				<mx:Button label="{resourceManager.getString('messages', 'dadosArquivo.btnCompartilhar')}" icon="@Embed(source='../resources/assets/images/share.png')" id="btnCompartilhar" click="_controller.compartilhar()"/>
 				<mx:Button label="{resourceManager.getString('messages', 'dadosArquivo.btnExcluir')}" icon="@Embed(source='../resources/assets/images/delete.png')" id="btnExcluir" click="_controller.excluir()"/>

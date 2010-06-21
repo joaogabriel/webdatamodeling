@@ -62,8 +62,8 @@ package br.edu.ucb.webdatamodeling.controller
 		private function exportarHandler(event:CustomEvent):void
 		{
 			_byteArray = event.data;
-			
 			Alert.show("Deseja realizar o download do arquivo?", "Aviso de Segurança", Alert.NO | Alert.YES, _view, alertListener);
+			_arquivoService.removeEventListener("exportarArquivo", exportarHandler);
 		}
 		
 		private function updateHandler(event:CustomEvent):void
@@ -82,6 +82,7 @@ package br.edu.ucb.webdatamodeling.controller
 				_arquivoService.addEventListener("update", updateHandler);
 				_arquivoService.update(_arquivo);
 			}
+			
 		}
 	}
 }

@@ -103,6 +103,7 @@ package br.edu.ucb.webdatamodeling.controller
 		{
 			_modeling.kill();
 			_modeling.mask.parent.removeChild(_modeling.mask);
+			_modeling = null;
 			_view.subContent.visible = true;
 		}
 		

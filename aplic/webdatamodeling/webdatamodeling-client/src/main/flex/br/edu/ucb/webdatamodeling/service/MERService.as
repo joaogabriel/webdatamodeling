@@ -57,6 +57,7 @@ package br.edu.ucb.webdatamodeling.service
         private function getMerByArquivoHandler(event:ResultEvent):void
         {
             dispatchEvent(new CustomEvent("getByArquivo", event.result));
+            _remoteObject.removeEventListener(ResultEvent.RESULT, getMerByArquivoHandler);
         }
         
         public static function getInstance():MERService
