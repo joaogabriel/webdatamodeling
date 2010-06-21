@@ -48,6 +48,16 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		public function get fk() : TableAttribute {return _fk;}
 		public function set fk(value : TableAttribute) : void {_fk = value;}
 		
+		public function get attributeName():String
+		{
+			return _text.text;
+		}
+		
+		public function set id(value : Number) : void 
+		{
+			_dto.id = value;
+		}
+		
 		public function set isNN(value : Boolean) : void 
 		{
 			if(!_isNN && value)

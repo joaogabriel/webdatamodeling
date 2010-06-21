@@ -1,4 +1,5 @@
 package br.edu.ucb.webdatamodeling.display.modeling {
+	import br.edu.ucb.webdatamodeling.dto.CampoDTO;
 	import br.com.thalespessoa.utils.Library;
 	import br.edu.ucb.webdatamodeling.display.modeling.events.TableEvent;
 	import gs.TweenMax;
@@ -58,7 +59,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			}
 			
 			if(point2)
-				completeRelationship(point2);
+				completeRelationship(point2); 
 			else
 			{
 				addEventListener(Event.ENTER_FRAME, drawingHandler);

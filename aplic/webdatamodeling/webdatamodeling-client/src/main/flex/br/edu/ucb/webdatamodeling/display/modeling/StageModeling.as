@@ -36,6 +36,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		private var _tables:Array;
 		private var _notes:Array;
 		private var _relationships:Array;
+		private var _fks:Array;
 		
 		public function get dataTables():Array
 		{
@@ -61,6 +62,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			_tables = [];
 			_notes = [];
 			_relationships = [];
+			_fks = [];
 			_bg = new Shape();
 			_bg.graphics.lineStyle(1, 0xCCCCCC);
 			for(var i:uint = 0; i < 300; i++)
@@ -133,7 +135,6 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 
 		private function createTable( tableDTO:TabelaDTO ):void
 		{
-			trace(" criando tabela ")
 			var lenCampos:uint;
 			var table:TableView;
 			var attribute:TableAttribute;
@@ -149,22 +150,25 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			
 			for(var j:uint=0; j<lenCampos; j++)
 			{
-				if(CampoDTO(tableDTO.campos[j]).tabelaEstrangeira) 
+				var aux:Number;
+				if(CampoDTO(tableDTO.campos[j]).tabelaEstrangeira && CampoDTO(tableDTO.campos[j]).tabelaEstrangeira.id != aux) 
 				{
 					_relationships.push({table:table, dto:CampoDTO(tableDTO.campos[j]).tabelaEstrangeira});
+					_fks.push({table:CampoDTO(tableDTO.campos[j]).tabelaEstrangeira, dto:CampoDTO(tableDTO.campos[j]) });
+					aux = CampoDTO(tableDTO.campos[j]).tabelaEstrangeira.id;
 					continue;
 				}
 				attribute = new TableAttribute(CampoDTO(tableDTO.campos[j]).descricao, 
-				CampoDTO(tableDTO.campos[j]).tipo.id,
-				false, 
-				CampoDTO(tableDTO.campos[j]).chavePrimaria,
-				Boolean(CampoDTO(tableDTO.campos[j]).tabelaEstrangeira),
-				null,
-				CampoDTO(tableDTO.campos[j]).naoNulo,
-				CampoDTO(tableDTO.campos[j]).autoIncremento,
-				CampoDTO(tableDTO.campos[j]).tamanho,
-				CampoDTO(tableDTO.campos[j]).id
-				) ;
+					CampoDTO(tableDTO.campos[j]).tipo.id,
+					false, 
+					CampoDTO(tableDTO.campos[j]).chavePrimaria,
+					Boolean(CampoDTO(tableDTO.campos[j]).tabelaEstrangeira),
+					null,
+					CampoDTO(tableDTO.campos[j]).naoNulo,
+					CampoDTO(tableDTO.campos[j]).autoIncremento,
+					CampoDTO(tableDTO.campos[j]).tamanho,
+					CampoDTO(tableDTO.campos[j]).id
+					);
 				
 				table.addAttribute(attribute);
 			}
@@ -175,11 +179,33 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 		private function createRelationShips() : void 
 		{
 			var len:uint = _relationships.length;
-			var lenAtt:uint;
-			var att:TableAttribute;
 			
 			for(var i:uint=0; i<len; i++)
 				addChildAt(new RelationshipView(TableView( _relationships[i].table ), RelationshipView.TYPE_N_1, getTableByName(_relationships[i].dto.descricao)), 2);
+			
+			len = _fks.length;
+			
+			var attributes:Array;
+			
+			for(i=0; i<len; i++)
+			{
+				attributes = TableView(_fks[i].table).attributes;
+				for(var j:uint = 0; j<attributes.length; j++)
+					if(TableAttribute(attributes[i]).attributeName == CampoDTO(_fks[i].dto).descricao)
+					{
+						TableAttribute(attributes[i]).isINC = CampoDTO(_fks[i].dto).autoIncremento;
+						TableAttribute(attributes[i]).isNN = CampoDTO(_fks[i].dto).naoNulo;
+						TableAttribute(attributes[i]).isPK = CampoDTO(_fks[i].dto).chavePrimaria;
+						TableAttribute(attributes[i]).id = CampoDTO(_fks[i].dto).id;
+					}
+			}
+		}
+		
+		private function getItemByProperty( array:Array, property:String, value:String ):*
+		{
+			for(var i:uint = 0; i<array.length; i++)
+				if(array[i][property] == value)
+					return array[i];
 		}
 		
 		private function getTableByName(name:String):TableView
