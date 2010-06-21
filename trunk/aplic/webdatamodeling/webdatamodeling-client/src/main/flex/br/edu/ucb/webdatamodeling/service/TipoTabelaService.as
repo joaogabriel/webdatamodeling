@@ -33,6 +33,7 @@ package br.edu.ucb.webdatamodeling.service
         public function findAllHandler(event:ResultEvent):void
         {
             dispatchEvent(new CustomEvent("findAll", event.result));
+            _remoteObject.removeEventListener(ResultEvent.RESULT, findAllHandler);
         }
         
         public static function getInstance():TipoTabelaService
