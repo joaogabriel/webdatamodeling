@@ -115,7 +115,10 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			_dto.chavePrimaria = isPK;
 			_dto.descricao = _text.text;
 			
-			_dto.tabelaEstrangeira = isFK ? _fkTable.data : null;
+			if(_fkTable)
+				_dto.tabelaEstrangeira = isFK ? _fkTable.data : null;
+			else
+				_dto.tabelaEstrangeira = null 
 			
 			_dto.naoNulo = _isNN;
 			_dto.autoIncremento = _isINC;
