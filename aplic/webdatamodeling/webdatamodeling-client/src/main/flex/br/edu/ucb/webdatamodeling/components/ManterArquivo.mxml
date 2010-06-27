@@ -73,9 +73,9 @@
 			</mx:HBox>
 			<mx:TextArea id="txtScript" width="100%" height="300"/>
 			<mx:HBox horizontalAlign="center" width="100%">
-				<mx:Button label="{resourceManager.getString('messages', 'script.btnCopiarAreaTransf')}" id="btnCopiarAreaTransf" click="_controller.copiarParaAreaDeTransferencia()"/>
-				<mx:Button label="{resourceManager.getString('messages', 'script.btnModelar')}" id="btnModelarScript" click="_controller.showModelagem()"/>
-				<mx:Button label="{resourceManager.getString('messages', 'script.btnExportar')}" id="btnExportarScript" click="_controller.exportar()"/>
+				<mx:Button label="{resourceManager.getString('messages', 'script.btnCopiarAreaTransf')}" icon="@Embed(source='../resources/assets/images/transferencia.png')"  id="btnCopiarAreaTransf" click="_controller.copiarParaAreaDeTransferencia()"/>
+				<mx:Button label="{resourceManager.getString('messages', 'script.btnModelar')}" icon="@Embed(source='../resources/assets/images/modelar.png')"  id="btnModelarScript" click="_controller.showModelagem()"/>
+				<mx:Button label="{resourceManager.getString('messages', 'script.btnExportar')}" icon="@Embed(source='../resources/assets/images/export.png')"  id="btnExportarScript" click="_controller.exportar()"/>
 			</mx:HBox>
 		</mx:Form>
 	</mx:VBox>
