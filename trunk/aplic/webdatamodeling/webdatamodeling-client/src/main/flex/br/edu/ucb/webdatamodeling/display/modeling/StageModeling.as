@@ -158,12 +158,14 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 					aux = CampoDTO(tableDTO.campos[j]).tabelaEstrangeira.id;
 					//continue;
 				}
+
+
 				attribute = new TableAttribute(CampoDTO(tableDTO.campos[j]).descricao, 
 					CampoDTO(tableDTO.campos[j]).tipo.id,
 					false,
 					CampoDTO(tableDTO.campos[j]).chavePrimaria,
 					Boolean(CampoDTO(tableDTO.campos[j]).tabelaEstrangeira),
-					null,
+					(CampoDTO(tableDTO.campos[j]).tabelaEstrangeira ? getTableByName(CampoDTO(tableDTO.campos[j]).tabelaEstrangeira.descricao) : null),
 					CampoDTO(tableDTO.campos[j]).naoNulo,
 					CampoDTO(tableDTO.campos[j]).autoIncremento,
 					CampoDTO(tableDTO.campos[j]).tamanho,
@@ -182,7 +184,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 			
 			for(var i:uint=0; i<len; i++)
 				addChildAt(new RelationshipView(TableView( _relationships[i].table ), RelationshipView.TYPE_N_1, getTableByName(_relationships[i].dto.descricao), false), 2);
-			
+			/*
 			len = _fks.length;
 			
 			var attributes:Array;
@@ -192,6 +194,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 				attributes = getTableByName(_fks[i].table.descricao).attributes;
 				for(var j:uint = 0; j<attributes.length; j++)
 				{
+					trace()
 					trace(TableAttribute(attributes[i]).attributeName," == ",CampoDTO(_fks[i].dto).descricao)
 					if(TableAttribute(attributes[i]).attributeName == CampoDTO(_fks[i].dto).descricao)
 					{
@@ -201,7 +204,7 @@ package br.edu.ucb.webdatamodeling.display.modeling {
 						TableAttribute(attributes[i]).id = CampoDTO(_fks[i].dto).id;
 					}
 				}
-			}
+			}*/
 		}
 		
 		private function getItemByProperty( array:Array, property:String, value:String ):*
