@@ -1,0 +1,2 @@
+O WebDataModeling (WDM) é um SaaS desenvolvido como Projeto Final de Curso na Universidade Católica de Brasília, Brasil. Os integrantes do projeto são os alunos João Gabriel Soares Esteves, Paulo Estevão Fragoso Carneiro e Thales Alves Pessoa Rodrigues, contando com o apoio e orientação do Professor Wesley Vaz.
+O WDM fornece um mecanismo para Modelagem de Dados em ambiente Web, construído utilizando Adobe Flex e Java, com frameworks consolidados como Spring, Hibernate e Log4J.
